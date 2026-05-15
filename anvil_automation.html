@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anvil Automation — Precision CNC Machining & Die Casting, Coimbatore</title>
+<meta name="description" content="ISO 9001:2015 certified CNC machining, VMC machining and pressure die casting manufacturer in Coimbatore, Tamil Nadu since 2004.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   RESET + ROOT
+═══════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0C1117;
+  --ink2:#2B3340;
+  --mute:#6B7A8D;
+  --line:#DDE3EC;
+  --bg:#F7F9FC;
+  --white:#FFFFFF;
+  --blue:#1147A8;
+  --blue2:#0D3C8A;
+  --accent:#E85B1A;
+  --cyan:#0A91C4;
+  --font-display:'Bebas Neue',sans-serif;
+  --font-body:'DM Sans',sans-serif;
+  --font-mono:'DM Mono',monospace;
+  --r:10px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+html{font-size:16px;scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:var(--font-body);background:var(--white);color:var(--ink);overflow-x:hidden;cursor:default}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+button{cursor:pointer;font-family:inherit;border:none;background:none}
+
+/* ═══════════════════════════════════════════════
+   CUSTOM CURSOR
+═══════════════════════════════════════════════ */
+.cursor{position:fixed;pointer-events:none;z-index:9999;mix-blend-mode:multiply}
+.cursor-dot{width:6px;height:6px;background:var(--blue);border-radius:50%;transform:translate(-50%,-50%);transition:transform .1s}
+.cursor-ring{width:32px;height:32px;border:1.5px solid var(--blue);border-radius:50%;transform:translate(-50%,-50%);transition:width .25s var(--ease),height .25s var(--ease),opacity .25s,top .08s,left .08s;opacity:.5}
+body:has(a:hover) .cursor-ring,body:has(button:hover) .cursor-ring{width:48px;height:48px;opacity:.3}
+
+/* ═══════════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════════ */
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--blue);border-radius:2px}
+
+/* ═══════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════ */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:0 48px;height:72px;display:flex;align-items:center;justify-content:space-between;transition:background .4s,box-shadow .4s}
+nav.scrolled{background:rgba(255,255,255,.96);backdrop-filter:blur(16px);box-shadow:0 1px 0 var(--line)}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-logo-mark{width:40px;height:40px;border-radius:50%;overflow:hidden;display:grid;place-items:center;flex-shrink:0;border:2px solid var(--blue);background:white}
+.nav-logo-mark img{width:100%;height:100%;object-fit:cover}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1}
+.nav-logo-name{font-family:var(--font-display);font-size:19px;letter-spacing:.08em;color:var(--ink);transition:opacity .4s var(--ease),transform .4s var(--ease)}
+.nav-logo-tag{font-size:9px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);margin-top:1px}
+.nav-links{display:flex;align-items:center;gap:2px}
+.nav-links a{font-size:13px;font-weight:500;color:var(--ink2);padding:7px 14px;border-radius:6px;letter-spacing:.01em;transition:color .2s,background .2s}
+.nav-links a:hover{color:var(--blue);background:rgba(17,71,168,.06)}
+.nav-right{display:flex;align-items:center;gap:12px}
+.btn-nav{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:9px 22px;border-radius:7px;transition:all .2s}
+.btn-nav.ghost{border:1.5px solid var(--line);color:var(--ink2)}
+.btn-nav.ghost:hover{border-color:var(--blue);color:var(--blue)}
+.btn-nav.solid{background:var(--blue);color:white}
+.btn-nav.solid:hover{background:var(--blue2);transform:translateY(-1px)}
+.hamburger{display:none;flex-direction:column;gap:5px;padding:8px;cursor:pointer}
+.hamburger span{display:block;width:22px;height:1.5px;background:var(--ink);border-radius:2px;transition:all .3s}
+.mobile-menu{display:none;position:fixed;inset:0;background:white;z-index:490;padding:100px 40px 40px;flex-direction:column;gap:8px}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-size:28px;font-family:var(--font-display);letter-spacing:.05em;color:var(--ink);padding:12px 0;border-bottom:1px solid var(--line)}
+
+/* ═══════════════════════════════════════════════
+   HERO — FULL SCREEN
+═══════════════════════════════════════════════ */
+#hero{width:100vw;height:100vh;min-height:700px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:0 60px 80px}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;filter:grayscale(30%) brightness(.85)}
+.hero-bg-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,15,25,.78) 0%,rgba(10,15,25,.55) 60%,rgba(10,15,25,.3) 100%)}
+/* Meteor layer */
+.hero-meteors{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1}
+.meteor{position:absolute;width:1.5px;height:90px;background:linear-gradient(180deg,rgba(10,145,196,.9),transparent);border-radius:2px;opacity:0;animation:mfall linear infinite}
+@keyframes mfall{0%{opacity:0;transform:rotate(215deg) translateY(-100px)}10%{opacity:.7}90%{opacity:.5}100%{opacity:0;transform:rotate(215deg) translateY(calc(100vh + 200px))}}
+/* Hero content */
+.hero-content{position:relative;z-index:3;max-width:1200px}
+.hero-eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:24px;opacity:0;animation:fadeUp .8s .3s var(--ease) forwards}
+.hero-eyebrow-line{width:40px;height:1px;background:var(--cyan)}
+.hero-eyebrow-text{font-family:var(--font-mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan)}
+.hero-brand{overflow:hidden;margin-bottom:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:clamp(120px,18vw,200px)}
+.hero-anvil{font-family:var(--font-display);font-size:clamp(120px,18vw,200px);line-height:.88;color:white;letter-spacing:.03em;display:block;opacity:0;transform:translateY(100px);animation:slideUp .9s .5s var(--ease) forwards;transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.hero-automation{font-family:var(--font-display);font-size:clamp(120px,18vw,200px);line-height:.88;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.35);letter-spacing:.03em;display:block;opacity:0;transform:translateY(100px);transition:opacity .5s var(--ease),transform .5s var(--ease),color .5s var(--ease),-webkit-text-stroke .5s var(--ease)}
+@keyframes slideUp{to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+.hero-sub{font-size:clamp(14px,1.6vw,17px);color:rgba(255,255,255,.6);max-width:480px;line-height:1.75;margin:28px 0 40px;font-weight:300;opacity:0;animation:fadeUp .8s 1s var(--ease) forwards}
+.hero-actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap;opacity:0;animation:fadeUp .8s 1.15s var(--ease) forwards}
+.btn-hero-primary{display:inline-flex;align-items:center;gap:10px;background:var(--blue);color:white;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:14px 28px;border-radius:7px;transition:all .25s}
+.btn-hero-primary:hover{background:var(--blue2);transform:translateY(-2px);box-shadow:0 12px 32px rgba(17,71,168,.35)}
+.btn-hero-primary svg{width:14px;height:14px;stroke:white;fill:none;stroke-width:2.5;transition:transform .2s}
+.btn-hero-primary:hover svg{transform:translateX(3px)}
+.btn-hero-ghost{display:inline-flex;align-items:center;gap:8px;color:rgba(255,255,255,.7);font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.25);transition:all .25s}
+.btn-hero-ghost:hover{color:white;border-color:rgba(255,255,255,.7)}
+/* Hero corner info */
+.hero-corner-left{position:absolute;bottom:40px;left:60px;z-index:3;font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.35);line-height:2;opacity:0;animation:fadeUp .6s 1.3s forwards}
+.hero-corner-right{position:absolute;bottom:40px;right:60px;z-index:3;text-align:right;font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;color:rgba(255,255,255,.35);line-height:2;opacity:0;animation:fadeUp .6s 1.3s forwards}
+/* Hero scroll indicator */
+.hero-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fadeUp .6s 1.5s forwards}
+.scroll-line{width:1px;height:48px;background:rgba(255,255,255,.2);position:relative;overflow:hidden;border-radius:1px}
+.scroll-line::after{content:'';position:absolute;top:-100%;left:0;width:100%;height:100%;background:white;animation:scrollDown 2s 2s ease-in-out infinite}
+@keyframes scrollDown{0%{top:-100%}50%{top:0}100%{top:100%}}
+.scroll-label{font-family:var(--font-mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+
+/* ═══════════════════════════════════════════════
+   SECTIONS COMMONS
+═══════════════════════════════════════════════ */
+.section{padding:120px 60px;max-width:100%;overflow:hidden}
+.section.bg-light{background:var(--bg)}
+.section.bg-dark{background:var(--ink)}
+.section.bg-blue{background:var(--blue)}
+.wrap{max-width:1280px;margin:0 auto}
+.section-eyebrow{font-family:var(--font-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--blue);display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.section-eyebrow::before{content:'';width:28px;height:1px;background:var(--blue);flex-shrink:0}
+.section-eyebrow.light{color:rgba(255,255,255,.45)}
+.section-eyebrow.light::before{background:rgba(255,255,255,.3)}
+.section-h{font-family:var(--font-display);font-size:clamp(42px,5.5vw,72px);line-height:1;letter-spacing:.03em;color:var(--ink)}
+.section-h.light{color:white}
+.section-p{font-size:16px;color:var(--mute);line-height:1.8;max-width:560px;margin-top:16px;font-weight:300}
+.section-p.light{color:rgba(255,255,255,.5)}
+
+/* Reveal animations */
+[data-reveal]{opacity:0;transform:translateY(36px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
+[data-reveal="left"]{transform:translateX(-40px)}
+[data-reveal="right"]{transform:translateX(40px)}
+[data-reveal="scale"]{transform:scale(.94);opacity:0}
+[data-reveal].revealed{opacity:1;transform:none}
+[data-reveal-delay="1"]{transition-delay:.1s}
+[data-reveal-delay="2"]{transition-delay:.2s}
+[data-reveal-delay="3"]{transition-delay:.3s}
+[data-reveal-delay="4"]{transition-delay:.4s}
+[data-reveal-delay="5"]{transition-delay:.5s}
+[data-reveal-delay="6"]{transition-delay:.6s}
+
+/* ═══════════════════════════════════════════════
+   TICKER STRIP
+═══════════════════════════════════════════════ */
+.ticker-wrap{background:var(--blue);overflow:hidden;padding:14px 0;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08)}
+.ticker-track{display:flex;gap:0;animation:tickerScroll 28s linear infinite;width:max-content}
+.ticker-item{display:flex;align-items:center;gap:24px;padding:0 40px;font-family:var(--font-mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.7);white-space:nowrap}
+.ticker-item::after{content:'·';color:rgba(255,255,255,.3)}
+@keyframes tickerScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ═══════════════════════════════════════════════
+   ABOUT SECTION
+═══════════════════════════════════════════════ */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center}
+.about-img-wrap{position:relative}
+.about-img-frame{border-radius:14px;overflow:hidden;position:relative;aspect-ratio:4/5}
+.about-img-frame img{width:100%;height:100%;object-fit:cover;transition:transform 8s ease}
+.about-img-frame:hover img{transform:scale(1.04)}
+.about-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,15,25,.5) 0%,transparent 50%)}
+.about-float{position:absolute;background:white;border-radius:10px;padding:16px 20px;box-shadow:0 8px 40px rgba(0,0,0,.1);border:1px solid var(--line)}
+.about-float.tl{top:-20px;left:-20px}
+.about-float.br{bottom:-20px;right:-20px}
+.float-num{font-family:var(--font-display);font-size:36px;line-height:1;color:var(--blue)}
+.float-lbl{font-size:11px;font-weight:500;color:var(--mute);letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+.about-text .kv-row{display:flex;gap:16px;padding:14px 0;border-bottom:1px solid var(--line);font-size:14px}
+.about-text .kv-k{color:var(--mute);min-width:140px;font-weight:400;letter-spacing:.01em}
+.about-text .kv-v{color:var(--ink);font-weight:500}
+
+/* ═══════════════════════════════════════════════
+   SERVICES
+═══════════════════════════════════════════════ */
+.services-header{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;margin-bottom:64px}
+.services-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line)}
+.svc-card{background:white;padding:40px 32px;position:relative;overflow:hidden;transition:background .3s}
+.svc-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
+.svc-card:hover{background:var(--bg)}
+.svc-card:hover::after{transform:scaleX(1)}
+.svc-num{font-family:var(--font-display);font-size:64px;color:var(--line);position:absolute;top:24px;right:24px;line-height:1;transition:color .3s}
+.svc-card:hover .svc-num{color:rgba(17,71,168,.06)}
+.svc-icon{width:48px;height:48px;border-radius:10px;background:rgba(17,71,168,.07);display:grid;place-items:center;margin-bottom:28px}
+.svc-icon svg{width:24px;height:24px;stroke:var(--blue);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.svc-title{font-family:var(--font-display);font-size:26px;letter-spacing:.04em;color:var(--ink);margin-bottom:12px}
+.svc-desc{font-size:13px;color:var(--mute);line-height:1.8;font-weight:300}
+.svc-list{margin-top:20px}
+.svc-list li{font-size:12px;color:var(--ink2);padding:5px 0;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line)}
+.svc-list li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--blue);flex-shrink:0}
+
+/* ═══════════════════════════════════════════════
+   INFRASTRUCTURE
+═══════════════════════════════════════════════ */
+.infra-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:80px;align-items:start;margin-top:80px}
+.spec-tabs{display:flex;gap:4px;margin-bottom:32px;border-bottom:1px solid var(--line);padding-bottom:0}
+.spec-tab{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:10px 18px;border-radius:6px 6px 0 0;color:var(--mute);cursor:pointer;transition:all .2s;border-bottom:2px solid transparent;margin-bottom:-1px}
+.spec-tab.active,.spec-tab:hover{color:var(--blue);border-bottom-color:var(--blue)}
+.spec-panel{display:none}
+.spec-panel.active{display:block}
+.spec-machine{margin-bottom:24px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.spec-machine-head{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;background:var(--bg)}
+.spec-machine-name{font-family:var(--font-display);font-size:20px;letter-spacing:.05em;color:var(--ink)}
+.spec-badge{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;background:rgba(17,71,168,.08);color:var(--blue);padding:4px 10px;border-radius:100px;text-transform:uppercase}
+.spec-row{display:flex;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--line);font-size:13px}
+.spec-row:nth-child(odd){background:rgba(0,0,0,.01)}
+.spec-k{color:var(--mute);font-weight:400}
+.spec-v{color:var(--ink);font-weight:500;font-family:var(--font-mono);font-size:12px}
+/* Icon cloud for infra */
+.cloud-area{position:relative;height:480px;display:flex;align-items:center;justify-content:center}
+.cloud-glow-bg{position:absolute;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(17,71,168,.08),transparent 70%);animation:breathe 4s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.08);opacity:1}}
+.cloud-svg{width:100%;height:100%}
+
+/* ═══════════════════════════════════════════════
+   QUALITY
+═══════════════════════════════════════════════ */
+.quality-row{display:grid;grid-template-columns:1fr 2fr;gap:80px;align-items:start}
+.iso-seal{width:160px;height:160px;border-radius:50%;border:2px solid var(--blue);display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:32px;position:relative}
+.iso-seal::before{content:'';position:absolute;inset:6px;border-radius:50%;border:1px dashed rgba(17,71,168,.3);animation:spinSeal 20s linear infinite}
+@keyframes spinSeal{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.iso-num{font-family:var(--font-display);font-size:28px;color:var(--blue);letter-spacing:.05em}
+.iso-sub{font-size:10px;font-family:var(--font-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin-top:4px}
+.quality-metrics{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+.qm-card{background:var(--bg);border-radius:10px;padding:24px;border:1px solid var(--line)}
+.qm-num{font-family:var(--font-display);font-size:48px;line-height:1;color:var(--blue);letter-spacing:.02em}
+.qm-label{font-size:12px;color:var(--mute);margin-top:6px;letter-spacing:.04em;text-transform:uppercase;font-weight:500}
+.quality-list-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.qli{display:flex;align-items:flex-start;gap:12px;padding:16px 0;border-bottom:1px solid var(--line);font-size:14px;color:var(--ink2)}
+.qli-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:6px}
+
+/* ═══════════════════════════════════════════════
+   CLIENTS
+═══════════════════════════════════════════════ */
+.clients-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:56px}
+.client-card{border:1px solid var(--line);border-radius:12px;padding:28px;transition:all .3s var(--ease);position:relative;overflow:hidden;background:white}
+.client-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
+.client-card:hover{border-color:rgba(17,71,168,.2);box-shadow:0 16px 48px rgba(17,71,168,.08);transform:translateY(-3px)}
+.client-card:hover::before{transform:scaleX(1)}
+.client-init{width:48px;height:48px;border-radius:10px;background:rgba(17,71,168,.07);display:grid;place-items:center;font-family:var(--font-display);font-size:18px;letter-spacing:.04em;color:var(--blue);margin-bottom:16px}
+.client-name{font-size:15px;font-weight:600;color:var(--ink);line-height:1.4;margin-bottom:6px}
+.client-loc{font-size:12px;color:var(--mute);display:flex;align-items:center;gap:6px}
+.client-loc svg{width:12px;height:12px;stroke:var(--mute);fill:none;stroke-width:2}
+.client-industry{display:inline-block;margin-top:12px;font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);background:rgba(17,71,168,.06);padding:4px 10px;border-radius:100px}
+
+/* ═══════════════════════════════════════════════
+   TESTIMONIALS — 3D MARQUEE
+═══════════════════════════════════════════════ */
+.marquee-section{padding:100px 0;background:var(--ink);overflow:hidden}
+.marquee-head{padding:0 60px;margin-bottom:56px;max-width:1280px;margin-left:auto;margin-right:auto}
+.mq-3d-wrap{perspective:1200px;overflow:hidden}
+.mq-3d-inner{transform:rotateX(16deg) rotateY(-3deg);transform-style:preserve-3d;padding:20px 0}
+.mq-row{display:flex;gap:20px;width:max-content;margin-bottom:20px}
+.mq-row1{animation:mq-left 38s linear infinite}
+.mq-row2{animation:mq-right 38s linear infinite}
+.mq-row1:hover,.mq-row2:hover{animation-play-state:paused}
+@keyframes mq-left{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes mq-right{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+.mq-card{min-width:340px;max-width:340px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:28px;flex-shrink:0;transition:border-color .3s,background .3s}
+.mq-card:hover{border-color:rgba(17,71,168,.5);background:rgba(17,71,168,.06)}
+.mq-stars{color:var(--accent);font-size:13px;letter-spacing:3px;margin-bottom:14px}
+.mq-text{font-size:14px;color:rgba(255,255,255,.6);line-height:1.8;font-style:italic;margin-bottom:20px;font-weight:300}
+.mq-author{display:flex;align-items:center;gap:12px}
+.mq-av{width:38px;height:38px;border-radius:50%;background:rgba(17,71,168,.3);display:grid;place-items:center;font-family:var(--font-display);font-size:14px;letter-spacing:.04em;color:rgba(255,255,255,.8)}
+.mq-name{font-size:13px;font-weight:600;color:white}
+.mq-co{font-size:11px;color:rgba(255,255,255,.35);margin-top:2px}
+/* Fade edges */
+.mq-fade-l,.mq-fade-r{position:absolute;top:0;bottom:0;width:160px;z-index:2;pointer-events:none}
+.mq-fade-l{left:0;background:linear-gradient(90deg,var(--ink),transparent)}
+.mq-fade-r{right:0;background:linear-gradient(-90deg,var(--ink),transparent)}
+
+/* ═══════════════════════════════════════════════
+   GLOBE SECTION
+═══════════════════════════════════════════════ */
+.globe-section{padding:100px 60px;background:var(--bg);overflow:hidden}
+.globe-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;max-width:1280px;margin:0 auto}
+.globe-wrap{position:relative;display:flex;align-items:center;justify-content:center}
+.globe-halo{position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(17,71,168,.1) 0%,transparent 70%);animation:halo 4s ease-in-out infinite}
+@keyframes halo{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+#globe-canvas{border-radius:50%;cursor:grab;display:block;box-shadow:0 32px 80px rgba(17,71,168,.15),0 0 0 1px rgba(17,71,168,.08)}
+#globe-canvas:active{cursor:grabbing}
+.globe-pin{position:absolute;display:flex;align-items:center;gap:8px;background:white;border:1px solid var(--line);border-radius:10px;padding:10px 16px;box-shadow:0 8px 24px rgba(0,0,0,.1);white-space:nowrap}
+.globe-pin-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);position:relative;flex-shrink:0}
+.globe-pin-dot::after{content:'';position:absolute;inset:-4px;border-radius:50%;background:rgba(232,91,26,.2);animation:ping 1.8s ease-out infinite}
+@keyframes ping{0%{opacity:.8;transform:scale(1)}100%{opacity:0;transform:scale(2.2)}}
+.globe-pin-name{font-size:12px;font-weight:600;color:var(--ink)}
+.globe-pin-sub{font-size:10px;color:var(--mute)}
+.globe-info{display:flex;flex-direction:column;gap:32px}
+.coord-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;color:var(--blue);background:rgba(17,71,168,.06);padding:10px 18px;border-radius:8px;border:1px solid rgba(17,71,168,.12);width:fit-content}
+.coord-badge svg{width:14px;height:14px;stroke:var(--blue);fill:none;stroke-width:2}
+.address-block{border-left:2px solid var(--blue);padding-left:20px}
+.address-line{font-size:14px;color:var(--ink2);line-height:2;font-weight:300}
+.drag-note{font-family:var(--font-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);margin-top:8px}
+
+/* ═══════════════════════════════════════════════
+   DOCK — FLOATING CONTACT
+═══════════════════════════════════════════════ */
+.dock{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:400;display:flex;align-items:flex-end;gap:6px;background:white;border:1px solid var(--line);border-radius:18px;padding:10px 16px;box-shadow:0 12px 48px rgba(0,0,0,.12),0 2px 8px rgba(0,0,0,.06);backdrop-filter:blur(20px)}
+.dock-item{display:flex;flex-direction:column;align-items:center;position:relative}
+.dock-item:hover .dock-tip{opacity:1;transform:translateX(-50%) translateY(0)}
+.dock-btn{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;cursor:pointer;transition:transform .2s cubic-bezier(.34,1.8,.64,1),box-shadow .2s;text-decoration:none;border:none}
+.dock-btn:hover{transform:translateY(-10px) scale(1.15);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+.dock-btn svg{width:20px;height:20px;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.dock-btn.wa{background:#E9F7EE}.dock-btn.wa svg{stroke:#1B7A39}
+.dock-btn.ph{background:rgba(17,71,168,.08)}.dock-btn.ph svg{stroke:var(--blue)}
+.dock-btn.em{background:rgba(232,91,26,.08)}.dock-btn.em svg{stroke:var(--accent)}
+.dock-btn.mp{background:#FDE8E8}.dock-btn.mp svg{stroke:#C0392B}
+.dock-btn.iq{background:rgba(10,145,196,.08)}.dock-btn.iq svg{stroke:var(--cyan)}
+.dock-sep{width:1px;height:28px;background:var(--line);margin:0 4px;align-self:center}
+.dock-tip{position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%) translateY(4px);background:var(--ink);color:white;font-size:10px;font-weight:500;letter-spacing:.06em;padding:5px 10px;border-radius:6px;white-space:nowrap;opacity:0;transition:all .2s;pointer-events:none}
+.dock-tip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:4px solid transparent;border-top-color:var(--ink)}
+
+/* ═══════════════════════════════════════════════
+   CTA SECTION
+═══════════════════════════════════════════════ */
+.cta-section{padding:120px 60px;background:var(--ink);position:relative;overflow:hidden;text-align:center}
+.cta-section::before{content:'ANVIL';font-family:var(--font-display);font-size:clamp(160px,25vw,300px);color:rgba(255,255,255,.02);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;white-space:nowrap;letter-spacing:.05em}
+.cta-h{font-family:var(--font-display);font-size:clamp(48px,7vw,90px);color:white;letter-spacing:.03em;line-height:1;margin-bottom:20px}
+.cta-p{font-size:16px;color:rgba(255,255,255,.45);max-width:480px;margin:0 auto 48px;line-height:1.75;font-weight:300}
+.cta-btns{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
+.btn-cta-primary{display:inline-flex;align-items:center;gap:10px;background:white;color:var(--blue);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:15px 32px;border-radius:8px;transition:all .25s}
+.btn-cta-primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(255,255,255,.15)}
+.btn-cta-ghost{display:inline-flex;align-items:center;gap:10px;color:rgba(255,255,255,.6);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:15px 32px;border-radius:8px;border:1px solid rgba(255,255,255,.12);transition:all .25s}
+.btn-cta-ghost:hover{color:white;border-color:rgba(255,255,255,.35)}
+
+/* ═══════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════ */
+footer{background:#080C12;padding:72px 60px 32px}
+.footer-inner{max-width:1280px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:60px;margin-bottom:60px}
+.footer-brand-name{font-family:var(--font-display);font-size:32px;letter-spacing:.08em;color:white;margin-bottom:12px}
+.footer-brand-desc{font-size:13px;color:rgba(255,255,255,.3);line-height:1.8;font-weight:300;max-width:280px}
+.footer-col h4{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:20px}
+.footer-col a,.footer-col p{display:block;font-size:13px;color:rgba(255,255,255,.45);margin-bottom:10px;transition:color .2s;font-weight:300;line-height:1.6}
+.footer-col a:hover{color:rgba(255,255,255,.9)}
+.footer-col .contact-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:12px}
+.footer-col .contact-row svg{width:13px;height:13px;stroke:rgba(255,255,255,.3);fill:none;stroke-width:2;flex-shrink:0;margin-top:3px}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:gap}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.2);font-weight:300}
+.footer-gst{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;color:rgba(255,255,255,.18)}
+.footer-iso{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);background:rgba(17,71,168,.15);padding:5px 12px;border-radius:100px;border:1px solid rgba(17,71,168,.25)}
+
+/* ═══════════════════════════════════════════════
+   STRENGTHS STRIP
+═══════════════════════════════════════════════ */
+.strengths-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);margin-top:64px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.strength-item{background:white;padding:32px 28px;transition:background .3s}
+.strength-item:hover{background:var(--bg)}
+.strength-num{font-family:var(--font-display);font-size:14px;color:var(--blue);letter-spacing:.1em;margin-bottom:8px;font-size:12px;text-transform:uppercase;font-family:var(--font-mono)}
+.strength-text{font-size:15px;font-weight:500;color:var(--ink);line-height:1.4}
+
+/* ═══════════════════════════════════════════════
+   PARALLAX
+═══════════════════════════════════════════════ */
+.parallax-img{transform:translateY(0);transition:none;will-change:transform}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media(max-width:1024px){
+  .services-grid{grid-template-columns:1fr 1fr}
+  .about-grid{grid-template-columns:1fr;gap:60px}
+  .infra-grid{grid-template-columns:1fr}
+  .quality-row{grid-template-columns:1fr}
+  .globe-layout{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr 1fr}
+  .strengths-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  nav{padding:0 24px}
+  .nav-links,.nav-right{display:none}
+  .hamburger{display:flex}
+  .section{padding:80px 24px}
+  .cta-section{padding:80px 24px}
+  #hero{padding:0 24px 60px}
+  .hero-corner-left,.hero-corner-right{display:none}
+  .services-grid{grid-template-columns:1fr}
+  .clients-grid{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr}
+  footer{padding:60px 24px 24px}
+  .strengths-grid{grid-template-columns:1fr 1fr}
+  .about-float{display:none}
+  .quality-metrics{grid-template-columns:1fr 1fr}
+  .quality-list-grid{grid-template-columns:1fr}
+  .globe-layout{grid-template-columns:1fr;text-align:center}
+  .address-block{border-left:none;padding-left:0;border-top:2px solid var(--blue);padding-top:16px}
+  .coord-badge{margin:0 auto}
+  #globe-canvas{width:300px!important;height:300px!important}
+  .globe-pin{display:none}
+  .dock{gap:4px;padding:8px 12px;border-radius:14px;bottom:20px}
+  .dock-btn{width:40px;height:40px;border-radius:10px}
+  .marquee-head{padding:0 24px}
+  .globe-section{padding:80px 24px}
+  .mq-card{min-width:280px}
+}
+@media(max-width:480px){
+  .services-header{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;gap:12px;text-align:center}
+  .strengths-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor cursor-dot" id="curDot"></div>
+<div class="cursor cursor-ring" id="curRing"></div>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">
+      <img src="logo.jpg" alt="Anvil Automation Logo">
+    </div>
+    <div class="nav-logo-text">
+      <span class="nav-logo-name" id="navLogoName">ANVIL</span>
+      <span class="nav-logo-tag">ISO 9001:2015 · Est. 2004</span>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#infrastructure">Infrastructure</a>
+    <a href="#quality">Quality</a>
+    <a href="#clients">Clients</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="nav-right">
+    <a href="tel:+919894355676" class="btn-nav ghost">+91 98943 55676</a>
+    <a href="mailto:anvil.cbe@gmail.com" class="btn-nav solid">Get a Quote</a>
+  </div>
+  <div class="hamburger" id="hamBtn" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="#services" onclick="toggleMenu()">Services</a>
+  <a href="#infrastructure" onclick="toggleMenu()">Infrastructure</a>
+  <a href="#quality" onclick="toggleMenu()">Quality</a>
+  <a href="#clients" onclick="toggleMenu()">Clients</a>
+  <a href="#contact" onclick="toggleMenu()">Contact</a>
+  <a href="mailto:anvil.cbe@gmail.com" onclick="toggleMenu()" style="color:var(--blue)">Get a Quote →</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg">
+    <img src="https://images.unsplash.com/photo-1565688534245-05d6b5be184a?w=1920&q=85&auto=format" alt="Precision manufacturing">
+    <div class="hero-bg-overlay"></div>
+  </div>
+  <div class="hero-meteors" id="meteorLayer"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <span class="hero-eyebrow-text">Est. 2004 · Coimbatore, India · ISO 9001:2015</span>
+    </div>
+    <div class="hero-brand">
+      <span class="hero-anvil" id="heroAnvil">ANVIL</span>
+      <span class="hero-automation" id="heroAutomation">AUTOMATION</span>
+    </div>
+    <p class="hero-sub">Precision CNC machining, VMC machining &amp; pressure die casting for Automotive and General Engineering industries. Trusted partner since 2004.</p>
+    <div class="hero-actions">
+      <a href="mailto:anvil.cbe@gmail.com" class="btn-hero-primary">
+        Get a Quote
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <a href="#services" class="btn-hero-ghost">Explore Capabilities</a>
+    </div>
+  </div>
+  <div class="hero-corner-left">
+    Coimbatore · Tamil Nadu · India<br>
+    SF No. 233/1B3-1B4, Kunnathur Village
+  </div>
+  <div class="hero-corner-right">
+    11.0168° N · 76.9558° E<br>
+    GST · 33BGJPS4244J1Z5
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span class="scroll-label">Scroll</span>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="ticker"></div>
+</div>
+
+<!-- ABOUT -->
+<section class="section" id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div data-reveal="left">
+        <div class="about-img-wrap">
+          <div class="about-img-frame">
+            <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80&auto=format" alt="CNC machining" class="parallax-img" data-parallax=".3">
+            <div class="about-img-overlay"></div>
+          </div>
+          <div class="about-float tl">
+            <div class="float-num">15+</div>
+            <div class="float-lbl">Years of Excellence</div>
+          </div>
+          <div class="about-float br">
+            <div class="float-num">30+</div>
+            <div class="float-lbl">Skilled Employees</div>
+          </div>
+        </div>
+      </div>
+      <div data-reveal="right">
+        <div class="section-eyebrow">Who We Are</div>
+        <h2 class="section-h">Precision. <br>Performance.<br>Reliability.</h2>
+        <p class="section-p" style="margin-bottom:36px">ANVIL AUTOMATION is an ISO 9001:2015 certified precision manufacturing company established in 2004 in Coimbatore. We specialize in CNC machined components and pressure die casting for Automotive and General Engineering industries, operating 3 shifts across our fully integrated facility.</p>
+        <div class="about-text">
+          <div class="kv-row"><span class="kv-k">Proprietor</span><span class="kv-v">P. Selvakumar</span></div>
+          <div class="kv-row"><span class="kv-k">Established</span><span class="kv-v">2004</span></div>
+          <div class="kv-row"><span class="kv-k">Certification</span><span class="kv-v">ISO 9001:2015</span></div>
+          <div class="kv-row"><span class="kv-k">Scale</span><span class="kv-v">Small Scale Industry</span></div>
+          <div class="kv-row"><span class="kv-k">Employees</span><span class="kv-v">~30 Skilled Workers</span></div>
+          <div class="kv-row"><span class="kv-k">Shift Operations</span><span class="kv-v">3 Shifts / 24×7</span></div>
+          <div class="kv-row"><span class="kv-k">Industry Focus</span><span class="kv-v">Automotive &amp; General Engineering</span></div>
+          <div class="kv-row"><span class="kv-k">GST</span><span class="kv-v" style="font-family:var(--font-mono);font-size:12px">33BGJPS4244J1Z5</span></div>
+          <div class="kv-row"><span class="kv-k">PAN</span><span class="kv-v" style="font-family:var(--font-mono);font-size:12px">BGJPS4244J</span></div>
+        </div>
+      </div>
+    </div>
+    <!-- Strengths -->
+    <div style="margin-top:96px">
+      <div class="section-eyebrow" data-reveal>Our Strengths</div>
+      <h2 class="section-h" data-reveal style="margin-bottom:0">What sets us apart</h2>
+    </div>
+    <div class="strengths-grid" data-reveal>
+      <div class="strength-item"><div class="strength-num">01</div><div class="strength-text">Aluminum Scrap Handling &amp; Recycling Support</div></div>
+      <div class="strength-item"><div class="strength-num">02</div><div class="strength-text">15+ Years Manufacturing Experience</div></div>
+      <div class="strength-item"><div class="strength-num">03</div><div class="strength-text">In-house CNC &amp; Die Casting Facility</div></div>
+      <div class="strength-item"><div class="strength-num">04</div><div class="strength-text">24/7 Production Capability</div></div>
+      <div class="strength-item"><div class="strength-num">05</div><div class="strength-text">Strong Quality Control System</div></div>
+      <div class="strength-item"><div class="strength-num">06</div><div class="strength-text">Automotive Industry Expertise</div></div>
+      <div class="strength-item"><div class="strength-num">07</div><div class="strength-text">Precision Machining Capability</div></div>
+      <div class="strength-item"><div class="strength-num">08</div><div class="strength-text">Customer-focused Manufacturing</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section bg-light" id="services">
+  <div class="wrap">
+    <div class="services-header">
+      <div data-reveal>
+        <div class="section-eyebrow">What We Do</div>
+        <h2 class="section-h">Four Core<br>Capabilities</h2>
+      </div>
+      <div data-reveal data-reveal-delay="2">
+        <p class="section-p">Integrated manufacturing services delivering precision components for automotive and engineering industries — from raw material to finished product.</p>
+        <a href="mailto:anvil.cbe@gmail.com" style="display:inline-flex;align-items:center;gap:8px;margin-top:24px;font-size:13px;font-weight:600;color:var(--blue);letter-spacing:.06em;text-transform:uppercase">Request a Quote <svg width="14" height="14" stroke="currentColor" fill="none" stroke-width="2.5" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      </div>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card" data-reveal data-reveal-delay="1">
+        <div class="svc-num">01</div>
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div>
+        <div class="svc-title">CNC Turning</div>
+        <p class="svc-desc">High precision turning for ferrous and non-ferrous components with strict dimensional tolerance.</p>
+        <ul class="svc-list"><li>Precision Turning</li><li>Grooving Operations</li><li>Threading &amp; Boring</li><li>Facing &amp; Batch Production</li><li>Close Tolerance Machining</li></ul>
+      </div>
+      <div class="svc-card" data-reveal data-reveal-delay="2">
+        <div class="svc-num">02</div>
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <div class="svc-title">VMC Machining</div>
+        <p class="svc-desc">Advanced vertical machining center solutions for complex engineering components.</p>
+        <ul class="svc-list"><li>Milling &amp; Drilling</li><li>Tapping &amp; Pocket Machining</li><li>Precision Surface Finishing</li><li>Multi-axis Machining</li><li>Fixture-based Production</li></ul>
+      </div>
+      <div class="svc-card" data-reveal data-reveal-delay="3">
+        <div class="svc-num">03</div>
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <div class="svc-title">Die Casting</div>
+        <p class="svc-desc">In-house high pressure die casting for aluminum automotive and industrial applications.</p>
+        <ul class="svc-list"><li>High Pressure Die Casting</li><li>Controlled Porosity Levels</li><li>ASTM Level 3 Capable</li><li>Proof Machining</li><li>Aluminum Components</li></ul>
+      </div>
+      <div class="svc-card" data-reveal data-reveal-delay="4">
+        <div class="svc-num">04</div>
+        <div class="svc-icon"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+        <div class="svc-title">Scrap Trading</div>
+        <p class="svc-desc">Aluminum scrap handling and recycling support for sustainable industrial manufacturing.</p>
+        <ul class="svc-list"><li>Aluminum Scrap Collection</li><li>Industrial Segregation</li><li>Foundry Grade Handling</li><li>Non-ferrous Processing</li><li>Recycling Support Supply</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INFRASTRUCTURE -->
+<section class="section" id="infrastructure">
+  <div class="wrap">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;margin-bottom:64px">
+      <div data-reveal>
+        <div class="section-eyebrow">Our Machine Fleet</div>
+        <h2 class="section-h">Infrastructure</h2>
+      </div>
+      <div data-reveal data-reveal-delay="2">
+        <p class="section-p">8 CNC turning machines · 2 VMC units · 1 pressure die casting facility · 10 NABL-calibrated inspection instruments operating 24×7.</p>
+      </div>
+    </div>
+    <div class="infra-grid">
+      <!-- Icon cloud -->
+      <div class="cloud-area" data-reveal="left">
+        <div class="cloud-glow-bg"></div>
+        <svg class="cloud-svg" id="cloudSvg" viewBox="0 0 420 420" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="cg" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#EEF3FA"/>
+              <stop offset="100%" stop-color="#DAE5F5"/>
+            </radialGradient>
+          </defs>
+          <circle cx="210" cy="210" r="185" fill="url(#cg)" stroke="rgba(17,71,168,.08)" stroke-width="1"/>
+          <circle cx="210" cy="210" r="185" fill="none" stroke="rgba(17,71,168,.06)" stroke-width="1" stroke-dasharray="4 8"/>
+        </svg>
+        <div style="position:absolute;inset:0" id="cloudTagsWrap"></div>
+      </div>
+      <!-- Spec panels -->
+      <div data-reveal="right">
+        <div class="spec-tabs">
+          <div class="spec-tab active" onclick="showTab(0)">CNC Turning</div>
+          <div class="spec-tab" onclick="showTab(1)">VMC</div>
+          <div class="spec-tab" onclick="showTab(2)">Die Casting</div>
+        </div>
+        <!-- Tab 0: CNC -->
+        <div class="spec-panel active" id="tab0">
+          <div class="spec-machine">
+            <div class="spec-machine-head"><span class="spec-machine-name">LMW SMARTURN</span><span class="spec-badge">×1 Unit</span></div>
+            <div class="spec-row"><span class="spec-k">Max Turning Diameter</span><span class="spec-v">200 mm</span></div>
+            <div class="spec-row"><span class="spec-k">Max Turning Length</span><span class="spec-v">150 mm</span></div>
+            <div class="spec-row"><span class="spec-k">Chuck Size</span><span class="spec-v">165 mm</span></div>
+            <div class="spec-row"><span class="spec-k">Bar Capacity</span><span class="spec-v">42 mm</span></div>
+            <div class="spec-row"><span class="spec-k">Spindle Power</span><span class="spec-v">5.5 / 7.5 KW</span></div>
+          </div>
+          <div class="spec-machine">
+            <div class="spec-machine-head"><span class="spec-machine-name">SAFAL TURN-5</span><span class="spec-badge">×6 Units</span></div>
+            <div class="spec-row"><span class="spec-k">Max Turning Diameter</span><span class="spec-v">200 mm</span></div>
+            <div class="spec-row"><span class="spec-k">Max Turning Length</span><span class="spec-v">350 mm</span></div>
+            <div class="spec-row"><span class="spec-k">Chuck Size</span><span class="spec-v">200 mm</span></div>
+            <div class="spec-row"><span class="spec-k">Bar Capacity</span><span class="spec-v">25 mm</span></div>
+            <div class="spec-row"><span class="spec-k">Spindle Power</span><span class="spec-v">5.5 / 7.5 KW</span></div>
+          </div>
+          <div class="spec-machine">
+            <div class="spec-machine-head"><span class="spec-machine-name">SGS T-TURN 135</span><span class="spec-badge">×1 Unit</span></div>
+            <div class="spec-row"><span class="spec-k">Max Turning Diameter</span><span class="spec-v">150 mm</span></div>
+            <div class="spec-row"><span class="spec-k">Max Turning Length</span><span class="spec-v">150 mm</span></div>
+            <div class="spec-row"><span class="spec-k">Chuck Size</span><span class="spec-v">135 mm</span></div>
+            <div class="spec-row"><span class="spec-k">Bore Through Spindle</span><span class="spec-v">38 mm</span></div>
+          </div>
+        </div>
+        <!-- Tab 1: VMC -->
+        <div class="spec-panel" id="tab1">
+          <div class="spec-machine">
+            <div class="spec-machine-head"><span class="spec-machine-name">VMC — Fanuc Control</span><span class="spec-badge">×2 Units</span></div>
+            <div class="spec-row"><span class="spec-k">X Axis</span><span class="spec-v">800 mm</span></div>
+            <div class="spec-row"><span class="spec-k">Y Axis</span><span class="spec-v">440–500 mm</span></div>
+            <div class="spec-row"><span class="spec-k">Z Axis</span><span class="spec-v">450–500 mm</span></div>
+            <div class="spec-row"><span class="spec-k">Table Size</span><span class="spec-v">1050 × 450 mm</span></div>
+            <div class="spec-row"><span class="spec-k">Spindle Speed</span><span class="spec-v">6000 RPM</span></div>
+            <div class="spec-row"><span class="spec-k">Tool Capacity</span><span class="spec-v">20 Tools</span></div>
+            <div class="spec-row"><span class="spec-k">Control System</span><span class="spec-v">Fanuc</span></div>
+            <div class="spec-row"><span class="spec-k">Indexer</span><span class="spec-v">Available</span></div>
+          </div>
+          <div style="padding:20px;background:rgba(17,71,168,.03);border-radius:8px;border:1px solid var(--line);margin-top:8px">
+            <p style="font-size:13px;color:var(--mute);line-height:1.75">Advanced VMC machining solutions for complex engineering components. Capable of milling, drilling, tapping, pocket machining, precision surface finishing, multi-axis machining, and fixture-based production.</p>
+          </div>
+        </div>
+        <!-- Tab 2: Die Casting -->
+        <div class="spec-panel" id="tab2">
+          <div class="spec-machine">
+            <div class="spec-machine-head"><span class="spec-machine-name">HMT Pressure Die Casting</span><span class="spec-badge">×1 Unit</span></div>
+            <div class="spec-row"><span class="spec-k">Machine Capacity</span><span class="spec-v">120 Ton</span></div>
+            <div class="spec-row"><span class="spec-k">Electric Furnace Power</span><span class="spec-v">36 KW</span></div>
+            <div class="spec-row"><span class="spec-k">Furnace Capacity</span><span class="spec-v">180–250 KG</span></div>
+            <div class="spec-row"><span class="spec-k">Standard Capability</span><span class="spec-v">ASTM Level 3</span></div>
+            <div class="spec-row"><span class="spec-k">Material</span><span class="spec-v">Aluminum Alloy</span></div>
+          </div>
+          <div style="padding:20px;background:rgba(17,71,168,.03);border-radius:8px;border:1px solid var(--line);margin-top:8px">
+            <p style="font-size:13px;color:var(--mute);line-height:1.75">High pressure die casting with controlled porosity levels. Supports proof machining, radiographic testing, and aluminum component manufacturing for automotive applications.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUALITY -->
+<section class="section bg-light" id="quality">
+  <div class="wrap">
+    <div class="section-eyebrow" data-reveal>Quality Assurance</div>
+    <h2 class="section-h" data-reveal style="margin-bottom:64px">Built on<br>ISO Standards</h2>
+    <div class="quality-row">
+      <div data-reveal="left">
+        <div class="iso-seal">
+          <div class="iso-num">ISO</div>
+          <div class="iso-sub">9001 : 2015</div>
+        </div>
+        <p style="font-size:13px;color:var(--mute);line-height:1.8;max-width:280px;margin-bottom:24px">Committed to manufacturing and supplying quality products that consistently satisfy customer requirements through skilled teamwork and continual improvement.</p>
+        <div class="quality-metrics">
+          <div class="qm-card"><div class="qm-num">1.66</div><div class="qm-label">Cpk Min</div></div>
+          <div class="qm-card"><div class="qm-num">1.7</div><div class="qm-label">Cpk Target</div></div>
+          <div class="qm-card"><div class="qm-num">10+</div><div class="qm-label">Instruments</div></div>
+          <div class="qm-card"><div class="qm-num">3</div><div class="qm-label">QA Shifts</div></div>
+        </div>
+      </div>
+      <div data-reveal="right">
+        <div style="margin-bottom:32px">
+          <h3 style="font-family:var(--font-display);font-size:24px;letter-spacing:.04em;color:var(--ink);margin-bottom:20px">Quality Assurance Activities</h3>
+          <div class="quality-list-grid">
+            <div class="qli"><div class="qli-dot"></div>Incoming Material Inspection</div>
+            <div class="qli"><div class="qli-dot"></div>In-process Inspection</div>
+            <div class="qli"><div class="qli-dot"></div>Final Inspection</div>
+            <div class="qli"><div class="qli-dot"></div>Patrol Inspection</div>
+            <div class="qli"><div class="qli-dot"></div>PPAP Documentation</div>
+            <div class="qli"><div class="qli-dot"></div>Process Capability Monitoring</div>
+            <div class="qli"><div class="qli-dot"></div>Internal Audits</div>
+            <div class="qli"><div class="qli-dot"></div>Management Review Systems</div>
+            <div class="qli" style="border-bottom:none;grid-column:1/-1"><div class="qli-dot"></div>Customer Satisfaction Monitoring</div>
+          </div>
+        </div>
+        <div>
+          <h3 style="font-family:var(--font-display);font-size:24px;letter-spacing:.04em;color:var(--ink);margin-bottom:20px">Inspection Instruments</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <span style="font-size:12px;padding:5px 12px;background:white;border:1px solid var(--line);border-radius:100px;color:var(--ink2)">Digital Air Gauge Units</span>
+            <span style="font-size:12px;padding:5px 12px;background:white;border:1px solid var(--line);border-radius:100px;color:var(--ink2)">Digital Height Gauge</span>
+            <span style="font-size:12px;padding:5px 12px;background:white;border:1px solid var(--line);border-radius:100px;color:var(--ink2)">Digital Vernier Calipers</span>
+            <span style="font-size:12px;padding:5px 12px;background:white;border:1px solid var(--line);border-radius:100px;color:var(--ink2)">Dial Vernier Calipers</span>
+            <span style="font-size:12px;padding:5px 12px;background:white;border:1px solid var(--line);border-radius:100px;color:var(--ink2)">Micrometers</span>
+            <span style="font-size:12px;padding:5px 12px;background:white;border:1px solid var(--line);border-radius:100px;color:var(--ink2)">Bore Dial Gauges</span>
+            <span style="font-size:12px;padding:5px 12px;background:white;border:1px solid var(--line);border-radius:100px;color:var(--ink2)">Surface Tables</span>
+            <span style="font-size:12px;padding:5px 12px;background:white;border:1px solid var(--line);border-radius:100px;color:var(--ink2)">Slip Gauges</span>
+            <span style="font-size:12px;padding:5px 12px;background:white;border:1px solid var(--line);border-radius:100px;color:var(--ink2)">Radius Gauges</span>
+            <span style="font-size:12px;padding:5px 12px;background:white;border:1px solid var(--line);border-radius:100px;color:var(--ink2)">Bevel Protector</span>
+          </div>
+          <p style="font-size:12px;color:var(--mute);margin-top:14px;font-style:italic">All instruments calibrated through NABL accredited external agencies.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLIENTS -->
+<section class="section" id="clients">
+  <div class="wrap">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;margin-bottom:0">
+      <div data-reveal>
+        <div class="section-eyebrow">Who We Serve</div>
+        <h2 class="section-h">Our Clients</h2>
+      </div>
+      <div data-reveal data-reveal-delay="2">
+        <p class="section-p">Trusted by leading automotive and engineering manufacturers across Coimbatore, Chennai, Bangalore, and Karur.</p>
+      </div>
+    </div>
+    <div class="clients-grid">
+      <div class="client-card" data-reveal data-reveal-delay="1">
+        <div class="client-init">MA</div>
+        <div class="client-name">Motherson Automotive Elastomers Technology</div>
+        <div class="client-loc"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Chennai, Tamil Nadu</div>
+        <span class="client-industry">Automotive</span>
+      </div>
+      <div class="client-card" data-reveal data-reveal-delay="2">
+        <div class="client-init">MT</div>
+        <div class="client-name">Motherson Automotive Technology &amp; Engineering</div>
+        <div class="client-loc"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Chennai, Tamil Nadu</div>
+        <span class="client-industry">Automotive</span>
+      </div>
+      <div class="client-card" data-reveal data-reveal-delay="3">
+        <div class="client-init">RG</div>
+        <div class="client-name">RND Gears Pvt Ltd</div>
+        <div class="client-loc"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Bangalore, Karnataka</div>
+        <span class="client-industry">Engineering</span>
+      </div>
+      <div class="client-card" data-reveal data-reveal-delay="1">
+        <div class="client-init">TN</div>
+        <div class="client-name">Tildenet</div>
+        <div class="client-loc"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Karur, Tamil Nadu</div>
+        <span class="client-industry">Engineering</span>
+      </div>
+      <div class="client-card" data-reveal data-reveal-delay="2">
+        <div class="client-init">MN</div>
+        <div class="client-name">MN Auto Products Pvt Ltd</div>
+        <div class="client-loc"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Coimbatore, Tamil Nadu</div>
+        <span class="client-industry">Automotive</span>
+      </div>
+      <div class="client-card" data-reveal data-reveal-delay="3">
+        <div class="client-init">LG</div>
+        <div class="client-name">L.G. Balakrishnan Bros Ltd</div>
+        <div class="client-loc"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Coimbatore, Tamil Nadu</div>
+        <span class="client-industry">Automotive</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS 3D MARQUEE -->
+<section class="marquee-section" id="testimonials">
+  <div class="marquee-head" data-reveal>
+    <div class="section-eyebrow light">Client Feedback</div>
+    <h2 class="section-h light">What Our Clients Say</h2>
+  </div>
+  <div style="position:relative;overflow:hidden">
+    <div class="mq-fade-l"></div>
+    <div class="mq-fade-r"></div>
+    <div class="mq-3d-wrap">
+      <div class="mq-3d-inner">
+        <div class="mq-row mq-row1" id="mqRow1"></div>
+        <div class="mq-row mq-row2" id="mqRow2"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GLOBE / LOCATION -->
+<section class="globe-section" id="contact">
+  <div class="globe-layout">
+    <div data-reveal="left">
+      <div class="section-eyebrow">Where We Are</div>
+      <h2 class="section-h">Rooted in<br>Coimbatore</h2>
+      <p class="section-p" style="margin-bottom:32px">Manufacturing precision components from the heart of Tamil Nadu's engineering hub — Coimbatore, India.</p>
+      <div class="coord-badge">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        11.0168° N &nbsp;·&nbsp; 76.9558° E
+      </div>
+      <div class="address-block" style="margin-top:28px">
+        <p class="address-line">SF No. 233/1B3-1B4, Oraikkal Palayam Road,</p>
+        <p class="address-line">S.S Kulam Post, Kunnathur Village,</p>
+        <p class="address-line">Coimbatore – 641107, Tamil Nadu, India.</p>
+      </div>
+      <p class="drag-note" style="margin-top:24px">↙ Drag globe to rotate · Auto-rotating</p>
+      <div style="margin-top:32px;display:flex;flex-direction:column;gap:12px">
+        <a href="tel:+919894355676" style="display:flex;align-items:center;gap:12px;font-size:14px;font-weight:500;color:var(--ink)">
+          <span style="width:36px;height:36px;background:rgba(17,71,168,.07);border-radius:8px;display:grid;place-items:center">
+            <svg width="16" height="16" stroke="var(--blue)" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.9 15.9a19.79 19.79 0 01-3.07-8.67A2 2 0 013.87 5.2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11l-1.27 1.27a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+          </span>
+          +91 98943 55676
+        </a>
+        <a href="mailto:anvil.cbe@gmail.com" style="display:flex;align-items:center;gap:12px;font-size:14px;font-weight:500;color:var(--ink)">
+          <span style="width:36px;height:36px;background:rgba(232,91,26,.07);border-radius:8px;display:grid;place-items:center">
+            <svg width="16" height="16" stroke="var(--accent)" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </span>
+          anvil.cbe@gmail.com
+        </a>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:20px" data-reveal="right">
+      <div class="globe-wrap">
+        <div class="globe-halo"></div>
+        <canvas id="globe-canvas" width="460" height="460"></canvas>
+        <div class="globe-pin" style="bottom:22%;right:-10px">
+          <div class="globe-pin-dot"></div>
+          <div>
+            <div class="globe-pin-name">Anvil Automation</div>
+            <div class="globe-pin-sub">Coimbatore, Tamil Nadu</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div data-reveal>
+    <p style="font-family:var(--font-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:20px">Ready to Manufacture</p>
+    <h2 class="cta-h">Start Your<br>Next Project</h2>
+    <p class="cta-p">Connect with our manufacturing team for CNC machining, VMC machining, pressure die casting, and aluminum scrap solutions.</p>
+    <div class="cta-btns">
+      <a href="mailto:anvil.cbe@gmail.com" class="btn-cta-primary">
+        <svg width="15" height="15" stroke="currentColor" fill="none" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        anvil.cbe@gmail.com
+      </a>
+      <a href="tel:+919894355676" class="btn-cta-ghost">
+        <svg width="15" height="15" stroke="currentColor" fill="none" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.9 15.9a19.79 19.79 0 01-3.07-8.67A2 2 0 013.87 5.2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11l-1.27 1.27a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+        +91 98943 55676
+      </a>
+      <a href="https://wa.me/919894355676" class="btn-cta-ghost">
+        <svg width="15" height="15" stroke="currentColor" fill="none" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">ANVIL AUTOMATION</div>
+        <p class="footer-brand-desc">ISO 9001:2015 certified precision CNC machining, VMC machining and pressure die casting manufacturer. Serving automotive and engineering industries from Coimbatore, Tamil Nadu since 2004.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <a href="#services">CNC Turning</a>
+        <a href="#services">VMC Machining</a>
+        <a href="#services">Pressure Die Casting</a>
+        <a href="#services">Aluminum Scrap Trading</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#about">About Us</a>
+        <a href="#infrastructure">Infrastructure</a>
+        <a href="#quality">Quality Policy</a>
+        <a href="#clients">Our Clients</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <div class="contact-row"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.9 15.9a19.79 19.79 0 01-3.07-8.67A2 2 0 013.87 5.2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11l-1.27 1.27a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg><span>+91 98943 55676</span></div>
+        <div class="contact-row"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span>anvil.cbe@gmail.com</span></div>
+        <div class="contact-row"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span>SF No. 233/1B3-1B4, Oraikkal Palayam Road, Kunnathur Village, Coimbatore – 641107, TN</span></div>
+        <div class="contact-row"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg><span>GST: 33BGJPS4244J1Z5</span></div>
+        <div class="contact-row"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg><span>PAN: BGJPS4244J</span></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2024 Anvil Automation · Proprietor: P. Selvakumar · All rights reserved.</p>
+      <p class="footer-gst">Company Aadhaar: 607508485643</p>
+      <div class="footer-iso">ISO 9001:2015 Certified</div>
+    </div>
+  </div>
+</footer>
+
+<!-- DOCK -->
+<div class="dock" id="mainDock">
+  <div class="dock-item">
+    <a class="dock-btn wa" href="https://wa.me/919894355676" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#1B7A39" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+    </a>
+    <div class="dock-tip">WhatsApp</div>
+  </div>
+  <div class="dock-item">
+    <a class="dock-btn ph" href="tel:+919894355676">
+      <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.9 15.9a19.79 19.79 0 01-3.07-8.67A2 2 0 013.87 5.2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11l-1.27 1.27a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+    </a>
+    <div class="dock-tip">+91 98943 55676</div>
+  </div>
+  <div class="dock-sep"></div>
+  <div class="dock-item">
+    <a class="dock-btn em" href="mailto:anvil.cbe@gmail.com">
+      <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+    </a>
+    <div class="dock-tip">anvil.cbe@gmail.com</div>
+  </div>
+  <div class="dock-item">
+    <a class="dock-btn mp" href="https://maps.google.com/?q=Kunnathur+Village+Coimbatore+641107" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    </a>
+    <div class="dock-tip">Get Directions</div>
+  </div>
+  <div class="dock-sep"></div>
+  <div class="dock-item">
+    <a class="dock-btn iq" href="mailto:anvil.cbe@gmail.com?subject=Manufacturing Inquiry — Anvil Automation">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+    </a>
+    <div class="dock-tip">Send Inquiry</div>
+  </div>
+</div>
+
+<script>
+/* ── CURSOR ── */
+const dot=document.getElementById('curDot'),ring=document.getElementById('curRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px'});
+(function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing)})();
+
+/* ── NAV SCROLL ── */
+const nav=document.getElementById('mainNav');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',scrollY>60)},{passive:true});
+
+/* ── MOBILE MENU ── */
+function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open')}
+
+/* ── METEORS ── */
+(function(){
+  const layer=document.getElementById('meteorLayer');
+  for(let i=0;i<24;i++){
+    const m=document.createElement('div');
+    m.className='meteor';
+    const left=10+Math.random()*100,top=Math.random()*80;
+    const dur=2.5+Math.random()*4,delay=Math.random()*10,len=50+Math.random()*80;
+    m.style.cssText=`left:${left}%;top:${top}%;height:${len}px;animation-duration:${dur}s;animation-delay:${delay}s`;
+    layer.appendChild(m);
+  }
+})();
+
+/* ── TICKER ── */
+(function(){
+  const items=['ISO 9001:2015 Certified','CNC Turning Specialists','VMC Machining','Pressure Die Casting','Coimbatore · Tamil Nadu','Est. 2004','30+ Skilled Employees','3 Shifts · 24×7','Cpk 1.66–1.7','NABL Calibrated','Automotive Grade Precision','Aluminum Die Casting'];
+  const t=document.getElementById('ticker');
+  const html=items.map(i=>`<div class="ticker-item">${i}</div>`).join('');
+  t.innerHTML=html+html+html;
+})();
+
+/* ── SCROLL REVEAL ── */
+const revObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('revealed');revObs.unobserve(e.target)}});
+},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('[data-reveal]').forEach(el=>revObs.observe(el));
+
+/* ── PARALLAX ── */
+window.addEventListener('scroll',()=>{
+  const y=scrollY;
+  document.querySelectorAll('[data-parallax]').forEach(el=>{
+    const speed=parseFloat(el.dataset.parallax)||.3;
+    const rect=el.closest('section')?.getBoundingClientRect()||{top:0};
+    el.style.transform=`translateY(${(y-el.closest('section')?.offsetTop||0)*speed*0.4}px)`;
+  });
+  /* Hero ANVIL hide and AUTOMATION show on scroll */
+  const anvil=document.getElementById('heroAnvil');
+  const auto=document.getElementById('heroAutomation');
+  const navLogo=document.getElementById('navLogoName');
+  if(anvil && auto && navLogo){
+    const prog=Math.min(y/window.innerHeight,1);
+    // Hide ANVIL in hero
+    anvil.style.opacity=prog>.15?0:1;
+    anvil.style.transform=`translateY(${prog>.15?-50:0}px)`;
+    // Show AUTOMATION in hero
+    auto.style.opacity=prog>.15?1:0;
+    auto.style.transform=`translateY(${prog>.15?0:100}px)`;
+    auto.style.webkitTextStroke=`${prog>.15?0:1}px rgba(255,255,255,.35)`;
+    auto.style.color=prog>.15?'white':'transparent';
+    // Change nav logo name
+    if(prog>.2){
+      navLogo.textContent='AUTOMATION';
+    }else{
+      navLogo.textContent='ANVIL';
+    }
+  }
+},{passive:true});
+
+/* ── SPEC TABS ── */
+const tabs=document.querySelectorAll('.spec-tab'),panels=document.querySelectorAll('.spec-panel');
+function showTab(i){
+  tabs.forEach((t,j)=>t.classList.toggle('active',i===j));
+  panels.forEach((p,j)=>p.classList.toggle('active',i===j));
+}
+
+/* ── ICON CLOUD ── */
+(function(){
+  const wrap=document.getElementById('cloudTagsWrap');
+  if(!wrap)return;
+  const labels=[
+    'CNC','VMC','LMW','SAFAL','SGS','HMT','Fanuc',
+    'Turning','Milling','Drilling','Tapping','Boring','Threading','Facing','Casting',
+    'ISO 9001','PPAP','Cpk','NABL',
+    'Aluminum','Steel','Ferrous',
+    '120 Ton','6000 RPM','200mm','Indexer','Precision','Automotive'
+  ];
+  const R=170,cx=50,cy=50;
+  const els=[];
+  labels.forEach((label,i)=>{
+    const phi=Math.acos(-1+2*(i+.5)/labels.length);
+    const theta0=Math.PI*(1+Math.sqrt(5))*i;
+    const el=document.createElement('span');
+    el.textContent=label;
+    el.style.cssText=`position:absolute;font-family:'DM Mono',monospace;font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:100px;white-space:nowrap;pointer-events:none;transition:none`;
+    wrap.appendChild(el);
+    els.push({el,phi,theta0});
+  });
+  let angle=0,raf;
+  function spin(){
+    angle+=.004;
+    els.forEach(({el,phi,theta0})=>{
+      const theta=theta0+angle;
+      const x=R*Math.sin(phi)*Math.cos(theta);
+      const y=R*Math.sin(phi)*Math.sin(theta);
+      const z=R*Math.cos(phi);
+      const px=cx+x*0.48;
+      const py=cy+y*0.48;
+      const depth=(z+R)/(2*R);
+      const opacity=Math.max(.12,depth*.9);
+      const scale=.65+depth*.55;
+      const isBlue=depth>.6;
+      el.style.left=px+'%';
+      el.style.top=py+'%';
+      el.style.transform=`translate(-50%,-50%) scale(${scale.toFixed(3)})`;
+      el.style.opacity=opacity.toFixed(3);
+      el.style.zIndex=Math.round(depth*100);
+      el.style.background=isBlue?'rgba(17,71,168,.09)':'rgba(107,122,141,.06)';
+      el.style.color=isBlue?'#1147A8':'#6B7A8D';
+      el.style.border=`1px solid ${isBlue?'rgba(17,71,168,.18)':'rgba(107,122,141,.12)'}`;
+    });
+    raf=requestAnimationFrame(spin);
+  }
+  spin();
+})();
+
+/* ── TESTIMONIALS ── */
+(function(){
+  const data=[
+    {name:'Rajesh Kumar',co:'Motherson Automotive',loc:'Chennai',text:'Anvil Automation delivers precision components with zero rejections across three consecutive orders. Their CNC turning quality is consistently outstanding.',stars:5},
+    {name:'Suresh Babu',co:'RND Gears Pvt Ltd',loc:'Bangalore',text:'Excellent dimensional tolerances. SAFAL TURN-5 output matches our tightest specs. Highly recommended for automotive-grade components.',stars:5},
+    {name:'Anand K.',co:'MN Auto Products',loc:'Coimbatore',text:'VMC machined parts fit perfectly in our assemblies every time. The 24/7 production capability means we never face delivery delays.',stars:5},
+    {name:'Priya Shankar',co:'L.G. Balakrishnan Bros',loc:'Coimbatore',text:'ISO 9001:2015 quality is visible in every batch delivered. Die casting components consistently pass incoming inspection at first check.',stars:5},
+    {name:'Venkat R.',co:'Tildenet',loc:'Karur',text:'Reliable partner for precision engineering components. Quality control and delivery track record is impeccable across all orders.',stars:5},
+    {name:'Karthik S.',co:'Motherson T&E',loc:'Chennai',text:'Aluminum die casting parts meet ASTM Level 3 standards without exception. Five-year partnership — consistent, trustworthy, precise.',stars:5},
+  ];
+  function card(d,i){
+    return `<div class="mq-card">
+      <div class="mq-stars">${'★'.repeat(d.stars)}</div>
+      <p class="mq-text">"${d.text}"</p>
+      <div class="mq-author">
+        <div class="mq-av">${d.name.split(' ').map(n=>n[0]).join('').slice(0,2)}</div>
+        <div><div class="mq-name">${d.name}</div><div class="mq-co">${d.co} · ${d.loc}</div></div>
+      </div>
+    </div>`;
+  }
+  const r1=document.getElementById('mqRow1'),r2=document.getElementById('mqRow2');
+  const all=data.map(card).join('');
+  const rev=[...data].reverse().map(card).join('');
+  r1.innerHTML=all+all;
+  r2.innerHTML=rev+rev;
+})();
+
+/* ── GLOBE (Canvas — proper geographic rendering) ── */
+(function(){
+  const canvas=document.getElementById('globe-canvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=460,H=460,CX=230,CY=230,R=210;
+  let phi=0.4,dragging=false,lastX=0;
+
+  /* Simplified but recognisable world land polygons [lat,lng] */
+  const lands={
+    india:[
+      [8.1,77.5],[8.5,76.9],[9.5,76.5],[10.5,76.0],[11,75.5],[12,74.9],[13,74.8],[14,74.2],[15,74.0],[16,73.8],
+      [17,73.5],[18,73.2],[19,72.8],[20,72.5],[21,72.8],[22,69.0],[23,68.5],[24,68.8],[25,68.4],[26.5,70.0],
+      [27,70.5],[27.5,71.2],[28,72.0],[29,73.0],[30,74.5],[31,75.5],[32,76.5],[33,76.0],[34.5,74.5],[34,73.0],
+      [32.5,70.5],[31.5,69.5],[30,67.0],[28.5,64.0],[26,63.5],[23.5,62.0],[22,60.5],[20.5,59.5],[19,58.0],
+      [15,52.0],[13,48.0],[11.5,44.0],[10.5,42.0],[8.5,42.5],[7.5,45.0],[8.0,50.0],[8.5,56.0],[9,60.0],
+      [9.5,64.0],[10,67.0],[9.5,71.5],[8.5,74.5],[8.1,77.5]
+    ],
+    /* South Asia region simplified */
+    sriLanka:[[9.8,79.8],[8.0,81.0],[6.0,81.5],[5.9,80.2],[6.8,79.8],[8.5,79.5],[9.8,79.8]],
+    /* Africa simplified */
+    africa:[
+      [37,10],[35,25],[30,35],[25,37],[20,40],[15,42],[10,45],[5,42],[0,42],[-5,40],[-10,38],
+      [-15,35],[-20,34],[-25,33],[-30,29],[-34,25],[-34,18],[-30,17],[-25,15],[-20,14],[-15,12],
+      [-10,14],[-5,10],[0,9],[5,2],[10,-5],[15,-17],[20,-17],[25,-15],[30,-10],[33,-5],[36,10],[37,10]
+    ],
+    /* Europe simplified */
+    europe:[
+      [36,5],[40,20],[45,28],[50,30],[55,24],[58,20],[60,24],[65,22],[68,20],[65,14],[60,10],[55,8],
+      [50,2],[45,0],[40,-2],[36,5]
+    ],
+    /* North America simplified */
+    namerica:[
+      [70,-140],[65,-170],[58,-170],[55,-165],[50,-127],[45,-125],[40,-125],[35,-120],[30,-115],[25,-108],[20,-105],
+      [15,-92],[10,-83],[8,-77],[8,-76],[12,-62],[16,-62],[20,-73],[25,-80],[30,-81],[35,-75],[40,-70],[45,-64],
+      [50,-56],[55,-60],[60,-65],[65,-70],[68,-72],[70,-95],[72,-130],[70,-140]
+    ],
+    /* South America */
+    samerica:[
+      [12,-72],[10,-62],[8,-63],[4,-52],[0,-50],[-5,-35],[-10,-38],[-15,-40],[-20,-41],[-25,-48],
+      [-30,-51],[-35,-57],[-38,-57],[-42,-64],[-45,-66],[-50,-69],[-55,-68],[-53,-58],[-46,-52],
+      [-38,-50],[-30,-48],[-22,-44],[-15,-38],[-8,-35],[-3,-38],[0,-50],[5,-53],[8,-60],[12,-72]
+    ],
+    /* Australia */
+    australia:[
+      [-15,130],[-16,128],[-19,122],[-22,114],[-28,114],[-32,116],[-34,119],[-36,136],[-38,140],
+      [-38,148],[-35,150],[-32,152],[-28,153],[-22,150],[-18,146],[-14,136],[-12,130],[-14,128],[-15,130]
+    ],
+    /* Asia (Eastern) */
+    asia:[
+      [70,30],[65,50],[60,60],[55,60],[50,70],[45,75],[40,72],[36,62],[32,48],[30,48],[26,56],[22,58],
+      [18,66],[14,74],[18,82],[22,88],[26,90],[30,92],[32,100],[28,106],[22,110],[15,108],[10,107],[5,103],
+      [1,104],[0,108],[5,115],[10,125],[15,120],[20,120],[25,115],[30,120],[35,120],[40,125],[45,135],
+      [50,142],[55,162],[60,163],[65,172],[68,170],[72,140],[75,105],[78,80],[72,60],[68,40],[70,30]
+    ]
+  };
+
+  function project(lat,lng,rot){
+    const latR=lat*Math.PI/180;
+    const lngR=(lng+rot*180/Math.PI+180)*Math.PI/180;
+    const x=R*Math.cos(latR)*Math.sin(lngR);
+    const y=-R*Math.sin(latR);
+    const z=R*Math.cos(latR)*Math.cos(lngR);
+    return {x:CX+x,y:CY+y,z,vis:z>-R*.05};
+  }
+
+  function drawPath(pts,rot){
+    ctx.beginPath();
+    let first=true,skipped=false;
+    for(let i=0;i<pts.length;i++){
+      const p=project(pts[i][0],pts[i][1],rot);
+      /* check big jump (wrap-around) */
+      if(i>0&&!first){
+        const prev=project(pts[i-1][0],pts[i-1][1],rot);
+        if(Math.abs(p.x-prev.x)>100||!p.vis){first=true;skipped=true;continue}
+      }
+      if(!p.vis){first=true;skipped=true;continue}
+      first?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);
+      first=false;skipped=false;
+    }
+    return !skipped;
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    /* Ocean */
+    const oceanGrad=ctx.createRadialGradient(CX-60,CY-60,10,CX,CY,R);
+    oceanGrad.addColorStop(0,'#EBF2FC');
+    oceanGrad.addColorStop(.6,'#D9E8F7');
+    oceanGrad.addColorStop(1,'#C4D9F0');
+    ctx.beginPath();ctx.arc(CX,CY,R,0,Math.PI*2);
+    ctx.fillStyle=oceanGrad;ctx.fill();
+
+    /* Globe border */
+    ctx.beginPath();ctx.arc(CX,CY,R,0,Math.PI*2);
+    ctx.strokeStyle='rgba(17,71,168,.12)';ctx.lineWidth=1;ctx.stroke();
+
+    /* Grid */
+    ctx.strokeStyle='rgba(17,71,168,.05)';ctx.lineWidth=.7;
+    for(let lat=-75;lat<=75;lat+=15){
+      ctx.beginPath();let f=true;
+      for(let lng=-180;lng<=180;lng+=2){
+        const p=project(lat,lng,phi);
+        if(!p.vis){f=true;continue}
+        f?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);f=false;
+      }
+      ctx.stroke();
+    }
+    for(let lng=-180;lng<=180;lng+=30){
+      ctx.beginPath();let f=true;
+      for(let lat=-88;lat<=88;lat+=2){
+        const p=project(lat,lng,phi);
+        if(!p.vis){f=true;continue}
+        f?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);f=false;
+      }
+      ctx.stroke();
+    }
+
+    /* Equator highlight */
+    ctx.beginPath();let f2=true;
+    for(let lng=-180;lng<=180;lng+=1){
+      const p=project(0,lng,phi);
+      if(!p.vis){f2=true;continue}
+      f2?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);f2=false;
+    }
+    ctx.strokeStyle='rgba(17,71,168,.1)';ctx.lineWidth=1;ctx.stroke();
+
+    /* Landmasses */
+    Object.entries(lands).forEach(([name,pts])=>{
+      drawPath(pts,phi);
+      if(name==='india'){
+        ctx.fillStyle='rgba(17,71,168,.25)';
+      } else {
+        ctx.fillStyle='rgba(17,71,168,.1)';
+      }
+      ctx.fill();
+      ctx.strokeStyle='rgba(17,71,168,.18)';ctx.lineWidth=.8;ctx.stroke();
+    });
+
+    /* Coimbatore marker */
+    const cbr=project(11.0168,76.9558,phi);
+    if(cbr.vis){
+      /* Glow rings */
+      [20,13,7].forEach((r,i)=>{
+        ctx.beginPath();ctx.arc(cbr.x,cbr.y,r,0,Math.PI*2);
+        ctx.fillStyle=`rgba(232,91,26,${.06+i*.04})`;ctx.fill();
+      });
+      /* Core dot */
+      ctx.beginPath();ctx.arc(cbr.x,cbr.y,5,0,Math.PI*2);
+      ctx.fillStyle='#E85B1A';ctx.fill();
+      ctx.beginPath();ctx.arc(cbr.x,cbr.y,2.5,0,Math.PI*2);
+      ctx.fillStyle='white';ctx.fill();
+    }
+
+    /* Shine */
+    const shine=ctx.createRadialGradient(CX-70,CY-70,0,CX-70,CY-70,R*.9);
+    shine.addColorStop(0,'rgba(255,255,255,.32)');
+    shine.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.beginPath();ctx.arc(CX,CY,R,0,Math.PI*2);
+    ctx.fillStyle=shine;ctx.fill();
+
+    /* Clip */
+    ctx.save();
+    ctx.beginPath();ctx.arc(CX,CY,R,0,Math.PI*2);
+    ctx.clip();ctx.restore();
+  }
+
+  let animPhi=0;
+  function loop(){
+    if(!dragging)phi+=.003;
+    draw();
+    requestAnimationFrame(loop);
+  }
+  loop();
+
+  canvas.addEventListener('mousedown',e=>{dragging=true;lastX=e.clientX;canvas.style.cursor='grabbing'});
+  window.addEventListener('mouseup',()=>{dragging=false;canvas.style.cursor='grab'});
+  window.addEventListener('mousemove',e=>{
+    if(!dragging)return;
+    phi+=(e.clientX-lastX)*.007;lastX=e.clientX;draw();
+  });
+  canvas.addEventListener('touchstart',e=>{dragging=true;lastX=e.touches[0].clientX},{passive:true});
+  window.addEventListener('touchend',()=>{dragging=false});
+  window.addEventListener('touchmove',e=>{
+    if(!dragging)return;
+    phi+=(e.touches[0].clientX-lastX)*.007;lastX=e.touches[0].clientX;
+  },{passive:true});
+})();
+
+/* ── HERO AUTOMATION SCROLL INIT ── */
+(function(){
+  const auto=document.getElementById('heroAutomation');
+  if(auto){auto.style.opacity='0';auto.style.transition='none'}
+})();
+
+/* ── DOCK HIDE ON MOBILE SCROLL ── */
+let lastSY=0,dockEl=document.getElementById('mainDock');
+window.addEventListener('scroll',()=>{
+  const cur=scrollY;
+  if(window.innerWidth<600){dockEl.style.opacity=cur<60?'0':'1'}
+  lastSY=cur;
+},{passive:true});
+</script>
+</body>
+</html>
