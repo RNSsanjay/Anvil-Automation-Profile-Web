@@ -803,8 +803,36 @@
 /* ─────────────────────────────
    CONFIG & DYNAMIC DATA LOAD
 ───────────────────────────── */
-const GEMINI_API_KEY = "AIzaSyB8-BKz0D-qQfiTh-Tb6xs4cFlDsS4UeKU";
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+let GEMINI_API_KEY = "AIzaSyB8-BKz0D-qQfiTh-Tb6xs4cFlDsS4UeKU";
+
+function getGeminiUrl() {
+  return `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+}
+
+async function loadEnv() {
+  try {
+    const response = await fetch('.env');
+    if (!response.ok) return;
+    const text = await response.text();
+    const env = {};
+    text.split('\n').forEach(line => {
+      const parts = line.split('=');
+      if (parts.length >= 2) {
+        const key = parts[0].trim();
+        const value = parts.slice(1).join('=').trim().replace(/^["']|["']$/g, '');
+        if (key && value) {
+          env[key] = value;
+        }
+      }
+    });
+    if (env.GEMINI_API_KEY) {
+      GEMINI_API_KEY = env.GEMINI_API_KEY;
+      console.log("Loaded API key from .env file successfully!");
+    }
+  } catch (error) {
+    console.warn("Failed to load .env file, utilizing default:", error);
+  }
+}
 
 let SYSTEM_PROMPT = "";
 let companyProfile = null;
@@ -1009,7 +1037,8 @@ let voiceSR = null;
 /* ─────────────────────────────
    INTRO SEQUENCE
 ───────────────────────────── */
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
+  await loadEnv();
   loadProfile();
   const seen = localStorage.getItem('axisai_v2_seen');
 
@@ -1133,7 +1162,7 @@ async function callGemini(userMessage) {
     generationConfig: { temperature: 0.5, maxOutputTokens: 400 }
   };
 
-  const res = await fetch(GEMINI_URL, {
+  const res = await fetch(getGeminiUrl(), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body)
