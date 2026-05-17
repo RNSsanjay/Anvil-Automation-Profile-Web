@@ -16,7 +16,39 @@
 
 <body>
 
-  <!-- INTRO ANIMATION REMOVED -->
+  <!-- INTRO ANIMATION -->
+  <div id="introOverlay">
+    <!-- Background Video -->
+    <video id="introVideo" autoplay muted playsinline>
+      <source src="assets/video/Anvil Automation Intro.mp4" type="video/mp4">
+    </video>
+
+    <!-- Dark gradient layers for legibility -->
+    <div class="intro-layer intro-grad-top"></div>
+    <div class="intro-layer intro-grad-bottom"></div>
+    <div class="intro-layer intro-vignette"></div>
+
+    <!-- Center: Cinematic Title -->
+    <div class="intro-center">
+      <div class="intro-eyebrow">Precision · Performance · Reliability</div>
+      <div class="intro-title-wrap">
+        <span class="intro-title-word">CRAFTING</span>
+        <span class="intro-title-word accent">PRECISION</span>
+      </div>
+      <div class="intro-sub">CNC Machining &amp; Die Casting · Coimbatore, India</div>
+    </div>
+
+    <!-- Bottom: Progress bar + Skip -->
+    <div class="intro-footer">
+      <div class="intro-progress-track">
+        <div class="intro-progress-bar" id="introProgressBar"></div>
+      </div>
+      <button class="intro-skip" onclick="skipIntro()">Skip&nbsp;<svg viewBox="0 0 24 24">
+          <polyline points="13 18 19 12 13 6" />
+          <polyline points="6 18 12 12 6 6" />
+        </svg></button>
+    </div>
+  </div>
 
   <!-- CURSOR -->
   <div id="cDot"></div>

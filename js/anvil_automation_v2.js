@@ -156,8 +156,55 @@ function openChatbot() {
   initSlideshow('ownerSlideshow');
 })();
 
-/* ── INTRO ANIMATION REMOVED ── */
-/* Intro overlay removed - direct load to main content */
+/* ── DEVICE-AWARE CINEMATIC INTRO overlay ── */
+(function () {
+  const intro = document.getElementById('introOverlay');
+  if (!intro) return;
+
+  const isDesktopLapTab = window.innerWidth >= 768;
+
+  if (!isDesktopLapTab) {
+    // For smaller screens (other mobile devices): completely bypass/remove immediately
+    intro.remove();
+    return;
+  }
+
+  // Desktops, laptops, and tablets: play cinematic intro
+  intro.style.display = 'block';
+  const vid = document.getElementById('introVideo');
+  const bar = document.getElementById('introProgressBar');
+  let rafId = null;
+
+  function hideIntro() {
+    cancelAnimationFrame(rafId);
+    if (bar) bar.style.width = '100%';
+    setTimeout(() => {
+      intro.classList.add('hidden');
+      setTimeout(() => { intro.remove(); }, 1100);
+    }, 200);
+  }
+
+  function updateBar() {
+    if (!vid || vid.paused || vid.ended) return;
+    if (vid.duration > 0) {
+      const pct = (vid.currentTime / vid.duration) * 100;
+      if (bar) bar.style.width = pct + '%';
+    }
+    rafId = requestAnimationFrame(updateBar);
+  }
+
+  window.skipIntro = hideIntro;
+
+  if (vid) {
+    vid.addEventListener('canplay', () => { vid.classList.add('loaded'); }, { once: true });
+    vid.addEventListener('playing', () => { updateBar(); });
+    vid.addEventListener('ended', hideIntro);
+    // Safety timeout: auto fadeout after 8 seconds
+    setTimeout(hideIntro, 8000);
+  } else {
+    setTimeout(hideIntro, 500);
+  }
+})();
 
 /* ── CAPABILITIES STRIP ── */
 (function () {
