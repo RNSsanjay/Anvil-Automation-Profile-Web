@@ -16,54 +16,49 @@
 
 <body>
 
-  <!-- INTRO ANIMATION -->
-  <div id="introOverlay">
-    <!-- Background Video -->
-    <video id="introVideo" autoplay muted playsinline>
-      <source src="assets/video/anvil_auto_2.mp4" type="video/mp4">
-    </video>
-
-    <!-- Dark gradient layers for legibility -->
-    <div class="intro-layer intro-grad-top"></div>
-    <div class="intro-layer intro-grad-bottom"></div>
-    <div class="intro-layer intro-vignette"></div>
-
-    <!-- Top-left: Brand Badge -->
-    <!-- <div class="intro-brand">
-      <img src="assets/images/logo.png" alt="Anvil Automation" class="intro-brand-logo">
-      <div class="intro-brand-text">
-        <span class="intro-brand-name">ANVIL AUTOMATION</span>
-        <span class="intro-brand-tag">ISO 9001:2015 &middot; Est. 2004 &middot; Coimbatore</span>
-      </div>
-    </div> -->
-
-    <!-- Center: Cinematic Title -->
-    <div class="intro-center">
-      <div class="intro-eyebrow">Precision · Performance · Reliability</div>
-      <div class="intro-title-wrap">
-        <span class="intro-title-word">CRAFTING</span>
-        <span class="intro-title-word accent">PRECISION</span>
-      </div>
-      <div class="intro-sub">CNC Machining &amp; Die Casting · Coimbatore, India</div>
-    </div>
-
-    <!-- Bottom: Progress bar + Skip -->
-    <div class="intro-footer">
-      <div class="intro-progress-track">
-        <div class="intro-progress-bar" id="introProgressBar"></div>
-      </div>
-      <button class="intro-skip" onclick="skipIntro()">Skip&nbsp;<svg viewBox="0 0 24 24">
-          <polyline points="13 18 19 12 13 6" />
-          <polyline points="6 18 12 12 6 6" />
-        </svg></button>
-    </div>
-  </div>
+  <!-- INTRO ANIMATION REMOVED -->
 
   <!-- CURSOR -->
   <div id="cDot"></div>
   <div id="cRing"></div>
   <!-- PROGRESS -->
   <div id="prog"></div>
+
+  <!-- FLOATING CONTACT DOCK -->
+  <div class="dock" id="mainDock">
+    <div class="dock-item">
+      <a href="https://wa.me/919894355676" target="_blank" class="dock-btn wa">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+      </a>
+      <div class="dock-tip">WhatsApp</div>
+    </div>
+    <div class="dock-item">
+      <a href="tel:+919894355676" class="dock-btn ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6.29-6.29 19.79 19.79 0 01-3.07-8.67A2 2 0 013.83 5h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 12.62a16 16 0 006.29 6.29l1.38-1.09a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 19.92z"/></svg>
+      </a>
+      <div class="dock-tip">Call Us</div>
+    </div>
+    <div class="dock-sep"></div>
+    <div class="dock-item dock-item-center">
+      <button class="dock-btn chatbot" onclick="openChatbot()">
+        <img src="assets/images/chatbot.png" alt="Live Chat Bot" class="chatbot-icon-img">
+      </button>
+      <div class="dock-tip">Axis AI</div>
+    </div>
+    <div class="dock-sep"></div>
+    <div class="dock-item">
+      <a href="mailto:anvil.cbe@gmail.com" class="dock-btn em">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+      </a>
+      <div class="dock-tip">Email</div>
+    </div>
+    <div class="dock-item">
+      <a href="https://maps.google.com/?q=Anvil+Automation+Coimbatore" target="_blank" class="dock-btn mp">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      </a>
+      <div class="dock-tip">Location</div>
+    </div>
+  </div>
 
   <!-- NAV -->
   <nav id="mainNav">
@@ -87,16 +82,15 @@
     </div>
     <div class="nav-right">
       <a href="tel:+919894355676" class="btn-sm ghost">
-        <svg width="12" height="12" stroke="currentColor" fill="none" stroke-width="2.5" viewBox="0 0 24 24">
-          <path
-            d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.9 15.9a19.79 19.79 0 01-3.07-8.67A2 2 0 013.87 5.2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.85 13.1a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
+        <svg width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6.29-6.29 19.79 19.79 0 01-3.07-8.67A2 2 0 013.83 5h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 12.62a16 16 0 006.29 6.29l1.38-1.09a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 19.92z"/>
         </svg>
         Call Us
       </a>
       <a href="mailto:anvil.cbe@gmail.com" class="btn-sm solid">
-        <svg width="12" height="12" stroke="currentColor" fill="none" stroke-width="2.5" viewBox="0 0 24 24">
-          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-          <polyline points="22,6 12,13 2,6" />
+        <svg width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <rect x="3" y="5" width="18" height="14" rx="2"/>
+          <path d="M3 7l9 6 9-6"/>
         </svg>
         Get a Quote
       </a>
@@ -138,16 +132,15 @@
       <div class="mob-footer">
         <div class="mob-cta">
           <a href="tel:+919894355676" class="mob-cta-ph">
-            <svg viewBox="0 0 24 24">
-              <path
-                d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.9 15.9a19.79 19.79 0 01-3.07-8.67A2 2 0 013.87 5.2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.85 13.1a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6.29-6.29 19.79 19.79 0 01-3.07-8.67A2 2 0 013.83 5h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 12.62a16 16 0 006.29 6.29l1.38-1.09a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 19.92z"/>
             </svg>
             <span>+91 98943 55676</span>
           </a>
           <a href="mailto:anvil.cbe@gmail.com" class="mob-cta-em">
-            <svg viewBox="0 0 24 24">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-              <polyline points="22,6 12,13 2,6" />
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="5" width="18" height="14" rx="2"/>
+              <path d="M3 7l9 6 9-6"/>
             </svg>
             <span>Get a Quote</span>
           </a>
@@ -170,7 +163,6 @@
       </div>
       <div class="hero-overlay"></div>
     </div>
-    <div class="hero-grid-overlay"></div>
     <div class="meteors" id="meteorLayer"></div>
 
     <div class="hero-inner">
@@ -187,7 +179,7 @@
       <div class="hero-actions">
         <a href="mailto:anvil.cbe@gmail.com" class="btn-hero-p">
           Get a Quote
-          <svg viewBox="0 0 24 24">
+          <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12" />
             <polyline points="12 5 19 12 12 19" />
           </svg>
@@ -333,7 +325,7 @@
             </div>
             <!-- Floating badges -->
             <div class="about-badge ab1">
-              <div class="ab-icon blue"><svg viewBox="0 0 24 24">
+              <div class="ab-icon blue"><svg viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z" />
                 </svg></div>
               <div>
@@ -342,7 +334,7 @@
               </div>
             </div>
             <div class="about-badge ab2">
-              <div class="ab-icon gold"><svg viewBox="0 0 24 24">
+              <div class="ab-icon gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="12" r="10" />
                   <polyline points="12 6 12 12 16 14" />
                 </svg></div>
@@ -352,7 +344,7 @@
               </div>
             </div>
             <div class="about-badge ab3">
-              <div class="ab-icon green"><svg viewBox="0 0 24 24">
+              <div class="ab-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
                   <circle cx="9" cy="7" r="4" />
                   <path d="M23 21v-2a4 4 0 00-3-3.87" />
@@ -409,7 +401,7 @@
 
             <button id="kvBtn" class="kv-toggle-btn" onclick="toggleKvMore()">
               <span id="kvBtnText">Show More Details</span>
-              <svg viewBox="0 0 24 24" stroke="currentColor" fill="none">
+              <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="6 9 12 15 18 9" />
               </svg>
             </button>
@@ -473,7 +465,7 @@
             engineering industries — from raw material to finished part.</p>
           <a href="mailto:anvil.cbe@gmail.com"
             style="display:inline-flex;align-items:center;gap:8px;margin-top:24px;font-size:12px;font-weight:700;color:var(--blue);letter-spacing:.1em;text-transform:uppercase">Request
-            a Quote <svg width="13" height="13" stroke="currentColor" fill="none" stroke-width="2.5"
+            a Quote <svg width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
               viewBox="0 0 24 24">
               <line x1="5" y1="12" x2="19" y2="12" />
               <polyline points="12 5 19 12 12 19" />
@@ -498,7 +490,7 @@
                 class="svc-feat">Boring</span><span class="svc-feat">Facing</span><span class="svc-feat">Close
                 Tolerance</span></div>
           </div>
-          <div class="svc-arrow"><svg viewBox="0 0 24 24">
+          <div class="svc-arrow"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="5" y1="12" x2="19" y2="12" />
               <polyline points="12 5 19 12 12 19" />
             </svg></div>
@@ -519,7 +511,7 @@
                 class="svc-feat">Tapping</span><span class="svc-feat">Pocket Machining</span><span
                 class="svc-feat">Multi-axis</span></div>
           </div>
-          <div class="svc-arrow"><svg viewBox="0 0 24 24">
+          <div class="svc-arrow"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="5" y1="12" x2="19" y2="12" />
               <polyline points="12 5 19 12 12 19" />
             </svg></div>
@@ -539,7 +531,7 @@
             <div class="svc-feats"><span class="svc-feat">High Pressure</span><span class="svc-feat">Controlled
                 Porosity</span><span class="svc-feat">ASTM L3</span><span class="svc-feat">Proof Machining</span></div>
           </div>
-          <div class="svc-arrow"><svg viewBox="0 0 24 24">
+          <div class="svc-arrow"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="5" y1="12" x2="19" y2="12" />
               <polyline points="12 5 19 12 12 19" />
             </svg></div>
@@ -560,7 +552,7 @@
                 class="svc-feat">Segregation</span><span class="svc-feat">Foundry Grade</span><span
                 class="svc-feat">Non-ferrous</span></div>
           </div>
-          <div class="svc-arrow"><svg viewBox="0 0 24 24">
+          <div class="svc-arrow"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="5" y1="12" x2="19" y2="12" />
               <polyline points="12 5 19 12 12 19" />
             </svg></div>
@@ -883,7 +875,52 @@
       </div>
 
       <!-- Partner logo grid with brand colors -->
-      <div class="partner-logos">
+      <div class="partner-scroll-container">
+        <div class="partner-logos" id="partnerLogos">
+        <!-- First set -->
+        <div class="p-logo">
+          <img src="assets/images/company_logo/motherson.png" alt="Motherson"
+            style="height:50px; width:auto; object-fit:contain; margin-bottom:8px">
+          <div class="p-logo-name">Motherson Automotive Elastomers Technology</div>
+          <div class="p-logo-city">Chennai, Tamil Nadu</div>
+          <div class="p-logo-ind">Automotive</div>
+        </div>
+        <div class="p-logo">
+          <img src="assets/images/company_logo/motherson.png" alt="Motherson"
+            style="height:50px; width:auto; object-fit:contain; margin-bottom:8px">
+          <div class="p-logo-name">Motherson Automotive Technology & Engineering</div>
+          <div class="p-logo-city">Chennai, Tamil Nadu</div>
+          <div class="p-logo-ind">Automotive</div>
+        </div>
+        <div class="p-logo">
+          <img src="assets/images/company_logo/rnd gears.png" alt="RND Gears"
+            style="height:50px; width:auto; object-fit:contain; margin-bottom:8px">
+          <div class="p-logo-name">RND Gears Pvt Ltd</div>
+          <div class="p-logo-city">Bangalore, Karnataka</div>
+          <div class="p-logo-ind">Engineering</div>
+        </div>
+        <div class="p-logo">
+          <img src="assets/images/company_logo/tildnet.png" alt="Tildenet"
+            style="height:50px; width:auto; object-fit:contain; margin-bottom:8px">
+          <div class="p-logo-name">Tildenet</div>
+          <div class="p-logo-city">Karur, Tamil Nadu</div>
+          <div class="p-logo-ind">Engineering</div>
+        </div>
+        <div class="p-logo">
+          <img src="assets/images/company_logo/mn auto parts.png" alt="MN Auto Products"
+            style="height:50px; width:auto; object-fit:contain; margin-bottom:8px">
+          <div class="p-logo-name">MN Auto Products Pvt Ltd</div>
+          <div class="p-logo-city">Coimbatore, Tamil Nadu</div>
+          <div class="p-logo-ind">Automotive</div>
+        </div>
+        <div class="p-logo">
+          <img src="assets/images/company_logo/lgb.png" alt="L.G. Balakrishnan Bros"
+            style="height:50px; width:auto; object-fit:contain; margin-bottom:8px">
+          <div class="p-logo-name">L.G. Balakrishnan Bros Ltd</div>
+          <div class="p-logo-city">Coimbatore, Tamil Nadu</div>
+          <div class="p-logo-ind">Automotive</div>
+        </div>
+        <!-- Duplicate set for seamless loop -->
         <div class="p-logo">
           <img src="assets/images/company_logo/motherson.png" alt="Motherson"
             style="height:50px; width:auto; object-fit:contain; margin-bottom:8px">
@@ -927,58 +964,7 @@
           <div class="p-logo-ind">Automotive</div>
         </div>
       </div>
-
-      <!-- Industries served strip -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:0" data-reveal>
-        <div
-          style="padding:28px;border-radius:12px;background:var(--bg);border:1px solid var(--line);display:flex;align-items:center;gap:16px">
-          <div
-            style="width:48px;height:48px;border-radius:10px;background:rgba(15,63,181,.08);display:grid;place-items:center;flex-shrink:0">
-            <svg width="24" height="24" stroke="var(--blue)" fill="none" stroke-width="1.8" stroke-linecap="round"
-              viewBox="0 0 24 24">
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-            </svg>
-          </div>
-          <div>
-            <div style="font-family:var(--fd);font-size:18px;letter-spacing:.04em;color:var(--ink)">Automotive Industry
-            </div>
-            <div style="font-size:12px;color:var(--mute);margin-top:4px">Precision components for automotive
-              applications</div>
-          </div>
-        </div>
-        <div
-          style="padding:28px;border-radius:12px;background:var(--bg);border:1px solid var(--line);display:flex;align-items:center;gap:16px">
-          <div
-            style="width:48px;height:48px;border-radius:10px;background:rgba(13,122,78,.08);display:grid;place-items:center;flex-shrink:0">
-            <svg width="24" height="24" stroke="var(--green)" fill="none" stroke-width="1.8" stroke-linecap="round"
-              viewBox="0 0 24 24">
-              <rect x="2" y="3" width="20" height="14" rx="2" />
-              <path d="M8 21h8M12 17v4" />
-            </svg>
-          </div>
-          <div>
-            <div style="font-family:var(--fd);font-size:18px;letter-spacing:.04em;color:var(--ink)">General Engineering
-            </div>
-            <div style="font-size:12px;color:var(--mute);margin-top:4px">Machined & die-cast industrial components</div>
-          </div>
-        </div>
-        <div
-          style="padding:28px;border-radius:12px;background:var(--bg);border:1px solid var(--line);display:flex;align-items:center;gap:16px">
-          <div
-            style="width:48px;height:48px;border-radius:10px;background:rgba(200,146,42,.08);display:grid;place-items:center;flex-shrink:0">
-            <svg width="24" height="24" stroke="var(--gold)" fill="none" stroke-width="1.8" stroke-linecap="round"
-              viewBox="0 0 24 24">
-              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-              <polyline points="17 6 23 6 23 12" />
-            </svg>
-          </div>
-          <div>
-            <div style="font-family:var(--fd);font-size:18px;letter-spacing:.04em;color:var(--ink)">Recycling & Scrap
-            </div>
-            <div style="font-size:12px;color:var(--mute);margin-top:4px">Sustainable aluminum scrap management</div>
-          </div>
-        </div>
-      </div>
+      </div>      
     </div>
   </section>
 
@@ -1052,27 +1038,7 @@
                   style="color:var(--accent)">anvil.cbe@gmail.com</a></div>
             </div>
           </div>
-          <div class="ci">
-            <div class="ci-icon gr"><svg viewBox="0 0 24 24">
-                <path
-                  d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
-              </svg></div>
-            <div>
-              <div class="ci-label">WhatsApp</div>
-              <div class="ci-val"><a href="https://wa.me/919894355676" target="_blank" style="color:var(--green)">Chat
-                  on WhatsApp</a></div>
-            </div>
-          </div>
-          <div class="ci">
-            <div class="ci-icon re"><svg viewBox="0 0 24 24">
-                <rect x="3" y="3" width="18" height="18" rx="2" />
-                <path d="M3 9h18M9 21V9" />
-              </svg></div>
-            <div>
-              <div class="ci-label">GST / PAN</div>
-              <div class="ci-val" style="font-family:var(--fm);font-size:12px">33BGJPS4244J1Z5 · BGJPS4244J</div>
-            </div>
-          </div>
+          
         </div>
       </div>
       <!-- Right: Animated Location Visual -->
@@ -1128,12 +1094,7 @@
             <span class="loc-chip-lbl">Longitude</span>
           </div>
 
-          <!-- Animated grid dots background -->
-          <canvas id="locDotCanvas" class="loc-dot-canvas"></canvas>
-
-          <!-- Bottom label -->
-          <p class="loc-label">Tamil Nadu · India · Est. 2004</p>
-        </div>
+          
       </div>
     </div>
   </section>
@@ -1203,26 +1164,25 @@
         </div>
         <div class="foot-col">
           <h5>Contact</h5>
-          <div class="foot-contact-r"><svg viewBox="0 0 24 24">
-              <path
-                d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.9 15.9a19.79 19.79 0 01-3.07-8.67A2 2 0 013.87 5.2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11l-1.27 1.27a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
+          <div class="foot-contact-r"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6.29-6.29 19.79 19.79 0 01-3.07-8.67A2 2 0 013.83 5h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 12.62a16 16 0 006.29 6.29l1.38-1.09a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 19.92z"/>
             </svg><span>+91 98943 55676</span></div>
-          <div class="foot-contact-r"><svg viewBox="0 0 24 24">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-              <polyline points="22,6 12,13 2,6" />
+          <div class="foot-contact-r"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="5" width="18" height="14" rx="2"/>
+              <path d="M3 7l9 6 9-6"/>
             </svg><span>anvil.cbe@gmail.com</span></div>
-          <div class="foot-contact-r"><svg viewBox="0 0 24 24">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
-              <circle cx="12" cy="10" r="3" />
+          <div class="foot-contact-r"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+              <circle cx="12" cy="10" r="3"/>
             </svg><span>SF No. 233/1B3-1B4, Oraikkal Palayam Road, Kunnathur Village, Coimbatore – 641107, Tamil
               Nadu</span></div>
-          <div class="foot-contact-r"><svg viewBox="0 0 24 24">
-              <rect x="3" y="3" width="18" height="18" rx="2" />
-              <path d="M3 9h18M9 21V9" />
+          <div class="foot-contact-r"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2"/>
+              <path d="M7 7h10M7 12h6"/>
             </svg><span>GST: 33BGJPS4244J1Z5 · PAN: BGJPS4244J</span></div>
-          <div class="foot-contact-r"><svg viewBox="0 0 24 24">
-              <rect x="3" y="3" width="18" height="18" rx="2" />
-              <path d="M3 9h18M9 21V9" />
+          <div class="foot-contact-r"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="7" width="20" height="15" rx="2"/>
+              <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/>
             </svg><span>Aadhaar: 607508485643</span></div>
         </div>
       </div>
@@ -1234,168 +1194,7 @@
     </div>
   </footer>
 
-  <!-- DOCK — FLOATING CONTACT BAR -->
-  <div class="dock" id="mainDock" style="background:rgba(255,255,255,0.03); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.1); box-shadow:none">
-    
-    <!-- Phone -->
-    <div class="d-item">
-      <a class="d-btn ph" href="tel:+919894355676" aria-label="Call">
-        <svg viewBox="0 0 24 24" style="stroke:white">
-          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.9 15.9a19.79 19.79 0 01-3.07-8.67A2 2 0 013.87 5.2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11l-1.27 1.27a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
-        </svg>
-      </a>
-      <div class="d-tip">Call Us</div>
-    </div>
-
-    <!-- WhatsApp -->
-    <div class="d-item">
-      <a class="d-btn wa" href="https://wa.me/919894355676" target="_blank" rel="noopener" aria-label="WhatsApp">
-        <svg viewBox="0 0 24 24" style="stroke:white">
-          <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
-        </svg>
-      </a>
-      <div class="d-tip">WhatsApp</div>
-    </div>
-
-    <!-- Email -->
-    <div class="d-item">
-      <a class="d-btn em" href="mailto:anvil.cbe@gmail.com" aria-label="Email">
-        <svg viewBox="0 0 24 24" style="stroke:white">
-          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-          <polyline points="22,6 12,13 2,6" />
-        </svg>
-      </a>
-      <div class="d-tip">Email</div>
-    </div>
-
-    <!-- LinkedIn -->
-    <div class="d-item">
-      <a class="d-btn lk" href="https://www.linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn">
-        <svg viewBox="0 0 24 24" style="stroke:white">
-          <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z" />
-          <rect x="2" y="9" width="4" height="12" />
-          <circle cx="4" cy="4" r="2" />
-        </svg>
-      </a>
-      <div class="d-tip">LinkedIn</div>
-    </div>
-
-    <!-- Location -->
-    <div class="d-item">
-      <a class="d-btn mp" href="https://maps.google.com/?q=Kunnathur+Village+Coimbatore+641107" target="_blank" rel="noopener" aria-label="Maps">
-        <svg viewBox="0 0 24 24" style="stroke:white">
-          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
-          <circle cx="12" cy="10" r="3" />
-        </svg>
-      </a>
-      <div class="d-tip">Location</div>
-    </div>
-
-  </div>
-
-  <!-- ─────────────────────────────────────────
-       AXIS AI - INTELLIGENT ASSISTANT
-       ───────────────────────────────────────── -->
-  
-  <!-- Fonts & Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-  <link rel="stylesheet" href="axis-style.css">
-
-  <!-- Intro Overlay -->
-  <div id="axis-intro" style="display:none">
-    <div class="intro-logo-wrap">
-      <img src="assets/images/logo1.png" alt="Anvil logo" class="intro-logo">
-      <h1 class="intro-title">AXIS AI</h1>
-    </div>
-    <div class="intro-status">Initializing System...</div>
-    <div class="intro-loader">
-      <div class="intro-progress"></div>
-    </div>
-    <button class="intro-skip" onclick="axisAI.closeIntro()">Skip Intro</button>
-  </div>
-
-  <!-- Launcher -->
-  <div id="axis-launcher" style="display:none">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 8V4H8"></path>
-      <rect width="16" height="12" x="4" y="8" rx="2"></rect>
-      <path d="M2 14h2"></path>
-      <path d="M20 14h2"></path>
-      <path d="M15 13v2"></path>
-      <path d="M9 13v2"></path>
-    </svg>
-  </div>
-
-  <!-- Chat Panel -->
-  <div id="axis-panel">
-    <div class="axis-header">
-      <div class="header-title">
-        <h4>⚡ AXIS <span>AI</span></h4>
-        <p>Anvil Automation Assistant</p>
-      </div>
-      <div class="header-right" style="display:flex; gap:12px; align-items:center">
-        <button id="switch-to-voice" class="ghost-btn" style="background:none;border:none;color:var(--axis-mute);cursor:pointer">🎙️</button>
-        <span id="axis-close" class="header-close">✕</span>
-      </div>
-    </div>
-
-    <!-- Mode Selection -->
-    <div id="mode-selection" class="mode-card">
-      <p style="color:var(--axis-mute); font-size:12px; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:10px">Interaction Mode</p>
-      <div id="mode-voice" class="mode-option">
-        <div class="mode-icon">🎙️</div>
-        <div>
-          <div style="color:white; font-weight:600">Voice Mode</div>
-          <div style="color:var(--axis-mute); font-size:12px">Speak naturally with Axis</div>
-        </div>
-      </div>
-      <div id="mode-text" class="mode-option">
-        <div class="mode-icon">💬</div>
-        <div>
-          <div style="color:white; font-weight:600">Text Mode</div>
-          <div style="color:var(--axis-mute); font-size:12px">Type your questions</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Chat Interface -->
-    <div id="chat-interface" style="display:none; flex-direction:column; height:calc(100% - 75px)">
-      <div id="axis-chat-area" class="axis-chat-area"></div>
-      <div class="axis-input-area">
-        <div id="axis-prompts" class="axis-prompts"></div>
-        <div class="input-wrap">
-          <input type="text" id="axis-input" class="axis-input" placeholder="Type your message...">
-          <button id="axis-send" class="axis-send">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <line x1="22" y1="2" x2="11" y2="13"></line>
-              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-            </svg>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Voice Overlay -->
-  <div id="axis-voice-overlay">
-    <div id="switch-to-text" style="position:absolute; top:40px; right:40px; color:white; cursor:pointer; font-family:var(--axis-font-head); letter-spacing:0.1em; border:1px solid rgba(255,255,255,0.2); padding:8px 20px; border-radius:30px">💬 SWITCH TO TEXT</div>
-    <div class="voice-visualizer">
-      <div class="pulse-ring"></div>
-      <div class="pulse-ring" style="animation-delay:0.5s"></div>
-      <div id="mic-btn" class="mic-btn">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
-          <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-          <line x1="12" y1="19" x2="12" y2="22"></line>
-        </svg>
-      </div>
-    </div>
-    <div id="voice-transcript" class="voice-transcript">Tap the mic to start speaking</div>
-  </div>
-
-  <script src="axis-speech.js"></script>
-  <script src="axis-chat.js"></script>
+</div>
 
   <script src="js/anvil_automation_v2.js"></script>
 </body>

@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Axis AI — Anvil Automation</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  /* ═══════════════════════════════════════
+     CSS VARIABLES — Anvil Brand System
+  ═══════════════════════════════════════ */
+  :root {
+    --bg:           #09090B;
+    --bg-2:         #111115;
+    --bg-3:         #18181E;
+    --bg-4:         #1F1F28;
+    --silver:       #C8CDD6;
+    --silver-dim:   #7A8290;
+    --silver-dark:  #2E3340;
+    --cyan:         #5EEAD4;
+    --cyan-dim:     rgba(94,234,212,0.18);
+    --cyan-glow:    rgba(94,234,212,0.35);
+    --cyan-soft:    rgba(94,234,212,0.08);
+    --white:        #F0F2F5;
+    --muted:        #5A6070;
+    --border:       rgba(200,205,214,0.10);
+    --border-cyan:  rgba(94,234,212,0.30);
+    --text:         #DDE1E8;
+    --font-display: 'Cormorant Garamond', serif;
+    --font-body:    'DM Sans', sans-serif;
+    --font-mono:    'JetBrains Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: var(--bg);
+    font-family: var(--font-body);
+    color: var(--text);
+    overflow: hidden;
+  }
+
+  /* ═══════════════════════════════════════
+     BACKGROUND — Animated Steel Grid
+  ═══════════════════════════════════════ */
+  .bg-layer {
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(94,234,212,0.04) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 80% 100%, rgba(94,234,212,0.03) 0%, transparent 60%),
+      linear-gradient(180deg, #09090B 0%, #0C0D12 100%);
+  }
+  .bg-grid {
+    position: fixed; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(94,234,212,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(94,234,212,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+  }
+
+  /* ═══════════════════════════════════════
+     INTRO OVERLAY
+  ═══════════════════════════════════════ */
+  #intro {
+    position: fixed; inset: 0; z-index: 1000;
+    background: #09090B;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 28px;
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.4,0,0.2,1);
+  }
+  #intro.hide {
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+  }
+  .intro-logo {
+    width: 110px; height: 110px;
+    border-radius: 24px;
+    object-fit: cover;
+    animation: intro-pulse 2.5s ease-in-out infinite;
+  }
+  @keyframes intro-pulse {
+    0%,100% { filter: drop-shadow(0 0 12px rgba(94,234,212,0.3)); }
+    50%      { filter: drop-shadow(0 0 32px rgba(94,234,212,0.6)); }
+  }
+  .intro-company {
+    font-family: var(--font-body);
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.3em;
+    color: var(--silver-dim);
+    text-transform: uppercase;
+  }
+  .intro-title {
+    font-family: var(--font-display);
+    font-size: clamp(42px, 6vw, 72px);
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.05em;
+    text-align: center;
+    line-height: 1;
+  }
+  .intro-title span {
+    background: linear-gradient(135deg, var(--cyan) 0%, #A5F3FC 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .intro-line {
+    width: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    transition: width 1.2s cubic-bezier(0.4,0,0.2,1) 0.5s;
+  }
+  .intro-line.active { width: 280px; }
+  .intro-subtitle {
+    font-family: var(--font-body);
+    font-size: 13px; font-weight: 300;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fade-up 0.8s ease 1s forwards;
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Waveform bars */
+  .waveform {
+    display: flex; align-items: center; gap: 5px;
+    height: 32px;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .waveform.visible { opacity: 1; }
+  .waveform .bar {
+    width: 3px; border-radius: 2px;
+    background: var(--cyan);
+    animation: wave-bar 1.2s ease-in-out infinite;
+  }
+  .waveform .bar:nth-child(1) { height: 8px;  animation-delay: 0s; }
+  .waveform .bar:nth-child(2) { height: 18px; animation-delay: 0.15s; }
+  .waveform .bar:nth-child(3) { height: 28px; animation-delay: 0.3s; }
+  .waveform .bar:nth-child(4) { height: 18px; animation-delay: 0.45s; }
+  .waveform .bar:nth-child(5) { height: 10px; animation-delay: 0.6s; }
+  .waveform .bar:nth-child(6) { height: 22px; animation-delay: 0.75s; }
+  .waveform .bar:nth-child(7) { height: 14px; animation-delay: 0.9s; }
+  @keyframes wave-bar {
+    0%,100% { transform: scaleY(0.4); opacity: 0.4; }
+    50%      { transform: scaleY(1);   opacity: 1; }
+  }
+
+  #skip-btn {
+    position: absolute; top: 24px; right: 28px;
+    background: none; border: none;
+    font-family: var(--font-body); font-size: 12px;
+    color: var(--muted); cursor: pointer;
+    letter-spacing: 0.1em;
+    transition: color 0.2s;
+  }
+  #skip-btn:hover { color: var(--cyan); }
+
+  /* ═══════════════════════════════════════
+     MAIN CHAT PAGE
+  ═══════════════════════════════════════ */
+  #app {
+    position: fixed; inset: 0; z-index: 1;
+    display: flex; flex-direction: column;
+    opacity: 0; transition: opacity 0.8s ease 0.3s;
+  }
+  #app.visible { opacity: 1; }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 28px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(9,9,11,0.8);
+    backdrop-filter: blur(16px);
+    flex-shrink: 0;
+    position: relative; z-index: 10;
+  }
+  .topbar-left {
+    display: flex; align-items: center; gap: 14px;
+  }
+  .back-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg-3);
+    color: var(--silver-dim);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    text-decoration: none;
+    margin-right: 4px;
+  }
+  .back-btn:hover {
+    color: var(--cyan);
+    border-color: var(--border-cyan);
+    background: var(--cyan-soft);
+    box-shadow: 0 0 12px rgba(94, 234, 212, 0.2);
+    transform: translateX(-3px);
+  }
+  .back-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+  .topbar-logo {
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    object-fit: cover;
+    filter: drop-shadow(0 0 8px rgba(94,234,212,0.3));
+  }
+  .topbar-info {}
+  .topbar-name {
+    font-family: var(--font-display);
+    font-size: 20px; font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+  .topbar-name span { color: var(--cyan); }
+  .topbar-sub {
+    font-size: 10px; font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* MODE SWITCH */
+  .mode-switch {
+    display: flex; align-items: center;
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    padding: 4px;
+    gap: 2px;
+    margin-right: 180px;
+  }
+  .mode-btn {
+    display: flex; align-items: center; gap: 7px;
+    padding: 8px 18px;
+    border-radius: 36px;
+    border: none; cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 13px; font-weight: 500;
+    transition: all 0.25s ease;
+    color: var(--muted);
+    background: transparent;
+    letter-spacing: 0.03em;
+  }
+  .mode-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+  .mode-btn.active {
+    background: linear-gradient(135deg, rgba(94,234,212,0.15), rgba(94,234,212,0.08));
+    color: var(--cyan);
+    box-shadow: 0 0 20px rgba(94,234,212,0.15), inset 0 0 0 1px var(--border-cyan);
+  }
+
+  .topbar-right {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .status-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 8px var(--cyan);
+    animation: status-pulse 2s ease-in-out infinite;
+  }
+  @keyframes status-pulse {
+    0%,100% { opacity: 1; }
+    50%      { opacity: 0.4; }
+  }
+  .status-text {
+    font-size: 11px; color: var(--muted);
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  /* ═══════════════════════════════════════
+     CONTENT AREA
+  ═══════════════════════════════════════ */
+  .content {
+    flex: 1; overflow: hidden;
+    position: relative;
+  }
+
+  /* ── TEXT CHAT PANEL ── */
+  #text-panel {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  #text-panel.hidden {
+    opacity: 0; pointer-events: none;
+    transform: translateX(-16px);
+  }
+
+  .chat-messages {
+    flex: 1; overflow-y: auto;
+    padding: 24px 28px;
+    display: flex; flex-direction: column; gap: 18px;
+    scroll-behavior: smooth;
+  }
+  .chat-messages::-webkit-scrollbar { width: 4px; }
+  .chat-messages::-webkit-scrollbar-track { background: transparent; }
+  .chat-messages::-webkit-scrollbar-thumb {
+    background: var(--silver-dark); border-radius: 2px;
+  }
+
+  /* Welcome card */
+  .welcome-card {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 12px; padding: 36px 20px;
+    text-align: center;
+    animation: fade-up 0.6s ease forwards;
+  }
+  .welcome-logo { width: 64px; height: 64px;
+    border-radius: 14px;
+    object-fit: cover;
+    filter: drop-shadow(0 0 16px rgba(94,234,212,0.4));
+  }
+  .welcome-title {
+    font-family: var(--font-display);
+    font-size: 28px; font-weight: 600;
+    color: var(--white);
+  }
+  .welcome-title span { color: var(--cyan); }
+  .welcome-sub {
+    font-size: 13px; color: var(--muted); max-width: 320px; line-height: 1.6;
+  }
+
+  /* Suggested chips */
+  .chips {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    justify-content: center; margin-top: 8px;
+  }
+  .chip {
+    padding: 7px 14px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 12px; color: var(--silver-dim);
+    cursor: pointer;
+    background: var(--bg-3);
+    transition: all 0.2s;
+    font-family: var(--font-body);
+  }
+  .chip:hover {
+    border-color: var(--border-cyan);
+    color: var(--cyan);
+    background: var(--cyan-soft);
+  }
+
+  /* Message bubbles */
+  .msg {
+    display: flex; gap: 12px;
+    animation: msg-in 0.35s cubic-bezier(0.4,0,0.2,1) forwards;
+    opacity: 0;
+  }
+  @keyframes msg-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .msg.user { flex-direction: row-reverse; }
+
+  .msg-avatar {
+    width: 34px; height: 34px; border-radius: 3px;
+    flex-shrink: 0; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .msg-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .msg.user .msg-avatar {
+    background: linear-gradient(135deg, var(--silver-dark), var(--bg-4));
+    border: 1px solid var(--border);
+    font-family: var(--font-display);
+    font-size: 15px; font-weight: 600;
+    color: var(--silver);
+  }
+
+  .msg-body { max-width: 72%; display: flex; flex-direction: column; gap: 4px; }
+  .msg.user .msg-body { align-items: flex-end; }
+
+  .msg-bubble {
+    padding: 12px 16px;
+    border-radius: 4px;
+    font-size: 14px; line-height: 1.65;
+    font-weight: 400;
+  }
+  .msg.bot .msg-bubble {
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--border-cyan);
+    color: var(--text);
+  }
+  .msg.user .msg-bubble {
+    background: linear-gradient(135deg, rgba(94,234,212,0.15), rgba(94,234,212,0.08));
+    border: 1px solid var(--border-cyan);
+    color: var(--white);
+  }
+  .msg-time {
+    font-family: var(--font-mono);
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* Typing indicator */
+  .typing-indicator {
+    display: flex; gap: 5px; align-items: center;
+    padding: 14px 16px;
+  }
+  .typing-indicator span {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--cyan);
+    animation: typing 1.2s ease-in-out infinite;
+  }
+  .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+  .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typing {
+    0%,60%,100% { opacity: 0.2; transform: translateY(0); }
+    30%          { opacity: 1;   transform: translateY(-5px); }
+  }
+
+  /* ── INPUT ROW ── */
+  .input-row {
+    display: flex; align-items: flex-end; gap: 10px;
+    padding: 16px 24px 20px;
+    border-top: 1px solid var(--border);
+    background: rgba(9,9,11,0.6);
+    backdrop-filter: blur(12px);
+    flex-shrink: 0;
+  }
+  .input-wrap {
+    flex: 1; display: flex; align-items: center;
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 14px;
+    gap: 10px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .input-wrap:focus-within {
+    border-color: var(--border-cyan);
+    box-shadow: 0 0 0 3px rgba(94,234,212,0.06);
+  }
+  #text-input {
+    flex: 1; background: none; border: none; outline: none;
+    font-family: var(--font-body); font-size: 14px;
+    color: var(--text); resize: none;
+    max-height: 120px; min-height: 22px;
+    line-height: 1.5;
+  }
+  #text-input::placeholder { color: var(--muted); }
+
+  /* Voice input button inside text bar */
+  #mic-inline-btn {
+    background: none; border: none;
+    cursor: pointer; padding: 4px;
+    color: var(--muted);
+    transition: color 0.2s;
+    display: flex; align-items: center;
+  }
+  #mic-inline-btn:hover { color: var(--cyan); }
+  #mic-inline-btn.listening { color: var(--cyan); animation: mic-pulse 1s ease-in-out infinite; }
+  @keyframes mic-pulse {
+    0%,100% { filter: drop-shadow(0 0 3px var(--cyan)); }
+    50%      { filter: drop-shadow(0 0 10px var(--cyan)); }
+  }
+  #mic-inline-btn svg { width: 18px; height: 18px; }
+
+  #send-btn {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, rgba(94,234,212,0.2), rgba(94,234,212,0.1));
+    border: 1px solid var(--border-cyan);
+    border-radius: 4px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--cyan);
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  #send-btn:hover {
+    background: rgba(94,234,212,0.25);
+    box-shadow: 0 0 16px rgba(94,234,212,0.2);
+  }
+  #send-btn svg { width: 18px; height: 18px; }
+
+  /* ═══════════════════════════════════════
+     VOICE PANEL
+  ═══════════════════════════════════════ */
+  #voice-panel {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 32px;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  #voice-panel.hidden {
+    opacity: 0; pointer-events: none;
+    transform: translateX(16px);
+  }
+
+  .voice-orb-wrap {
+    position: relative;
+    width: 160px; height: 160px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .voice-ring {
+    position: absolute; border-radius: 50%;
+    border: 1px solid rgba(94,234,212,0.2);
+    transition: all 0.4s;
+  }
+  .voice-ring-1 { width: 160px; height: 160px; }
+  .voice-ring-2 { width: 200px; height: 200px; opacity: 0; }
+  .voice-ring-3 { width: 240px; height: 240px; opacity: 0; }
+  .voice-orb-wrap.listening .voice-ring-1 { border-color: rgba(94,234,212,0.5); animation: ring-pulse 1.5s ease-in-out infinite; }
+  .voice-orb-wrap.listening .voice-ring-2 { opacity: 1; animation: ring-pulse 1.5s ease-in-out 0.3s infinite; }
+  .voice-orb-wrap.listening .voice-ring-3 { opacity: 1; animation: ring-pulse 1.5s ease-in-out 0.6s infinite; }
+  @keyframes ring-pulse {
+    0%,100% { transform: scale(1);    opacity: 0.6; }
+    50%      { transform: scale(1.05); opacity: 0.2; }
+  }
+
+  #voice-orb {
+    width: 120px; height: 120px; border-radius: 50%;
+    background: var(--bg-3);
+    border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative; z-index: 1;
+  }
+  #voice-orb:hover { border-color: var(--border-cyan); box-shadow: 0 0 30px rgba(94,234,212,0.15); }
+  .voice-orb-wrap.listening #voice-orb {
+    border-color: var(--cyan);
+    box-shadow: 0 0 40px rgba(94,234,212,0.3), inset 0 0 30px rgba(94,234,212,0.05);
+  }
+  #voice-orb svg { width: 40px; height: 40px; color: var(--silver); transition: color 0.3s; }
+  .voice-orb-wrap.listening #voice-orb svg { color: var(--cyan); }
+
+  .voice-orb-logo {
+    width: 44px; height: 44px;
+    position: absolute; z-index: 1;
+    filter: drop-shadow(0 0 8px rgba(94,234,212,0.4));
+  }
+
+  .voice-state-label {
+    font-family: var(--font-body); font-size: 14px;
+    color: var(--muted); letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 400;
+    transition: color 0.3s;
+    height: 20px;
+  }
+  .voice-state-label.active { color: var(--cyan); }
+
+  #voice-transcript {
+    max-width: 520px; width: 90%;
+    min-height: 60px;
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 14px 18px;
+    font-size: 14px; color: var(--text);
+    line-height: 1.6; text-align: center;
+    display: none;
+    font-style: italic;
+  }
+  #voice-transcript.visible { display: block; }
+
+  #voice-response {
+    max-width: 520px; width: 90%;
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--border-cyan);
+    border-radius: 4px;
+    padding: 16px 20px;
+    font-size: 14px; color: var(--text);
+    line-height: 1.65;
+    display: none;
+  }
+  #voice-response.visible { display: block; animation: fade-up 0.4s ease; }
+
+  .voice-waveform {
+    display: flex; align-items: center; gap: 4px; height: 28px;
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .voice-waveform.active { opacity: 1; }
+  .voice-waveform .vbar {
+    width: 3px; border-radius: 2px;
+    background: var(--cyan);
+    animation: wave-bar 1.2s ease-in-out infinite;
+  }
+  .voice-waveform .vbar:nth-child(1) { height: 6px;  animation-delay: 0s; }
+  .voice-waveform .vbar:nth-child(2) { height: 14px; animation-delay: 0.1s; }
+  .voice-waveform .vbar:nth-child(3) { height: 22px; animation-delay: 0.2s; }
+  .voice-waveform .vbar:nth-child(4) { height: 16px; animation-delay: 0.3s; }
+  .voice-waveform .vbar:nth-child(5) { height: 10px; animation-delay: 0.4s; }
+  .voice-waveform .vbar:nth-child(6) { height: 20px; animation-delay: 0.5s; }
+  .voice-waveform .vbar:nth-child(7) { height: 8px;  animation-delay: 0.6s; }
+
+  /* ═══════════════════════════════════════
+     FOOTER
+  ═══════════════════════════════════════ */
+  .footer {
+    text-align: center;
+    padding: 8px;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ═══════════════════════════════════════
+     TOAST
+  ═══════════════════════════════════════ */
+  .toast {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+    background: var(--bg-4);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 13px; color: var(--silver);
+    z-index: 9999;
+    animation: toast-in 0.3s ease forwards;
+    white-space: nowrap;
+  }
+  @keyframes toast-in {
+    from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+
+  /* ═══════════════════════════════════════
+     RESPONSIVE
+  ═══════════════════════════════════════ */
+  @media (max-width: 600px) {
+    .topbar { padding: 12px 16px; }
+    .mode-btn { padding: 7px 12px; font-size: 12px; }
+    .mode-btn span { display: none; }
+    .chat-messages { padding: 16px; }
+    .input-row { padding: 12px 16px 16px; }
+    .welcome-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- BG LAYERS -->
+<div class="bg-layer"></div>
+<div class="bg-grid"></div>
+
+<!-- ═══ INTRO OVERLAY ═══ -->
+<div id="intro">
+  <button id="skip-btn">Skip ›</button>
+
+  <img src="assets/images/chatbot.png" class="intro-logo" alt="Axis AI Logo">
+
+  <p class="intro-company">Anvil Automation · Est. 2004 · Coimbatore</p>
+
+  <h1 class="intro-title">AXIS <span>AI</span></h1>
+
+  <div class="intro-line" id="intro-line"></div>
+
+  <p class="intro-subtitle">Precision Manufacturing Intelligence</p>
+
+  <div class="waveform" id="intro-wave">
+    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+    <div class="bar"></div>
+  </div>
+</div>
+
+<!-- ═══ MAIN APP ═══ -->
+<div id="app">
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <a href="index.html" class="back-btn" title="Back to Website">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+      </a>
+      <img src="assets/images/chatbot.png" class="topbar-logo" alt="Axis AI Logo">
+      <div class="topbar-info">
+        <div class="topbar-name">AXIS <span>AI</span></div>
+        <div class="topbar-sub">Anvil Automation</div>
+      </div>
+    </div>
+
+    <!-- MODE SWITCH -->
+    <div class="mode-switch">
+      <button class="mode-btn active" id="btn-text" onclick="switchMode('text')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        <span>Text</span>
+      </button>
+      <button class="mode-btn" id="btn-voice" onclick="switchMode('voice')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/>
+          <line x1="8" y1="23" x2="16" y2="23"/>
+        </svg>
+        <span>Voice</span>
+      </button>
+    </div>
+
+    <div class="topbar-right">
+      <div class="status-dot"></div>
+      <span class="status-text">Online</span>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- TEXT PANEL -->
+    <div id="text-panel">
+      <div class="chat-messages" id="chat-messages">
+        <!-- Welcome card (shown on load) -->
+        <div class="welcome-card" id="welcome-card">
+          <img src="assets/images/chatbot.png" class="welcome-logo" alt="Axis AI Logo">
+          <h2 class="welcome-title">Hello, I'm <span>Axis AI</span></h2>
+          <p class="welcome-sub">Your precision manufacturing intelligence from Anvil Automation. Ask me anything about our CNC machining, die casting, quality systems, or how to get a quote.</p>
+          <div class="chips" id="chips">
+            <button class="chip" onclick="sendChip(this)">What CNC machines do you have?</button>
+            <button class="chip" onclick="sendChip(this)">Tell me about die casting capacity</button>
+            <button class="chip" onclick="sendChip(this)">Your quality certifications?</button>
+            <button class="chip" onclick="sendChip(this)">Which clients do you supply to?</button>
+            <button class="chip" onclick="sendChip(this)">How do I request a quote?</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- INPUT ROW -->
+      <div class="input-row">
+        <div class="input-wrap">
+          <textarea id="text-input" rows="1" placeholder="Ask about our machining capabilities..." onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+          <!-- Voice input button inside text bar -->
+          <button id="mic-inline-btn" title="Voice input" onclick="toggleInlineMic()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+              <line x1="12" y1="19" x2="12" y2="23"/>
+              <line x1="8" y1="23" x2="16" y2="23"/>
+            </svg>
+          </button>
+        </div>
+        <button id="send-btn" onclick="sendMessage()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- VOICE PANEL -->
+    <div id="voice-panel" class="hidden">
+      <div class="voice-orb-wrap" id="voice-orb-wrap">
+        <div class="voice-ring voice-ring-1"></div>
+        <div class="voice-ring voice-ring-2"></div>
+        <div class="voice-ring voice-ring-3"></div>
+        <div id="voice-orb" onclick="toggleVoice()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" id="orb-icon">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="23"/>
+            <line x1="8" y1="23" x2="16" y2="23"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="voice-waveform" id="voice-waveform">
+        <div class="vbar"></div><div class="vbar"></div><div class="vbar"></div>
+        <div class="vbar"></div><div class="vbar"></div><div class="vbar"></div>
+        <div class="vbar"></div>
+      </div>
+
+      <div class="voice-state-label" id="voice-label">Tap the mic to speak</div>
+
+      <div id="voice-transcript"></div>
+      <div id="voice-response"></div>
+    </div>
+
+  </div><!-- /content -->
+
+  <footer class="footer">
+    AXIS AI · Powered by Gemini · Anvil Automation © 2024 · ISO 9001:2015
+  </footer>
+</div>
+
+<!-- ═══════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════ -->
+<script>
+/* ─────────────────────────────
+   CONFIG & DYNAMIC DATA LOAD
+───────────────────────────── */
+const GEMINI_API_KEY = "AIzaSyB8-BKz0D-qQfiTh-Tb6xs4cFlDsS4UeKU";
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+let SYSTEM_PROMPT = "";
+let companyProfile = null;
+
+function generateSystemPrompt(profile) {
+  const c = profile.company;
+  const contact = profile.contact;
+  
+  // Format Services
+  const servicesStr = profile.services.map((s, idx) => {
+    let str = `${idx + 1}. ${s.name} (${s.category}) – ${s.description}`;
+    if (s.fleet) {
+      str += ` Fleet: ` + s.fleet.map(f => `${f.model} (×${f.units}) [${Object.entries(f).filter(([k]) => k !== 'model' && k !== 'units').map(([k, v]) => `${k.replace(/_/g, ' ')}: ${v}`).join(', ')}]`).join('; ');
+    }
+    if (s.capabilities) {
+      str += ` Capabilities: ${s.capabilities.join(', ')}.`;
+    }
+    if (s.items) {
+      str += ` Items traded: ${s.items.join(', ')}.`;
+    }
+    return str;
+  }).join('\n');
+
+  // Format Quality
+  const q = profile.quality;
+  const qualityStr = `- QA Policy: ${q.assurance_policy}
+- Metrics: CPK Min ${q.metrics.cpk_min}, CPK Target ${q.metrics.cpk_target}, QA Shifts: ${q.metrics.qa_shifts}, Instruments: ${q.metrics.instruments_count} (${q.instruments.join(', ')})
+- Calibration: ${q.calibration}
+- Activities: ${q.activities.join(', ')}`;
+
+  // Format Clients
+  const clientsStr = profile.clients.map(cl => `${cl.name} (${cl.location})`).join(', ');
+
+  // Format Strengths
+  const strengthsStr = profile.strengths.map((str, idx) => `${idx + 1}. ${str}`).join('\n');
+
+  SYSTEM_PROMPT = `You are Axis AI, the official intelligent assistant of Anvil Automation — an ISO 9001:2015 certified precision CNC machining, VMC machining, and pressure die casting manufacturer established in 2004 in Coimbatore, Tamil Nadu, India. Proprietor: ${c.proprietor}.
+
+COMPANY INFO:
+- Name: ${c.name} | Est: ${c.established} | Certifications: ${c.certifications.join(', ')}
+- Tagline: ${c.tagline}
+- Address: ${contact.address}
+- Phone: ${contact.phone} | Email: ${contact.email} | WhatsApp: ${contact.whatsapp}
+- GST: ${contact.gst} | PAN: ${contact.pan} | Aadhaar: ${contact.aadhaar}
+- Employees: ${c.employees} | Shifts: ${c.operations} | Scale: ${c.scale} | Experience: ${c.experience}
+
+SERVICES:
+${servicesStr}
+
+QUALITY:
+${qualityStr}
+
+CLIENTS:
+${clientsStr}
+
+STRENGTHS:
+${strengthsStr}
+
+INSTRUCTIONS:
+- Be professional, precise, and concise (3-4 sentences max unless asked for detail).
+- Answer ONLY from the company data above. Never fabricate information.
+- For quotes: direct to ${contact.email} or ${contact.phone} or WhatsApp.
+- For complex queries: "For detailed information, please contact our team at ${contact.email} or call ${contact.phone}."
+- You represent Mr. Selvakumar and the 20+ years of precision manufacturing excellence of Anvil Automation — be confident and accurate.`;
+}
+
+async function loadProfile() {
+  try {
+    const response = await fetch('profile.json');
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    companyProfile = await response.json();
+    generateSystemPrompt(companyProfile);
+    console.log("Successfully loaded and generated system prompt from profile.json!");
+  } catch (error) {
+    console.error("Failed to load profile.json, utilizing inline fallback:", error);
+    // Offline fallback definition so it NEVER fails, keeping it bulletproof!
+    const fallbackProfile = {
+      "company": {
+        "name": "Anvil Automation",
+        "established": 2004,
+        "proprietor": "P. Selvakumar",
+        "certifications": ["ISO 9001:2015"],
+        "tagline": "Precision · Performance · Reliability",
+        "scale": "Small Scale Industry",
+        "employees": "50+ Skilled Workers",
+        "operations": "3 Shifts / 24×7",
+        "experience": "20+ Years of Manufacturing Excellence"
+      },
+      "contact": {
+        "address": "SF No. 233/1B3-1B4, Oraikkal Palayam Road, Kunnathur Village, Coimbatore – 641107, Tamil Nadu, India",
+        "phone": "+91 98943 55676",
+        "email": "anvil.cbe@gmail.com",
+        "whatsapp": "+91 98943 55676",
+        "maps_query": "Anvil Automation Coimbatore",
+        "coordinates": "SF No. 233/1B3-1B4, Oraikkal Palayam Road, Kunnathur Village",
+        "gst": "33BGJPS4244J1Z5",
+        "pan": "BGJPS4244J",
+        "aadhaar": "607508485643"
+      },
+      "services": [
+        {
+          "id": "cnc_turning",
+          "name": "CNC Turning",
+          "category": "Precision Manufacturing",
+          "description": "High precision turning operations for ferrous and non-ferrous components.",
+          "fleet": [
+            { "model": "LMW SMARTURN", "units": 1, "max_turning_diameter": "200 mm", "turning_length": "150 mm", "chuck_size": "165 mm", "bar_capacity": "42 mm", "spindle_power": "5.5 / 7.5 KW" },
+            { "model": "SAFAL TURN-5", "units": 6, "max_turning_diameter": "200 mm", "turning_length": "350 mm", "chuck_size": "200 mm", "bar_capacity": "25 mm", "spindle_power": "5.5 / 7.5 KW" },
+            { "model": "SGS T-TURN 135", "units": 1, "max_turning_diameter": "150 mm", "turning_length": "150 mm", "chuck_size": "135 mm", "spindle_bore": "38 mm" }
+          ],
+          "capabilities": ["Precision Turning", "Grooving", "Threading", "Boring", "Facing", "Close Tolerance"]
+        },
+        {
+          "id": "vmc_machining",
+          "name": "VMC Machining",
+          "category": "Advanced Machining",
+          "description": "Vertical machining center solutions for complex engineering components.",
+          "fleet": [
+            { "model": "VMC — FANUC", "units": 2, "axes": "X / Y / Z: 800 / 500 / 500 mm", "table_size": "1050 × 450 mm", "spindle_speed": "6000 RPM", "tool_capacity": "20 Tools · Indexer" }
+          ],
+          "capabilities": ["Milling", "Drilling", "Tapping", "Pocket Machining", "Multi-axis"]
+        },
+        {
+          "id": "die_casting",
+          "name": "Pressure Die Casting",
+          "category": "Casting Solutions",
+          "description": "In-house high pressure die casting for aluminum automotive components.",
+          "fleet": [
+            { "model": "HMT DIE CAST", "units": 1, "capacity": "120 Ton", "furnace_power": "36 KW", "furnace_capacity": "180–250 KG", "standard": "ASTM Level 3 Capable" }
+          ],
+          "capabilities": ["High Pressure", "Controlled Porosity", "ASTM L3 Standard", "Proof Machining"]
+        },
+        {
+          "id": "scrap_trading",
+          "name": "Aluminum Scrap Trading & Recycling Support",
+          "category": "Circular Economy",
+          "description": "Aluminum scrap handling and recycling support for sustainable manufacturing.",
+          "items": ["Foundry Grade Scrap", "Die Casting Scrap", "Aluminum Blocks & Runners"],
+          "capabilities": ["Scrap Collection", "Segregation", "Foundry Grade", "Non-ferrous"]
+        }
+      ],
+      "quality": {
+        "assurance_policy": "Committed to manufacturing and supplying quality products that consistently satisfy customer requirements through skilled teamwork and continual improvement.",
+        "metrics": {
+          "cpk_min": 1.66,
+          "cpk_target": 1.70,
+          "qa_shifts": "3 Shifts",
+          "instruments_count": "10+ Instruments"
+        },
+        "instruments": [
+          "Digital Air Gauge Units",
+          "Digital & Dial Height Gauges",
+          "Digital & Dial Vernier Calipers",
+          "Micrometers",
+          "Bore Gauge Sets"
+        ],
+        "calibration": "NABL Accredited Calibration Standards",
+        "activities": [
+          "Incoming Material Inspection",
+          "In-Process Quality Checks",
+          "Final Outgoing Quality Inspection",
+          "Patrol Quality Inspection",
+          "PPAP Documentation Support",
+          "Process Capability Monitoring",
+          "Internal Quality Audits"
+        ]
+      },
+      "clients": [
+        { "name": "Motherson Automotive Elastomers Technology", "location": "Chennai" },
+        { "name": "Motherson Automotive Technology & Engineering (MATE)", "location": "Chennai" },
+        { "name": "RND Gears Pvt Ltd", "location": "Bangalore" },
+        { "name": "Tildenet", "location": "Karur" },
+        { "name": "MN Auto Products Pvt Ltd", "location": "Coimbatore" },
+        { "name": "L.G. Balakrishnan Bros Ltd (LGB)", "location": "Coimbatore" }
+      ],
+      "strengths": [
+        "Aluminum Scrap Handling & Recycling Support",
+        "20+ Years of Manufacturing Experience in Coimbatore",
+        "In-house CNC Turning & Pressure Die Casting Facilities",
+        "24/7 Production Capacity (3 working shifts)",
+        "Robust Quality Control Systems (Cpk 1.66–1.7)",
+        "Deep Automotive & General Engineering Sector Expertise",
+        "High Precision Machining Capabilities for Close Tolerances",
+        "Customer-Centric Manufacturing and Relationship Focus"
+      ]
+    };
+    generateSystemPrompt(fallbackProfile);
+  }
+}
+
+/* ─────────────────────────────
+   STATE
+───────────────────────────── */
+let conversationHistory = [];
+let currentMode = 'text';
+let isProcessing = false;
+let inlineMicActive = false;
+let voiceMicActive = false;
+let inlineSR = null;
+let voiceSR = null;
+
+/* ─────────────────────────────
+   INTRO SEQUENCE
+───────────────────────────── */
+window.addEventListener('load', () => {
+  loadProfile();
+  const seen = localStorage.getItem('axisai_v2_seen');
+
+  setTimeout(() => {
+    document.getElementById('intro-line').classList.add('active');
+  }, 300);
+
+  if (seen) {
+    // Skip intro
+    skipIntro(true);
+  } else {
+    // Play welcome speech after short delay
+    setTimeout(() => {
+      speakIntro();
+    }, 1200);
+
+    // Fallback: hide after 9s
+    setTimeout(() => {
+      skipIntro(false);
+    }, 9000);
+  }
+
+  document.getElementById('skip-btn').onclick = () => skipIntro(false);
+});
+
+function speakIntro() {
+  if (!window.speechSynthesis) { skipIntro(false); return; }
+  const wave = document.getElementById('intro-wave');
+  wave.classList.add('visible');
+
+  const msg = new SpeechSynthesisUtterance(
+    "Welcome to Anvil Automation. I am Axis AI — your precision manufacturing intelligence assistant. Anvil Automation has been crafting precision CNC components and die cast parts from Coimbatore since 2004. I am here to help you explore our capabilities, quality systems, and solutions. Let us build something together."
+  );
+  msg.lang = 'en-IN';
+  msg.rate = 0.92;
+  msg.pitch = 1.0;
+
+  // Try to pick a good voice
+  const voices = window.speechSynthesis.getVoices();
+  const preferred = voices.find(v => v.lang.includes('en-IN') || v.lang.includes('en-GB'));
+  if (preferred) msg.voice = preferred;
+
+  msg.onend = () => {
+    wave.classList.remove('visible');
+    setTimeout(() => skipIntro(false), 600);
+  };
+  msg.onerror = () => skipIntro(false);
+
+  window.speechSynthesis.speak(msg);
+}
+
+// voices load async in some browsers
+window.speechSynthesis && window.speechSynthesis.addEventListener &&
+  window.speechSynthesis.addEventListener('voiceschanged', () => {});
+
+function skipIntro(instant) {
+  localStorage.setItem('axisai_v2_seen', 'true');
+  window.speechSynthesis && window.speechSynthesis.cancel();
+  const intro = document.getElementById('intro');
+  const app   = document.getElementById('app');
+  if (instant) {
+    intro.style.display = 'none';
+    app.classList.add('visible');
+  } else {
+    intro.classList.add('hide');
+    setTimeout(() => {
+      intro.style.display = 'none';
+      app.classList.add('visible');
+    }, 900);
+  }
+}
+
+/* ─────────────────────────────
+   MODE SWITCH
+───────────────────────────── */
+let micPermissionGranted = false;
+
+async function requestMicPermission() {
+  if (micPermissionGranted) return true;
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    stream.getTracks().forEach(track => track.stop());
+    micPermissionGranted = true;
+    console.log("Microphone access authorized!");
+    return true;
+  } catch (err) {
+    console.warn("Microphone access denied:", err);
+    showToast("Microphone access is required for voice features.");
+    return false;
+  }
+}
+
+function switchMode(mode) {
+  currentMode = mode;
+  document.getElementById('btn-text').classList.toggle('active', mode === 'text');
+  document.getElementById('btn-voice').classList.toggle('active', mode === 'voice');
+  document.getElementById('text-panel').classList.toggle('hidden', mode !== 'text');
+  document.getElementById('voice-panel').classList.toggle('hidden', mode !== 'voice');
+
+  if (mode === 'voice') {
+    requestMicPermission();
+  }
+
+  // Stop any active recognition when switching
+  if (mode === 'text') {
+    stopVoiceMic();
+  } else {
+    stopInlineMic();
+  }
+}
+
+/* ─────────────────────────────
+   GEMINI API CALL
+───────────────────────────── */
+async function callGemini(userMessage) {
+  conversationHistory.push({ role: 'user', parts: [{ text: userMessage }] });
+
+  const body = {
+    system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
+    contents: conversationHistory,
+    generationConfig: { temperature: 0.5, maxOutputTokens: 400 }
+  };
+
+  const res = await fetch(GEMINI_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+
+  if (!res.ok) throw new Error(`API Error ${res.status}`);
+  const data = await res.json();
+  const reply = data.candidates?.[0]?.content?.parts?.[0]?.text
+    || "I'm unable to process that right now. Please contact anvil.cbe@gmail.com or call +91 98943 55676.";
+
+  conversationHistory.push({ role: 'model', parts: [{ text: reply }] });
+  return reply;
+}
+
+/* ─────────────────────────────
+   TEXT CHAT
+───────────────────────────── */
+function getTime() {
+  return new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: false });
+}
+
+function appendMsg(text, role) {
+  const welcome = document.getElementById('welcome-card');
+  if (welcome) welcome.remove();
+
+  const box = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = `msg ${role}`;
+
+  if (role === 'bot') {
+    div.innerHTML = `
+      <div class="msg-avatar">
+        <img src="assets/images/chatbot.png" alt="Axis AI" style="width:100%;height:100%;object-fit:cover;border-radius:4px;">
+      </div>
+      <div class="msg-body">
+        <div class="msg-bubble">${escapeHtml(text)}</div>
+        <span class="msg-time">${getTime()}</span>
+      </div>`;
+  } else {
+    div.innerHTML = `
+      <div class="msg-body">
+        <div class="msg-bubble">${escapeHtml(text)}</div>
+        <span class="msg-time">${getTime()}</span>
+      </div>
+      <div class="msg-avatar">S</div>`;
+  }
+
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+}
+
+function showTyping() {
+  const box = document.getElementById('chat-messages');
+  const el = document.createElement('div');
+  el.className = 'msg bot'; el.id = 'typing-msg';
+  el.innerHTML = `
+    <div class="msg-avatar">
+      <img src="assets/images/chatbot.png" alt="Axis AI" style="width:100%;height:100%;object-fit:cover;border-radius:4px;">
+    </div>
+    <div class="msg-body">
+      <div class="msg-bubble">
+        <div class="typing-indicator"><span></span><span></span><span></span></div>
+      </div>
+    </div>`;
+  box.appendChild(el);
+  box.scrollTop = box.scrollHeight;
+}
+
+function removeTyping() {
+  const el = document.getElementById('typing-msg');
+  if (el) el.remove();
+}
+
+async function sendMessage(override) {
+  const input = document.getElementById('text-input');
+  const text = (override || input.value).trim();
+  if (!text || isProcessing) return;
+
+  isProcessing = true;
+  if (!override) { input.value = ''; autoResize(input); }
+
+  appendMsg(text, 'user');
+  showTyping();
+
+  try {
+    const reply = await callGemini(text);
+    removeTyping();
+    appendMsg(reply, 'bot');
+  } catch (e) {
+    removeTyping();
+    appendMsg("Connection issue. Please contact anvil.cbe@gmail.com or +91 98943 55676.", 'bot');
+  }
+  isProcessing = false;
+}
+
+function sendChip(el) {
+  sendMessage(el.textContent);
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function escapeHtml(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+
+/* ─────────────────────────────
+   INLINE MIC (inside text input)
+───────────────────────────── */
+async function toggleInlineMic() {
+  if (!checkSpeechSupport()) return;
+  const permission = await requestMicPermission();
+  if (!permission) return;
+  if (inlineMicActive) { stopInlineMic(); return; }
+  startInlineMic();
+}
+
+function startInlineMic() {
+  inlineSR = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+  inlineSR.lang = 'en-IN';
+  inlineSR.interimResults = true;
+  inlineSR.continuous = false;
+
+  const btn = document.getElementById('mic-inline-btn');
+  btn.classList.add('listening');
+  inlineMicActive = true;
+
+  inlineSR.onresult = (e) => {
+    const transcript = Array.from(e.results).map(r => r[0].transcript).join('');
+    document.getElementById('text-input').value = transcript;
+    autoResize(document.getElementById('text-input'));
+  };
+
+  inlineSR.onend = () => {
+    btn.classList.remove('listening');
+    inlineMicActive = false;
+  };
+
+  inlineSR.onerror = () => {
+    btn.classList.remove('listening');
+    inlineMicActive = false;
+    showToast('Mic error. Please try again.');
+  };
+
+  inlineSR.start();
+}
+
+function stopInlineMic() {
+  if (inlineSR) { inlineSR.stop(); inlineSR = null; }
+  document.getElementById('mic-inline-btn').classList.remove('listening');
+  inlineMicActive = false;
+}
+
+/* ─────────────────────────────
+   VOICE PANEL
+───────────────────────────── */
+async function toggleVoice() {
+  const permission = await requestMicPermission();
+  if (!permission) return;
+  if (voiceMicActive) { stopVoiceMic(); return; }
+  startVoiceMic();
+}
+
+function startVoiceMic() {
+  if (!checkSpeechSupport()) return;
+
+  voiceSR = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+  voiceSR.lang = 'en-IN';
+  voiceSR.interimResults = true;
+  voiceSR.continuous = false;
+
+  const wrap    = document.getElementById('voice-orb-wrap');
+  const label   = document.getElementById('voice-label');
+  const trans   = document.getElementById('voice-transcript');
+  const resp    = document.getElementById('voice-response');
+  const waveEl  = document.getElementById('voice-waveform');
+
+  wrap.classList.add('listening');
+  label.textContent = 'Listening...';
+  label.classList.add('active');
+  waveEl.classList.add('active');
+  trans.classList.remove('visible');
+  resp.classList.remove('visible');
+  voiceMicActive = true;
+
+  voiceSR.onresult = (e) => {
+    const transcript = Array.from(e.results).map(r => r[0].transcript).join('');
+    trans.textContent = transcript;
+    trans.classList.add('visible');
+  };
+
+  voiceSR.onend = async () => {
+    wrap.classList.remove('listening');
+    waveEl.classList.remove('active');
+    voiceMicActive = false;
+
+    const question = trans.textContent.trim();
+    if (!question) { label.textContent = 'Tap the mic to speak'; label.classList.remove('active'); return; }
+
+    label.textContent = 'Processing...';
+
+    try {
+      const reply = await callGemini(question);
+      resp.textContent = reply;
+      resp.classList.add('visible');
+      label.textContent = 'Tap to speak again';
+      label.classList.remove('active');
+      speakReply(reply, label);
+    } catch {
+      label.textContent = 'Error. Tap to try again.';
+      label.classList.remove('active');
+    }
+  };
+
+  voiceSR.onerror = (e) => {
+    wrap.classList.remove('listening');
+    waveEl.classList.remove('active');
+    voiceMicActive = false;
+    label.textContent = 'Tap the mic to speak';
+    label.classList.remove('active');
+    if (e.error !== 'no-speech') showToast('Mic error: ' + e.error);
+  };
+
+  voiceSR.start();
+}
+
+function stopVoiceMic() {
+  if (voiceSR) { voiceSR.stop(); voiceSR = null; }
+  const wrap  = document.getElementById('voice-orb-wrap');
+  const label = document.getElementById('voice-label');
+  const wave  = document.getElementById('voice-waveform');
+  wrap.classList.remove('listening');
+  wave.classList.remove('active');
+  label.textContent = 'Tap the mic to speak';
+  label.classList.remove('active');
+  voiceMicActive = false;
+}
+
+function speakReply(text, label) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'en-IN'; utt.rate = 0.95; utt.pitch = 1.0;
+
+  const voices = window.speechSynthesis.getVoices();
+  const v = voices.find(v => v.lang.includes('en-IN') || v.lang.includes('en-GB'));
+  if (v) utt.voice = v;
+
+  const wave = document.getElementById('voice-waveform');
+  wave.classList.add('active');
+  if (label) { label.textContent = 'Speaking...'; label.classList.add('active'); }
+
+  utt.onend = utt.onerror = () => {
+    wave.classList.remove('active');
+    if (label) { label.textContent = 'Tap to speak again'; label.classList.remove('active'); }
+  };
+
+  window.speechSynthesis.speak(utt);
+}
+
+/* ─────────────────────────────
+   UTILITIES
+───────────────────────────── */
+function checkSpeechSupport() {
+  if (!('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) {
+    showToast('Voice not supported in this browser. Try Chrome.');
+    return false;
+  }
+  return true;
+}
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast'; t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+// Load voices on init
+if (window.speechSynthesis) {
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+}
+</script>
+</body>
+</html>

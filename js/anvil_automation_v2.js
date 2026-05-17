@@ -114,6 +114,12 @@ document.querySelectorAll('.svc').forEach(card => {
 /* ── MOBILE MENU ── */
 function toggleMob() { document.getElementById("mobNav").classList.toggle("on"); document.querySelector(".ham").classList.toggle("on"); }
 
+/* ── CHATBOT FUNCTION ── */
+function openChatbot() {
+  window.location.href = 'axis-ai.html';
+  console.log('Chatbot clicked - Navigating to Axis AI');
+}
+
 /* ── METEORS ── */
 (function () {
   const l = document.getElementById('meteorLayer');
@@ -150,50 +156,8 @@ function toggleMob() { document.getElementById("mobNav").classList.toggle("on");
   initSlideshow('ownerSlideshow');
 })();
 
-/* ── INTRO ANIMATION CLEANUP ── */
-(function () {
-  const intro = document.getElementById('introOverlay');
-  if (!intro) return;
-
-  const vid = document.getElementById('introVideo');
-  const bar = document.getElementById('introProgressBar');
-  let rafId = null;
-
-  function hideIntro() {
-    cancelAnimationFrame(rafId);
-    if (bar) bar.style.width = '100%';
-    setTimeout(() => {
-      intro.classList.add('hidden');
-      // Remove from DOM after fade to keep page clean
-      setTimeout(() => { intro.style.display = 'none'; }, 1100);
-    }, 200);
-  }
-
-  function updateBar() {
-    if (!vid || vid.paused || vid.ended) return;
-    if (vid.duration > 0) {
-      const pct = (vid.currentTime / vid.duration) * 100;
-      if (bar) bar.style.width = pct + '%';
-    }
-    rafId = requestAnimationFrame(updateBar);
-  }
-
-  // Global skip function for the button
-  window.skipIntro = hideIntro;
-
-  if (vid) {
-    // Fade video in once it can play
-    vid.addEventListener('canplay', () => { vid.classList.add('loaded'); }, { once: true });
-    vid.addEventListener('playing', () => { updateBar(); });
-    vid.addEventListener('ended', hideIntro);
-
-    // Hard fallback — hide after 8 s max
-    setTimeout(hideIntro, 8000);
-  } else {
-    // No video fallback
-    setTimeout(hideIntro, 500);
-  }
-})();
+/* ── INTRO ANIMATION REMOVED ── */
+/* Intro overlay removed - direct load to main content */
 
 /* ── CAPABILITIES STRIP ── */
 (function () {
@@ -228,9 +192,31 @@ function toggleMob() { document.getElementById("mobNav").classList.toggle("on");
 
 /* ── SCROLL REVEAL ── */
 const revObs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target) } });
-}, { threshold: .08, rootMargin: '0px 0px -30px 0px' });
-document.querySelectorAll('[data-reveal]').forEach(el => revObs.observe(el));
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      revObs.unobserve(e.target);
+    }
+  });
+}, { threshold: .05, rootMargin: '0px 0px -12px 0px' });
+
+const revealEls = document.querySelectorAll('[data-reveal]');
+revealEls.forEach(el => revObs.observe(el));
+
+// Safety pass: if user reloads mid-page, reveal anything already in viewport.
+function revealVisibleNow() {
+  revealEls.forEach(el => {
+    if (el.classList.contains('visible')) return;
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.92 && rect.bottom > 0) {
+      el.classList.add('visible');
+      revObs.unobserve(el);
+    }
+  });
+}
+
+window.addEventListener('load', revealVisibleNow, { once: true });
+setTimeout(revealVisibleNow, 120);
 
 /* ── ICON CLOUD ── */
 (function () {
@@ -352,6 +338,99 @@ document.querySelectorAll('[data-reveal]').forEach(el => revObs.observe(el));
     requestAnimationFrame(draw);
   }
   draw();
+})();
+
+/* ── CLIENTS HORIZONTAL SCROLL ── */
+(function () {
+  const container = document.getElementById('partnerLogos');
+  if (!container) return;
+
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+  let autoScrollInterval;
+  let isHovering = false;
+  
+  // Calculate half width for seamless loop reset
+  const getHalfWidth = () => container.scrollWidth / 2;
+  
+  // Auto-scroll animation with seamless loop
+  function startAutoScroll() {
+    if (autoScrollInterval) return;
+    autoScrollInterval = setInterval(() => {
+      if (!isDown && !isHovering) {
+        container.scrollLeft += 1;
+        // Seamless loop: reset to start when reaching halfway point
+        if (container.scrollLeft >= getHalfWidth()) {
+          container.scrollLeft = 0;
+        }
+      }
+    }, 30);
+  }
+  
+  function stopAutoScroll() {
+    if (autoScrollInterval) {
+      clearInterval(autoScrollInterval);
+      autoScrollInterval = null;
+    }
+  }
+
+  // Mouse drag to scroll
+  container.addEventListener('mousedown', (e) => {
+    isDown = true;
+    container.classList.add('dragging');
+    startX = e.pageX - container.offsetLeft;
+    scrollLeft = container.scrollLeft;
+    stopAutoScroll();
+  });
+
+  container.addEventListener('mouseleave', () => {
+    isDown = false;
+    container.classList.remove('dragging');
+    isHovering = false;
+    startAutoScroll();
+  });
+
+  container.addEventListener('mouseup', () => {
+    isDown = false;
+    container.classList.remove('dragging');
+    if (!isHovering) startAutoScroll();
+  });
+
+  container.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - container.offsetLeft;
+    const walk = (x - startX) * 2; // Scroll speed multiplier
+    const newScrollLeft = scrollLeft - walk;
+    
+    // Handle seamless loop during drag
+    if (newScrollLeft >= getHalfWidth()) {
+      container.scrollLeft = newScrollLeft - getHalfWidth();
+      scrollLeft = container.scrollLeft;
+      startX = x;
+    } else if (newScrollLeft < 0) {
+      container.scrollLeft = getHalfWidth() + newScrollLeft;
+      scrollLeft = container.scrollLeft;
+      startX = x;
+    } else {
+      container.scrollLeft = newScrollLeft;
+    }
+  });
+
+  // Pause on hover
+  container.addEventListener('mouseenter', () => {
+    isHovering = true;
+    stopAutoScroll();
+  });
+
+  container.addEventListener('mouseleave', () => {
+    isHovering = false;
+    if (!isDown) startAutoScroll();
+  });
+
+  // Start auto-scrolling
+  startAutoScroll();
 })();
 
 
