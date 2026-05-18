@@ -197,7 +197,16 @@ function openChatbot() {
 
   if (vid) {
     vid.addEventListener('canplay', () => { vid.classList.add('loaded'); }, { once: true });
-    vid.addEventListener('playing', () => { updateBar(); });
+    vid.addEventListener('playing', () => { 
+      updateBar(); 
+      // Fade out cinematic text after 3 seconds
+      setTimeout(() => {
+        const introCenter = document.querySelector('.intro-center');
+        if (introCenter) {
+          introCenter.classList.add('fade-out');
+        }
+      }, 3000);
+    });
     vid.addEventListener('ended', hideIntro);
     // Safety timeout: auto fadeout after 8 seconds
     setTimeout(hideIntro, 8000);
