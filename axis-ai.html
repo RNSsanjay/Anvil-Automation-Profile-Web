@@ -804,6 +804,8 @@
   ═══════════════════════════════════════ */
   @media (max-width: 600px) {
     .topbar { padding: 12px 16px; }
+    .topbar-right { display: none; }
+    .mode-switch { margin-right: 0; }
     .mode-btn { padding: 7px 12px; font-size: 12px; }
     .mode-btn span { display: none; }
     .chat-messages { padding: 16px; }
@@ -1071,7 +1073,7 @@
   </div><!-- /content -->
 
   <footer class="footer">
-    AXIS AI · Powered by Gemini · Anvil Automation © 2024 · ISO 9001:2015
+    AXIS AI · Powered by Groq · Anvil Automation © 2024 · ISO 9001:2015
   </footer>
 </div>
 
@@ -1329,6 +1331,8 @@ let voiceSR = null;
 let lastProcessedIndex = 0;
 let isBotSpeaking = false;
 let silenceTimer = null;
+let noSpeechTimer = null;
+let isMicIntentionalOff = false;
 
 /* ─────────────────────────────
    INTRO SEQUENCE
@@ -1579,9 +1583,9 @@ function switchMode(mode) {
 }
 
 /* ─────────────────────────────
-   GEMINI API CALL
+   GROQ API CALL
 ───────────────────────────── */
-async function callGemini(userMessage) {
+async function callGroq(userMessage) {
   // Push in standard OpenAI role/content format
   conversationHistory.push({ role: 'user', content: userMessage });
 
@@ -1696,7 +1700,7 @@ async function sendMessage(override) {
   showTyping();
 
   try {
-    const reply = await callGemini(text);
+    const reply = await callGroq(text);
     removeTyping();
     appendMsg(reply, 'bot');
   } catch (e) {
@@ -1774,6 +1778,19 @@ function stopInlineMic() {
    VOICE PANEL
 ───────────────────────────── */
 
+/* ── NO SPEECH DETECTED AUTO TURN OFF ── */
+function startNoSpeechTimeout() {
+  clearTimeout(noSpeechTimer);
+  noSpeechTimer = setTimeout(() => {
+    if (voiceMicActive && !isBotSpeaking) {
+      console.log("No voice detected. Turning off microphone.");
+      stopVoiceMic();
+      const label = document.getElementById('voice-label');
+      if (label) label.textContent = 'No voice detected. Tap to speak';
+    }
+  }, 6000); // 6 seconds of silence turns off the mic
+}
+
 async function toggleVoice() {
   const permission = await requestMicPermission();
   if (!permission) return;
@@ -1790,14 +1807,23 @@ function startVoiceMic() {
   const resp    = document.getElementById('voice-response');
   const waveEl  = document.getElementById('voice-waveform');
 
+  isMicIntentionalOff = false; // Reset when starting fresh
+
   if (!voiceSR) {
     voiceSR = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
     voiceSR.lang = 'en-IN';
     voiceSR.interimResults = true;
     voiceSR.continuous = true; // Setup continuous SpeechRecognition to prevent multiple prompts
 
+    voiceSR.onstart = () => {
+      lastProcessedIndex = 0; // Reset index to 0 for a brand new recognition session!
+      console.log("SpeechRecognition session started, reset index to 0.");
+    };
+
     voiceSR.onresult = (e) => {
       if (isBotSpeaking) return; // Mute mic inputs while the bot is actively speaking
+
+      clearTimeout(noSpeechTimer); // Clear no-speech timer as soon as user makes sound/says something
 
       let interimTranscript = '';
       let finalTranscript = '';
@@ -1834,10 +1860,10 @@ function startVoiceMic() {
       console.log("SpeechRecognition continuous session ended.");
       voiceMicActive = false;
       
-      // Auto-restart silently to maintain microphone active state
-      if (currentMode === 'voice') {
+      // Auto-restart silently to maintain microphone active state if not intentionally turned off
+      if (currentMode === 'voice' && !isMicIntentionalOff) {
         setTimeout(() => {
-          if (currentMode === 'voice' && !voiceMicActive) {
+          if (currentMode === 'voice' && !voiceMicActive && !isMicIntentionalOff) {
             try {
               voiceSR.start();
               voiceMicActive = true;
@@ -1853,9 +1879,9 @@ function startVoiceMic() {
       console.warn("SpeechRecognition error:", e.error);
       if (e.error === 'aborted') return;
       
-      if (currentMode === 'voice') {
+      if (currentMode === 'voice' && !isMicIntentionalOff) {
         setTimeout(() => {
-          if (currentMode === 'voice' && !voiceMicActive) {
+          if (currentMode === 'voice' && !voiceMicActive && !isMicIntentionalOff) {
             try {
               voiceSR.start();
               voiceMicActive = true;
@@ -1876,8 +1902,10 @@ function startVoiceMic() {
 
   try {
     voiceSR.start();
+    startNoSpeechTimeout(); // Start silence detector
   } catch (err) {
     console.warn("SpeechRecognition already active:", err);
+    startNoSpeechTimeout();
   }
 }
 
@@ -1890,7 +1918,7 @@ async function processVoiceQuery(question, nextIndex) {
   label.textContent = 'Processing...';
   
   try {
-    const reply = await callGemini(question);
+    const reply = await callGroq(question); // Renamed to callGroq
     resp.textContent = reply;
     resp.classList.add('visible');
     
@@ -1899,6 +1927,7 @@ async function processVoiceQuery(question, nextIndex) {
       lastProcessedIndex = nextIndex;
       trans.textContent = '';
       label.textContent = 'Listening...';
+      startNoSpeechTimeout(); // Restart silence timer once bot finishes speaking!
     });
   } catch (err) {
     const errReply = "Connection issue. Please contact anvil.cbe@gmail.com or +91 98943 55676.";
@@ -1910,11 +1939,17 @@ async function processVoiceQuery(question, nextIndex) {
       lastProcessedIndex = nextIndex;
       trans.textContent = '';
       label.textContent = 'Listening...';
+      startNoSpeechTimeout(); // Restart silence timer once bot finishes speaking!
     });
   }
 }
 
 function stopVoiceMic() {
+  isMicIntentionalOff = true; // Mark as intentional off so onend/onerror auto-restarts are ignored
+  voiceMicActive = false;
+  clearTimeout(noSpeechTimer);
+  clearTimeout(silenceTimer);
+
   if (voiceSR) {
     try {
       voiceSR.stop();
@@ -1923,11 +1958,10 @@ function stopVoiceMic() {
   const wrap  = document.getElementById('voice-orb-wrap');
   const label = document.getElementById('voice-label');
   const wave  = document.getElementById('voice-waveform');
-  wrap.classList.remove('listening');
-  wave.classList.remove('active');
-  label.textContent = 'Tap the mic to speak';
-  label.classList.remove('active');
-  voiceMicActive = false;
+  if (wrap) wrap.classList.remove('listening');
+  if (wave) wave.classList.remove('active');
+  if (label) label.textContent = 'Tap the mic to speak';
+  if (label) label.classList.remove('active');
 }
 
 function speakReply(text, label, callback) {
