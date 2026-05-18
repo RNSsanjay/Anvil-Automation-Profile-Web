@@ -543,3 +543,40 @@ document.querySelectorAll('.reveal-text').forEach(el => revealObserver.observe(e
   window.addEventListener('scroll', scrollSpy, { passive: true });
   scrollSpy(); // Initial call
 })();
+
+/* ── MOBILE SCROLL DIRECTION DOCK TOGGLE ── */
+(function () {
+  const dock = document.getElementById('mainDock');
+  if (!dock) return;
+
+  let lastScrollY = window.scrollY;
+
+  function updateDockVisibility() {
+    // Only apply in mobile view (screen width < 768px)
+    if (window.innerWidth >= 768) {
+      dock.classList.remove('dock-hidden');
+      return;
+    }
+
+    const currentScrollY = window.scrollY;
+
+    // Hide when at the very top of the page (landing page initial entry)
+    if (currentScrollY < 100) {
+      dock.classList.add('dock-hidden');
+    } else {
+      // Show when scrolling UP, hide when scrolling DOWN
+      if (currentScrollY < lastScrollY) {
+        dock.classList.remove('dock-hidden');
+      } else if (currentScrollY > lastScrollY) {
+        dock.classList.add('dock-hidden');
+      }
+    }
+
+    lastScrollY = currentScrollY;
+  }
+
+  // Run on initial load/evaluation
+  updateDockVisibility();
+
+  window.addEventListener('scroll', updateDockVisibility, { passive: true });
+})();

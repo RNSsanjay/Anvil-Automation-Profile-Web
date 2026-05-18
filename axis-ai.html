@@ -1061,28 +1061,11 @@
 
       <div class="voice-state-label" id="voice-label">Tap the mic to speak</div>
 
-      <!-- DYNAMIC POPUP MODAL FOR CONVERSATION TEXT -->
-      <div id="voice-conv-modal" class="voice-modal-overlay" onclick="if(event.target===this) toggleVoiceText()">
-        <div class="voice-modal-card">
-          <div class="voice-modal-header">
-            <h3>⚡ Live Conversation</h3>
-            <button class="voice-modal-close" onclick="toggleVoiceText()">&times;</button>
-          </div>
-          <div class="voice-modal-content">
-            <div id="voice-transcript"></div>
-            <div id="voice-response"></div>
-          </div>
-        </div>
+      <!-- Hidden elements for speech tracking compatibility -->
+      <div style="display: none;">
+        <div id="voice-transcript"></div>
+        <div id="voice-response"></div>
       </div>
-
-      <!-- Toggle voice text visibility button -->
-      <button id="toggle-voice-text-btn" class="toggle-text-btn" onclick="toggleVoiceText()">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="toggle-text-icon">
-          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-          <circle cx="12" cy="12" r="3"/>
-        </svg>
-        <span>View Text Conversation</span>
-      </button>
     </div>
 
   </div><!-- /content -->
@@ -1790,34 +1773,6 @@ function stopInlineMic() {
 /* ─────────────────────────────
    VOICE PANEL
 ───────────────────────────── */
-function toggleVoiceText() {
-  const modal = document.getElementById('voice-conv-modal');
-  const btn = document.getElementById('toggle-voice-text-btn');
-  if (!modal || !btn) return;
-  
-  const isVisible = modal.classList.toggle('visible');
-  const label = btn.querySelector('span');
-  const icon = btn.querySelector('svg');
-  
-  if (isVisible) {
-    if (label) label.textContent = 'Hide Text Conversation';
-    if (icon) {
-      icon.innerHTML = `
-        <line x1="1" y1="1" x2="23" y2="23"/>
-        <path d="M9 9a3 3 0 1 1 6 6"/>
-        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
-      `;
-    }
-  } else {
-    if (label) label.textContent = 'View Text Conversation';
-    if (icon) {
-      icon.innerHTML = `
-        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-        <circle cx="12" cy="12" r="3"/>
-      `;
-    }
-  }
-}
 
 async function toggleVoice() {
   const permission = await requestMicPermission();

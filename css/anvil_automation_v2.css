@@ -240,7 +240,7 @@ nav.on-hero .ham span{background:white}
 .mob-brand{
   display:flex;align-items:center;gap:16px;
 }
-.mob-brand-logo{width:60px;height:60px;object-fit:contain;filter:drop-shadow(0 0 12px rgba(243, 241, 241, 0.15))}
+.mob-brand-logo{width:60px;height:60px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(255,255,255,.9)) drop-shadow(0 0 16px rgba(255,255,255,.5))}
 .mob-brand-name{font-family:var(--fd);font-size:22px;letter-spacing:.08em;color:white;line-height:1}
 .mob-brand-tag{font-size:9.5px;font-family:var(--fm);letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:4px}
 
@@ -901,6 +901,11 @@ nav.on-hero .ham span{background:white}
   transition:all 0.4s var(--ease);
   animation:dockFadeIn 0.8s 0.3s ease backwards;
 }
+.dock.dock-hidden {
+  transform: translateX(-50%) translateY(150%) !important;
+  opacity: 0;
+  pointer-events: none;
+}
 @keyframes dockFadeIn{
   from{opacity:0;transform:translateX(-50%) translateY(20px)}
   to{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -1460,10 +1465,10 @@ footer{background:#050810;padding:72px 72px 28px}
   
   /* Responsive dock */
   .dock{
-    gap:5px;padding:8px 10px;
+    padding:8px 16px;
     border-radius:18px;bottom:20px;
     width:94%;max-width:480px;
-    justify-content:center;
+    justify-content:space-between;
   }
   .dock-btn{width:42px;height:42px;border-radius:11px}
   .dock-btn svg{width:18px;height:18px}
@@ -1506,8 +1511,9 @@ footer{background:#050810;padding:72px 72px 28px}
   
   /* Extra small screen dock */
   .dock{
-    gap:4px;padding:7px 8px;
+    padding:7px 12px;
     bottom:16px;width:96%;
+    justify-content:space-between;
   }
   .dock-btn{width:40px;height:40px}
   .dock-btn svg{width:17px;height:17px}
