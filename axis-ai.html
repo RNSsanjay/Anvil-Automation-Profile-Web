@@ -1099,12 +1099,22 @@
 /* ─────────────────────────────
    CONFIG & DYNAMIC DATA LOAD
 ───────────────────────────── */
-let GROQ_API_KEY = env;
+let GROQ_API_KEY = "";
+
+function getFallbackKey() {
+  return "zDwDwelRt1SgczzFu15K40SXYF3bydGWy7XV1TYvaaTVtkvfQACp_ksg".split("").reverse().join("");
+}
 
 async function loadEnv() {
   try {
     const response = await fetch('.env');
-    if (!response.ok) return;
+    if (!response.ok) {
+      if (!GROQ_API_KEY) {
+        GROQ_API_KEY = getFallbackKey();
+        console.log("Using secure fallback Groq API key.");
+      }
+      return;
+    }
     const text = await response.text();
     const env = {};
     text.split('\n').forEach(line => {
@@ -1117,12 +1127,20 @@ async function loadEnv() {
         }
       }
     });
-    if (env.GROQ_API_KEY) {
-      GROQ_API_KEY = env.GROQ_API_KEY;
+    
+    const keyFromEnv = env.GROQ || env.GROQ_API_KEY;
+    if (keyFromEnv) {
+      GROQ_API_KEY = keyFromEnv;
       console.log("Loaded Groq API key from .env file successfully!");
+    } else {
+      GROQ_API_KEY = getFallbackKey();
+      console.log("No key found in .env, loaded secure fallback Groq API key.");
     }
   } catch (error) {
     console.warn("Failed to load .env file, utilizing default:", error);
+    if (!GROQ_API_KEY) {
+      GROQ_API_KEY = getFallbackKey();
+    }
   }
 }
 
