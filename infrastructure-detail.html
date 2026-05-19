@@ -1,0 +1,1909 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Industrial Infrastructure — Anvil Automation</title>
+  <meta name="description"
+    content="Explore Anvil Automation's state-of-the-art precision machine fleet: CNC Turning centers, VMC milling stations, molten HMT casting plants, and NABL quality control labs.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/anvil_automation_v2.css">
+
+  <style>
+    /* Futuristic Dark Theme Styling */
+    body {
+      background: #050810;
+      color: rgba(255, 255, 255, 0.9);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .detail-wrapper {
+      padding-top: 110px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #050810;
+    }
+
+    /* Fixed Navbar with Background Image overlay */
+    #mainNav {
+      background: linear-gradient(rgba(5, 8, 16, 0.88), rgba(5, 8, 16, 0.95)), url('assets/images/hero_factory_bg.png') center/cover no-repeat !important;
+      backdrop-filter: blur(20px) !important;
+      -webkit-backdrop-filter: blur(20px) !important;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05), 0 4px 28px rgba(0, 0, 0, 0.4) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }
+
+    #mainNav .nav-brand-name {
+      color: #ffffff !important;
+    }
+
+    #mainNav .nav-brand-tag {
+      color: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    #mainNav .nav-links a {
+      color: rgba(255, 255, 255, 0.6) !important;
+    }
+
+    #mainNav .nav-links a:hover,
+    #mainNav .nav-links a.active {
+      color: #ffffff !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    #mainNav .btn-sm.ghost {
+      border-color: rgba(255, 255, 255, 0.15) !important;
+      color: rgba(255, 255, 255, 0.8) !important;
+    }
+
+    #mainNav .btn-sm.ghost:hover {
+      border-color: #ffffff !important;
+      color: #ffffff !important;
+      background: rgba(255, 255, 255, 0.05) !important;
+    }
+
+    /* Centered Pill Navigation Switcher with Background Image overlay */
+    .tabs-container {
+      display: flex;
+      justify-content: center;
+      margin: 40px 0 20px;
+      width: 100%;
+      padding: 0 24px;
+    }
+
+    .capabilities-pills {
+      display: flex;
+      background: linear-gradient(rgba(5, 8, 16, 0.88), rgba(5, 8, 16, 0.95)), url('assets/images/hero_factory_bg.png') center/cover no-repeat;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 6px;
+      border-radius: 100px;
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      gap: 6px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      max-width: 100%;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .capabilities-pills::-webkit-scrollbar {
+      display: none;
+    }
+
+    .pill-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 12px 26px;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .pill-btn:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .pill-btn.active {
+      background: #ffffff;
+      color: #050810;
+      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.2);
+    }
+
+    .pill-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke-width: 2.5;
+    }
+
+    /* Full Width Content Sections */
+    .detail-content {
+      width: 100%;
+    }
+
+    .section-panel {
+      display: none;
+      animation: tabFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      width: 100%;
+    }
+
+    .section-panel.active {
+      display: block;
+    }
+
+    @keyframes tabFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Section Content Styling */
+    .section-hero-bleed {
+      width: 100%;
+      height: 480px;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .section-hero-bleed img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .section-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, #050810 0%, rgba(5, 8, 16, 0.6) 40%, rgba(0, 0, 0, 0.4) 100%);
+    }
+
+    .panel-width-limit {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .panel-header {
+      padding-top: 40px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 20px;
+      margin-bottom: 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .panel-eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #2dd4bf;
+      margin-bottom: 8px;
+    }
+
+    .panel-title {
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      margin: 0;
+    }
+
+    .panel-badge {
+      background: rgba(45, 212, 191, 0.1);
+      border: 1px solid rgba(45, 212, 191, 0.25);
+      color: #2dd4bf;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 100px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* taglines */
+    .panel-tagline {
+      font-size: 22px;
+      line-height: 1.6;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.8);
+      margin: 32px 0 48px;
+      border-left: 5px solid #2dd4bf;
+      padding-left: 24px;
+    }
+
+    /* Specifications Table Layout */
+    .specs-table-wrapper {
+      margin-bottom: 48px;
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .section-subtitle {
+      font-size: 24px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 20px;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-subtitle svg {
+      width: 22px;
+      height: 22px;
+      stroke: #2dd4bf;
+      fill: none;
+      stroke-width: 2.5;
+    }
+
+    .specs-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14.5px;
+      margin-bottom: 20px;
+    }
+
+    .specs-table th {
+      background: rgba(255, 255, 255, 0.03);
+      color: #ffffff;
+      font-weight: 700;
+      padding: 16px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .specs-table td {
+      padding: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .specs-table tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.01);
+    }
+
+    .specs-table tr:hover {
+      background: rgba(45, 212, 191, 0.04);
+    }
+
+    .highlight-val {
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    /* Core info layout grids - No Box Containers */
+    .info-layout-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 48px;
+      margin-bottom: 60px;
+    }
+
+    /* Tooling lists */
+    .tooling-desc-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .tool-desc-item {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 16px;
+    }
+
+    .tool-desc-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tool-desc-name::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: #2dd4bf;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .tool-desc-txt {
+      font-size: 13.5px;
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* Checklist columns */
+    .checklist-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 14.5px;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .check-item svg {
+      width: 18px;
+      height: 18px;
+      stroke: #2dd4bf;
+      fill: none;
+      stroke-width: 3;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* Manager & Supervisor Contact Card Styling */
+    .contact-node-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .contact-node-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 24px rgba(45, 212, 191, 0.15);
+      border-color: #2dd4bf !important;
+      background: rgba(255, 255, 255, 0.04) !important;
+    }
+
+    /* Contact Card Grid Responsive Override */
+    .contact-card-grid {
+      display: grid !important;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)) !important;
+      gap: 24px !important;
+      margin-top: 20px !important;
+    }
+
+    /* Responsive queries */
+    @media (max-width: 992px) {
+      .section-hero-bleed {
+        height: 320px;
+      }
+
+      .info-layout-grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+
+      #mainNav {
+        padding: 0 24px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .tabs-container {
+        top: 70px !important;
+      }
+
+      .tabs-container.scrolled-sticky {
+        top: 70px !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .tabs-container {
+        top: 68px !important;
+      }
+
+      .tabs-container.scrolled-sticky {
+        top: 68px !important;
+      }
+
+      .panel-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .panel-title {
+        font-size: 32px;
+      }
+
+      .panel-tagline {
+        font-size: 17px;
+      }
+
+      .specs-table-wrapper {
+        margin-bottom: 32px;
+      }
+
+      .specs-table {
+        min-width: 650px !important;
+      }
+
+      .specs-table th,
+      .specs-table td {
+        padding: 12px;
+        font-size: 13px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .tabs-container {
+        padding: 8px 12px !important;
+        margin: 20px 0 10px !important;
+      }
+
+      .pill-btn {
+        padding: 8px 16px !important;
+        font-size: 12px !important;
+      }
+
+      .panel-width-limit {
+        padding: 0 16px 48px !important;
+      }
+
+      .panel-title {
+        font-size: 26px !important;
+      }
+
+      .section-subtitle {
+        font-size: 20px !important;
+      }
+
+      .panel-tagline {
+        font-size: 15px !important;
+        padding-left: 16px !important;
+        margin: 20px 0 32px !important;
+      }
+
+      .contact-node-card {
+        padding: 16px !important;
+        gap: 12px !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+      }
+
+      .specs-table-wrapper {
+        margin-bottom: 32px !important;
+      }
+
+      .panel-header {
+        margin-bottom: 24px !important;
+      }
+
+      .panel-badge {
+        font-size: 11px !important;
+        padding: 6px 12px !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- FLOATING CONTACT DOCK (Identical to homepage index.html) -->
+  <div class="dock" id="mainDock">
+    <div class="dock-item">
+      <a href="https://wa.me/919894355676" target="_blank" class="dock-btn wa">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+        </svg>
+      </a>
+      <div class="dock-tip">WhatsApp</div>
+    </div>
+    <div class="dock-item">
+      <a href="tel:+919894355676" class="dock-btn ph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path
+            d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6.29-6.29 19.79 19.79 0 01-3.07-8.67A2 2 0 013.83 5h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 12.62a16 16 0 006.29 6.29l1.38-1.09a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 19.92z" />
+        </svg>
+      </a>
+      <div class="dock-tip">Call Us</div>
+    </div>
+    <div class="dock-sep"></div>
+    <div class="dock-item dock-item-center">
+      <button class="dock-btn chatbot" onclick="openChatbot()">
+        <img src="assets/images/chatbot.png" alt="Live Chat Bot" class="chatbot-icon-img">
+      </button>
+      <div class="dock-tip">Axis AI</div>
+    </div>
+    <div class="dock-sep"></div>
+    <div class="dock-item">
+      <a href="mailto:anvil.cbe@gmail.com" class="dock-btn em">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <rect x="3" y="5" width="18" height="14" rx="2" />
+          <path d="M3 7l9 6 9-6" />
+        </svg>
+      </a>
+      <div class="dock-tip">Email</div>
+    </div>
+    <div class="dock-item">
+      <a href="https://maps.google.com/?q=Anvil+Automation+Coimbatore" target="_blank" class="dock-btn mp">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+          <circle cx="12" cy="10" r="3" />
+        </svg>
+      </a>
+      <div class="dock-tip">Location</div>
+    </div>
+  </div>
+
+  <!-- NAV (Exactly matching index.html, No Talk to Axis AI button) -->
+  <nav id="mainNav">
+    <a href="index.html#hero" class="nav-brand">
+      <div class="nav-logo-wrap">
+        <img src="assets/images/logo1.png" alt="Anvil Automation" class="nav-logo-img">
+      </div>
+      <div class="nav-brand-text">
+        <span class="nav-brand-name">ANVIL AUTOMATION</span>
+        <span class="nav-brand-tag">ISO 9001:2015 · Est. 2004</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#hero">Home</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#infrastructure" class="active">Infra</a>
+      <a href="index.html#quality">Quality</a>
+      <a href="index.html#clients">Clients</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+    <div class="nav-right">
+      <a href="tel:+919894355676" class="btn-sm ghost">
+        <svg width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" viewBox="0 0 24 24">
+          <path
+            d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6.29-6.29 19.79 19.79 0 01-3.07-8.67A2 2 0 013.83 5h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 12.62a16 16 0 006.29 6.29l1.38-1.09a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 19.92z" />
+        </svg>
+        Call Us
+      </a>
+      <a href="mailto:anvil.cbe@gmail.com" class="btn-sm solid" style="box-shadow: 0 4px 16px rgba(45, 212, 191, 0.2);">
+        <svg width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" viewBox="0 0 24 24">
+          <rect x="3" y="5" width="18" height="14" rx="2" />
+          <path d="M3 7l9 6 9-6" />
+        </svg>
+        Get a Quote
+      </a>
+      <button class="ham" id="hamBtn" onclick="toggleMob()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MOBILE NAV DRAWER -->
+  <div class="mob-nav" id="mobNav">
+    <button class="mob-close" onclick="toggleMob()" aria-label="Close Menu">
+      <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    <div class="mob-inner">
+      <div class="mob-header">
+        <div class="mob-brand">
+          <img src="assets/images/logo1.png" alt="Anvil Automation" class="mob-brand-logo"
+            style="filter: drop-shadow(0 0 8px rgba(255,255,255,.9)) drop-shadow(0 0 16px rgba(255,255,255,.5))">
+          <div class="mob-brand-info">
+            <div class="mob-brand-name">ANVIL AUTOMATION</div>
+            <div class="mob-brand-tag">ISO 9001:2015 · Est. 2004</div>
+          </div>
+        </div>
+      </div>
+      <nav class="mob-links">
+        <a href="index.html#hero" onclick="toggleMob()">Home</a>
+        <a href="index.html#about" onclick="toggleMob()">About</a>
+        <a href="index.html#services" onclick="toggleMob()">Services</a>
+        <a href="index.html#infrastructure" onclick="toggleMob()" class="active">Infrastructure</a>
+        <a href="index.html#quality" onclick="toggleMob()">Quality Policy</a>
+        <a href="index.html#clients" onclick="toggleMob()">Our Clients</a>
+        <a href="index.html#contact" onclick="toggleMob()">Contact</a>
+      </nav>
+      <div class="mob-footer">
+        <div class="mob-copyright">PRECISION CNC & DIE CASTING · COIMBATORE, INDIA</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN WRAPPER -->
+  <div class="detail-wrapper">
+
+    <!-- HORIZONTAL TABS SWITCHER (Matches layout perfectly) -->
+    <div class="tabs-container">
+      <div class="capabilities-pills">
+        <a href="#lmw-smarturn" class="pill-btn active" id="btn-lmw-smarturn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <rect x="4" y="4" width="16" height="16" rx="2" />
+            <path d="M9 9h6v6H9z" />
+          </svg>
+          LMW Smarturn
+        </a>
+        <a href="#safal-turn5" class="pill-btn" id="btn-safal-turn5">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <rect x="4" y="4" width="16" height="16" rx="2" />
+            <path d="M9 9h6v6H9z" />
+          </svg>
+          Safal Turn-5
+        </a>
+        <a href="#sgs-tturn" class="pill-btn" id="btn-sgs-tturn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <rect x="4" y="4" width="16" height="16" rx="2" />
+            <path d="M9 9h6v6H9z" />
+          </svg>
+          SGS T-Turn
+        </a>
+        <a href="#vmc-fanuc" class="pill-btn" id="btn-vmc-fanuc">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M9 3v18M15 3v18" />
+          </svg>
+          VMC Fanuc
+        </a>
+        <a href="#hmt-diecast" class="pill-btn" id="btn-hmt-diecast">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+          </svg>
+          HMT Diecast
+        </a>
+        <a href="#inspection-lab" class="pill-btn" id="btn-inspection-lab">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+          Metrology Lab
+        </a>
+      </div>
+    </div>
+
+    <!-- CONTENT PANELS -->
+    <main class="detail-content">
+
+      <!-- SECTION 1: LMW SMARTURN -->
+      <section class="section-panel active" id="pane-lmw-smarturn">
+        <!-- Full-Bleed Cinematic Hero -->
+        <div class="section-hero-bleed">
+          <img src="assets/images/lmw_smarturn.png" alt="LMW SMARTURN CNC Lathe in Action">
+          <div class="section-hero-overlay"></div>
+        </div>
+
+        <div class="panel-width-limit">
+          <div class="panel-header">
+            <div>
+              <div class="panel-eyebrow">CNC Turning Center</div>
+              <h1 class="panel-title">LMW SMARTURN</h1>
+            </div>
+            <span class="panel-badge">×1 Unit Active</span>
+          </div>
+
+          <p class="panel-tagline">Highly compact and accurate CNC lathe designed for high-volume manufacturing of
+            medium-sized automotive cylinders and structural pins.</p>
+
+          <!-- Specifications Directory -->
+          <div class="specs-table-wrapper">
+            <h3 class="section-subtitle">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5V3a2.5 2.5 0 0 1 2.5-2.5H20v14H6.5A2.5 2.5 0 0 0 4 15.5z" />
+              </svg>
+              Machinery Parameters &amp; Specifications
+            </h3>
+            <table class="specs-table">
+              <thead>
+                <tr>
+                  <th>Parameters</th>
+                  <th>Value / Specifications</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="highlight-val">Maximum Turning Diameter</td>
+                  <td>200 mm</td>
+                </tr>
+                <tr>
+                  <td class="highlight-val">Maximum Turning Length</td>
+                  <td>150 mm</td>
+                </tr>
+                <tr>
+                  <td class="highlight-val">Hydraulic Chuck size</td>
+                  <td>165 mm</td>
+                </tr>
+                <tr>
+                  <td class="highlight-val">Through-Spindle Bar capacity</td>
+                  <td>42 mm</td>
+                </tr>
+                <tr>
+                  <td class="highlight-val">Spindle Drive Power</td>
+                  <td>5.5 / 7.5 KW</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Information Grid - No Box Containers -->
+          <div class="info-layout-grid">
+            <div>
+              <h3 class="section-subtitle">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z" />
+                </svg>
+                Machinery Components &amp; Accessories
+              </h3>
+              <div class="tooling-desc-list">
+                <div class="tool-desc-item">
+                  <div class="tool-desc-name">8-Station Hydraulic Indexing Turret</div>
+                  <p class="tool-desc-txt">Ensures ultra-fast index times under 0.2 seconds per tool station, maximizing
+                    continuous cutting throughput.</p>
+                </div>
+                <div class="tool-desc-item">
+                  <div class="tool-desc-name">MT-4 Programmable Quill Tailstock</div>
+                  <p class="tool-desc-txt">Provides robust lateral support for long shafts to completely eliminate
+                    high-frequency chatter and deflection.</p>
+                </div>
+                <div class="tool-desc-item">
+                  <div class="tool-desc-name">Hardened &amp; Ground Linear Guideways</div>
+                  <p class="tool-desc-txt">Engineered to absorb heavy axial forces while maintaining frictionless
+                    sliding movements across both feed axes.</p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="section-subtitle">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 8v4l3 3" />
+                </svg>
+                Operations Directory
+              </h3>
+              <div class="checklist-grid">
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> High-speed step turning and tapered profiles</div>
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> Complex internal counterbores and boring</div>
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> Precision parting and high-speed parting-off</div>
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> Dynamic metric and standard threading configurations</div>
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> Rigorous concentricity checks under 10µm</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- OPERATIONAL CONTACT PORTAL (Production Manager & Setter Cum Supervisorr) -->
+          <div class="manager-contact-section"
+            style="margin-top: 60px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 48px;">
+            <h3 class="section-subtitle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6.29-6.29 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.83 5h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 12.62a16 16 0 0 0 6.29 6.29l1.38-1.09a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 19.92z" />
+              </svg>
+              Operational Inquiries &amp; Scheduling
+            </h3>
+            <div class="contact-card-grid"
+              style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 20px;">
+              <div class="contact-node-card">
+                <div
+                  style="width: 54px; height: 54px; background: rgba(45, 212, 191, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #2dd4bf; flex-shrink: 0;">
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </div>
+                <div>
+                  <div
+                    style="font-size: 11px; font-weight: 700; color: #2dd4bf; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px;">
+                    Production Manager</div>
+                  <div style="font-size: 18px; font-weight: 700; color: #ffffff; margin-bottom: 4px;">Ranjith Kumar HN
+                  </div>
+                  <div
+                    style="font-size: 14px; color: rgba(255, 255, 255, 0.7); display: flex; align-items: center; gap: 8px;">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="color:#2dd4bf">
+                      <path
+                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                    </svg>
+                    <a href="tel:+919788323006" style="text-decoration:none; color:inherit; font-weight: 600;">+91 97883
+                      23006</a>
+                  </div>
+                </div>
+              </div>
+              <div class="contact-node-card">
+                <div
+                  style="width: 54px; height: 54px; background: rgba(59, 130, 246, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #3b82f6; flex-shrink: 0;">
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                </div>
+                <div>
+                  <div
+                    style="font-size: 11px; font-weight: 700; color: #3b82f6; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px;">
+                    Setter Cum Supervisorr</div>
+                  <div style="font-size: 18px; font-weight: 700; color: #ffffff; margin-bottom: 4px;">Subith Kumar N
+                  </div>
+                  <div
+                    style="font-size: 14px; color: rgba(255, 255, 255, 0.7); display: flex; align-items: center; gap: 8px;">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="color:#3b82f6">
+                      <path
+                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                    </svg>
+                    <a href="tel:+917010453944" style="text-decoration:none; color:inherit; font-weight: 600;">+91 70104
+                      53944</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 2: SAFAL TURN-5 -->
+      <section class="section-panel" id="pane-safal-turn5">
+        <!-- Full-Bleed Cinematic Hero -->
+        <div class="section-hero-bleed">
+          <img src="assets/images/safal_turn5.png" alt="SAFAL TURN-5 CNC Turning Fleet">
+          <div class="section-hero-overlay"></div>
+        </div>
+
+        <div class="panel-width-limit">
+          <div class="panel-header">
+            <div>
+              <div class="panel-eyebrow">CNC Turning Center</div>
+              <h1 class="panel-title">SAFAL TURN-5</h1>
+            </div>
+            <span class="panel-badge">×6 Units Active</span>
+          </div>
+
+          <p class="panel-tagline">Our high-productivity turning workhorse fleet. Delivers robust torque profiles and
+            high spindle stiffness for mass output of critical industrial shafts.</p>
+
+          <!-- Specifications Directory -->
+          <div class="specs-table-wrapper">
+            <h3 class="section-subtitle">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5V3a2.5 2.5 0 0 1 2.5-2.5H20v14H6.5A2.5 2.5 0 0 0 4 15.5z" />
+              </svg>
+              Machinery Parameters &amp; Specifications
+            </h3>
+            <table class="specs-table">
+              <thead>
+                <tr>
+                  <th>Parameters</th>
+                  <th>Value / Specifications</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="highlight-val">Maximum Turning Diameter</td>
+                  <td>200 mm</td>
+                </tr>
+                <tr>
+                  <td class="highlight-val">Maximum Turning Length</td>
+                  <td>350 mm</td>
+                </tr>
+                <tr>
+                  <td class="highlight-val">Hydraulic Chuck size</td>
+                  <td>200 mm</td>
+                </tr>
+                <tr>
+                  <td class="highlight-val">Through-Spindle Bar capacity</td>
+                  <td>25 mm</td>
+                </tr>
+                <tr>
+                  <td class="highlight-val">Maximum Spindle Speed</td>
+                  <td>4,000 RPM</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Information Grid - No Box Containers -->
+          <div class="info-layout-grid">
+            <div>
+              <h3 class="section-subtitle">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z" />
+                </svg>
+                Machinery Components &amp; Accessories
+              </h3>
+              <div class="tooling-desc-list">
+                <div class="tool-desc-item">
+                  <div class="tool-desc-name">High-Precision Linear Guideways</div>
+                  <p class="tool-desc-txt">Ensures micro-positional precision across rapid 24 m/min traverse movements,
+                    guaranteeing high cycle consistency.</p>
+                </div>
+                <div class="tool-desc-item">
+                  <div class="tool-desc-name">Dual-Safe Hydraulic Chucking</div>
+                  <p class="tool-desc-txt">Maintains rigid grip forces up to 30 KN without marking thin-walled aluminum
+                    tubes or pipes.</p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="section-subtitle">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 8v4l3 3" />
+                </svg>
+                Operations Directory
+              </h3>
+              <div class="checklist-grid">
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> High-feed long-axis rough profiling</div>
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> Heavy-load axial grooving and recessing</div>
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> High-precision internal threading and tapping</div>
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> Fine taper finishes for drive interfaces</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- OPERATIONAL CONTACT PORTAL (Production Manager & Setter Cum Supervisorr) -->
+          <div class="manager-contact-section"
+            style="margin-top: 60px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 48px;">
+            <h3 class="section-subtitle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6.29-6.29 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.83 5h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 12.62a16 16 0 0 0 6.29 6.29l1.38-1.09a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 19.92z" />
+              </svg>
+              Operational Inquiries &amp; Scheduling
+            </h3>
+            <div class="contact-card-grid"
+              style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 20px;">
+              <div class="contact-node-card">
+                <div
+                  style="width: 54px; height: 54px; background: rgba(45, 212, 191, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #2dd4bf; flex-shrink: 0;">
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </div>
+                <div>
+                  <div
+                    style="font-size: 11px; font-weight: 700; color: #2dd4bf; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px;">
+                    Production Manager</div>
+                  <div style="font-size: 18px; font-weight: 700; color: #ffffff; margin-bottom: 4px;">Ranjith Kumar HN
+                  </div>
+                  <div
+                    style="font-size: 14px; color: rgba(255, 255, 255, 0.7); display: flex; align-items: center; gap: 8px;">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="color:#2dd4bf">
+                      <path
+                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                    </svg>
+                    <a href="tel:+919788323006" style="text-decoration:none; color:inherit; font-weight: 600;">+91 97883
+                      23006</a>
+                  </div>
+                </div>
+              </div>
+              <div class="contact-node-card">
+                <div
+                  style="width: 54px; height: 54px; background: rgba(59, 130, 246, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #3b82f6; flex-shrink: 0;">
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                </div>
+                <div>
+                  <div
+                    style="font-size: 11px; font-weight: 700; color: #3b82f6; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px;">
+                    Setter Cum Supervisorr</div>
+                  <div style="font-size: 18px; font-weight: 700; color: #ffffff; margin-bottom: 4px;">Subith Kumar N
+                  </div>
+                  <div
+                    style="font-size: 14px; color: rgba(255, 255, 255, 0.7); display: flex; align-items: center; gap: 8px;">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="color:#3b82f6">
+                      <path
+                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                    </svg>
+                    <a href="tel:+917010453944" style="text-decoration:none; color:inherit; font-weight: 600;">+91 70104
+                      53944</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 3: SGS T-TURN -->
+      <section class="section-panel" id="pane-sgs-tturn">
+        <!-- Full-Bleed Cinematic Hero -->
+        <div class="section-hero-bleed">
+          <img src="assets/images/sgs_tturn.png" alt="SGS T-TURN CNC Machining Center">
+          <div class="section-hero-overlay"></div>
+        </div>
+
+        <div class="panel-width-limit">
+          <div class="panel-header">
+            <div>
+              <div class="panel-eyebrow">CNC Turning Center</div>
+              <h1 class="panel-title">SGS T-TURN 135</h1>
+            </div>
+            <span class="panel-badge">×1 Unit Active</span>
+          </div>
+
+          <p class="panel-tagline">Specialized high-speed compact turning center featuring rapid-action pneumatic
+            clamping mechanisms, specifically optimized for high-volume brass and aluminum micro parts.</p>
+
+          <!-- Specifications Directory -->
+          <div class="specs-table-wrapper">
+            <h3 class="section-subtitle">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5V3a2.5 2.5 0 0 1 2.5-2.5H20v14H6.5A2.5 2.5 0 0 0 4 15.5z" />
+              </svg>
+              Machinery Parameters &amp; Specifications
+            </h3>
+            <table class="specs-table">
+              <thead>
+                <tr>
+                  <th>Parameters</th>
+                  <th>Value / Specifications</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="highlight-val">Maximum Turning Diameter</td>
+                  <td>150 mm</td>
+                </tr>
+                <tr>
+                  <td class="highlight-val">Maximum Turning Length</td>
+                  <td>150 mm</td>
+                </tr>
+                <tr>
+                  <td class="highlight-val">Pneumatic Chuck size</td>
+                  <td>135 mm</td>
+                </tr>
+                <tr>
+                  <td class="highlight-val">Through-Spindle Bar capacity</td>
+                  <td>38 mm</td>
+                </tr>
+                <tr>
+                  <td class="highlight-val">Maximum Spindle Speed</td>
+                  <td>5,000 RPM</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Information Grid - No Box Containers -->
+          <div class="info-layout-grid">
+            <div>
+              <h3 class="section-subtitle">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z" />
+                </svg>
+                Machinery Components &amp; Accessories
+              </h3>
+              <div class="tooling-desc-list">
+                <div class="tool-desc-item">
+                  <div class="tool-desc-name">High-RPM Cartridge Spindle</div>
+                  <p class="tool-desc-txt">Features ceramic bearings configured to support thermal expansions up to
+                    5,000 RPM without axis vibration.</p>
+                </div>
+                <div class="tool-desc-item">
+                  <div class="tool-desc-name">Pneumatic Collet attachment</div>
+                  <p class="tool-desc-txt">Enables rapid components exchange under 0.8 seconds, minimizing dead times in
+                    production runs.</p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="section-subtitle">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 8v4l3 3" />
+                </svg>
+                Operations Directory
+              </h3>
+              <div class="checklist-grid">
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> High-speed micro components profiles</div>
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> Ultra-fast brass connectors turning</div>
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> Rigid tapping and threading profiles</div>
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> Fine external knurling operations</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- OPERATIONAL CONTACT PORTAL (Production Manager & Setter Cum Supervisorr) -->
+          <div class="manager-contact-section"
+            style="margin-top: 60px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 48px;">
+            <h3 class="section-subtitle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6.29-6.29 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.83 5h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 12.62a16 16 0 0 0 6.29 6.29l1.38-1.09a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 19.92z" />
+              </svg>
+              Operational Inquiries &amp; Scheduling
+            </h3>
+            <div class="contact-card-grid"
+              style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 20px;">
+              <div class="contact-node-card">
+                <div
+                  style="width: 54px; height: 54px; background: rgba(45, 212, 191, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #2dd4bf; flex-shrink: 0;">
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </div>
+                <div>
+                  <div
+                    style="font-size: 11px; font-weight: 700; color: #2dd4bf; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px;">
+                    Production Manager</div>
+                  <div style="font-size: 18px; font-weight: 700; color: #ffffff; margin-bottom: 4px;">Ranjith Kumar HN
+                  </div>
+                  <div
+                    style="font-size: 14px; color: rgba(255, 255, 255, 0.7); display: flex; align-items: center; gap: 8px;">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="color:#2dd4bf">
+                      <path
+                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                    </svg>
+                    <a href="tel:+919788323006" style="text-decoration:none; color:inherit; font-weight: 600;">+91 97883
+                      23006</a>
+                  </div>
+                </div>
+              </div>
+              <div class="contact-node-card">
+                <div
+                  style="width: 54px; height: 54px; background: rgba(59, 130, 246, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #3b82f6; flex-shrink: 0;">
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                </div>
+                <div>
+                  <div
+                    style="font-size: 11px; font-weight: 700; color: #3b82f6; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px;">
+                    Setter Cum Supervisorr</div>
+                  <div style="font-size: 18px; font-weight: 700; color: #ffffff; margin-bottom: 4px;">Subith Kumar N
+                  </div>
+                  <div
+                    style="font-size: 14px; color: rgba(255, 255, 255, 0.7); display: flex; align-items: center; gap: 8px;">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="color:#3b82f6">
+                      <path
+                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                    </svg>
+                    <a href="tel:+917010453944" style="text-decoration:none; color:inherit; font-weight: 600;">+91 70104
+                      53944</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 4: VMC FANUC -->
+      <section class="section-panel" id="pane-vmc-fanuc">
+        <!-- Full-Bleed Cinematic Hero -->
+        <div class="section-hero-bleed">
+          <img src="assets/images/vmc_machine.png" alt="VMC FANUC Vertical Machining Center">
+          <div class="section-hero-overlay"></div>
+        </div>
+
+        <div class="panel-width-limit">
+          <div class="panel-header">
+            <div>
+              <div class="panel-eyebrow">Vertical Machining Center</div>
+              <h1 class="panel-title">VMC FANUC 850</h1>
+            </div>
+            <span class="panel-badge">×2 Units Active</span>
+          </div>
+
+          <p class="panel-tagline">Precision 3-axis VMC machines running continuous Fanuc control modules. Rigorous
+            structural rigidity configured to process complex aluminum motor shields and valve casings.</p>
+
+          <!-- Specifications Directory -->
+          <div class="specs-table-wrapper">
+            <h3 class="section-subtitle">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5V3a2.5 2.5 0 0 1 2.5-2.5H20v14H6.5A2.5 2.5 0 0 0 4 15.5z" />
+              </svg>
+              Machinery Parameters &amp; Specifications
+            </h3>
+            <table class="specs-table">
+              <thead>
+                <tr>
+                  <th>Parameters</th>
+                  <th>Value / Specifications</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="highlight-val">X-Axis Travel distance</td>
+                  <td>800 mm</td>
+                </tr>
+                <tr>
+                  <td class="highlight-val">Y-Axis Travel distance</td>
+                  <td>500 mm</td>
+                </tr>
+                <tr>
+                  <td class="highlight-val">Z-Axis Travel distance</td>
+                  <td>500 mm</td>
+                </tr>
+                <tr>
+                  <td class="highlight-val">Maximum Spindle Speed</td>
+                  <td>6,000 RPM</td>
+                </tr>
+                <tr>
+                  <td class="highlight-val">ATC Tool Capacity</td>
+                  <td>20-Tool Carousel</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Information Grid - No Box Containers -->
+          <div class="info-layout-grid">
+            <div>
+              <h3 class="section-subtitle">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z" />
+                </svg>
+                Machinery Components &amp; Accessories
+              </h3>
+              <div class="tooling-desc-list">
+                <div class="tool-desc-item">
+                  <div class="tool-desc-name">High-Torque Fanuc Spindle</div>
+                  <p class="tool-desc-txt">Features direct belt power transmissions generating massive torque even
+                    during low-RPM structural steel slotting.</p>
+                </div>
+                <div class="tool-desc-item">
+                  <div class="tool-desc-name">20-Tool Armless Automatic Changer</div>
+                  <p class="tool-desc-txt">Performs dynamic chip-to-chip tooling updates under 3.5 seconds, drastically
+                    shortening overall production times.</p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="section-subtitle">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 8v4l3 3" />
+                </svg>
+                Operations Directory
+              </h3>
+              <div class="checklist-grid">
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> Deep cavity structural pocketing</div>
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> High-speed rigid tapping and drilling blocks</div>
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> Side milling profile contouring</div>
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> Precise coordinate boring and facing</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- OPERATIONAL CONTACT PORTAL (Production Manager & Setter Cum Supervisorr) -->
+          <div class="manager-contact-section"
+            style="margin-top: 60px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 48px;">
+            <h3 class="section-subtitle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6.29-6.29 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.83 5h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 12.62a16 16 0 0 0 6.29 6.29l1.38-1.09a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 19.92z" />
+              </svg>
+              Operational Inquiries &amp; Scheduling
+            </h3>
+            <div class="contact-card-grid"
+              style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 20px;">
+              <div class="contact-node-card">
+                <div
+                  style="width: 54px; height: 54px; background: rgba(45, 212, 191, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #2dd4bf; flex-shrink: 0;">
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </div>
+                <div>
+                  <div
+                    style="font-size: 11px; font-weight: 700; color: #2dd4bf; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px;">
+                    Production Manager</div>
+                  <div style="font-size: 18px; font-weight: 700; color: #ffffff; margin-bottom: 4px;">Ranjith Kumar HN
+                  </div>
+                  <div
+                    style="font-size: 14px; color: rgba(255, 255, 255, 0.7); display: flex; align-items: center; gap: 8px;">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="color:#2dd4bf">
+                      <path
+                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                    </svg>
+                    <a href="tel:+919788323006" style="text-decoration:none; color:inherit; font-weight: 600;">+91 97883
+                      23006</a>
+                  </div>
+                </div>
+              </div>
+              <div class="contact-node-card">
+                <div
+                  style="width: 54px; height: 54px; background: rgba(59, 130, 246, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #3b82f6; flex-shrink: 0;">
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                </div>
+                <div>
+                  <div
+                    style="font-size: 11px; font-weight: 700; color: #3b82f6; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px;">
+                    Setter Cum Supervisorr</div>
+                  <div style="font-size: 18px; font-weight: 700; color: #ffffff; margin-bottom: 4px;">Subith Kumar N
+                  </div>
+                  <div
+                    style="font-size: 14px; color: rgba(255, 255, 255, 0.7); display: flex; align-items: center; gap: 8px;">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="color:#3b82f6">
+                      <path
+                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                    </svg>
+                    <a href="tel:+917010453944" style="text-decoration:none; color:inherit; font-weight: 600;">+91 70104
+                      53944</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 5: HMT DIECAST -->
+      <section class="section-panel" id="pane-hmt-diecast">
+        <!-- Full-Bleed Cinematic Hero -->
+        <div class="section-hero-bleed">
+          <img src="assets/images/die_casting.png" alt="HMT Cold Chamber Casting Plant">
+          <div class="section-hero-overlay"></div>
+        </div>
+
+        <div class="panel-width-limit">
+          <div class="panel-header">
+            <div>
+              <div class="panel-eyebrow">Pressure Die Casting</div>
+              <h1 class="panel-title">HMT Cold Chamber Casting Plant</h1>
+            </div>
+            <span class="panel-badge">×1 Unit Active</span>
+          </div>
+
+          <p class="panel-tagline">Heavy duty cold-chamber molten injection casting plant. Delivering immense structural
+            locking forces to prevent liquid flashing and achieve high surface detailing.</p>
+
+          <!-- Specifications Directory -->
+          <div class="specs-table-wrapper">
+            <h3 class="section-subtitle">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5V3a2.5 2.5 0 0 1 2.5-2.5H20v14H6.5A2.5 2.5 0 0 0 4 15.5z" />
+              </svg>
+              Machinery Parameters &amp; Specifications
+            </h3>
+            <table class="specs-table">
+              <thead>
+                <tr>
+                  <th>Parameters</th>
+                  <th>Value / Specifications</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="highlight-val">Locking Clamping force</td>
+                  <td>120 Tons</td>
+                </tr>
+                <tr>
+                  <td class="highlight-val">Crucible Furnace Power</td>
+                  <td>36 KW</td>
+                </tr>
+                <tr>
+                  <td class="highlight-val">Maximum Shot Weight</td>
+                  <td>1.5 KG per stroke</td>
+                </tr>
+                <tr>
+                  <td class="highlight-val">Furnace Metal Volume</td>
+                  <td>180 to 250 KG holding capacity</td>
+                </tr>
+                <tr>
+                  <td class="highlight-val">Standard Casting Alloys</td>
+                  <td>ADC12 · LM6 · AlSi9Cu3</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Information Grid - No Box Containers -->
+          <div class="info-layout-grid">
+            <div>
+              <h3 class="section-subtitle">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z" />
+                </svg>
+                Machinery Components &amp; Accessories
+              </h3>
+              <div class="tooling-desc-list">
+                <div class="tool-desc-item">
+                  <div class="tool-desc-name">High-Density Steel Mold Frames</div>
+                  <p class="tool-desc-txt">Engineered to resist continuous thermal expansions up to 650°C without
+                    mechanical wear or shift.</p>
+                </div>
+                <div class="tool-desc-item">
+                  <div class="tool-desc-name">Hydraulic Gate trimming press</div>
+                  <p class="tool-desc-txt">Ensures clean flash shearing directly after mold extraction, reducing
+                    post-processing grinding labor.</p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="section-subtitle">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 8v4l3 3" />
+                </svg>
+                Operations Directory
+              </h3>
+              <div class="checklist-grid">
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> Automated metal pouring and ladling</div>
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> Ultra-high locking pressure cold injection</div>
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> Dynamic cooling and solidification curves</div>
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> Steel shot-blasting surface texturing</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- OPERATIONAL CONTACT PORTAL (Production Manager & Setter Cum Supervisorr) -->
+          <div class="manager-contact-section"
+            style="margin-top: 60px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 48px;">
+            <h3 class="section-subtitle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6.29-6.29 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.83 5h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 12.62a16 16 0 0 0 6.29 6.29l1.38-1.09a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 19.92z" />
+              </svg>
+              Operational Inquiries &amp; Scheduling
+            </h3>
+            <div class="contact-card-grid"
+              style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 20px;">
+              <div class="contact-node-card">
+                <div
+                  style="width: 54px; height: 54px; background: rgba(45, 212, 191, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #2dd4bf; flex-shrink: 0;">
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </div>
+                <div>
+                  <div
+                    style="font-size: 11px; font-weight: 700; color: #2dd4bf; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px;">
+                    Production Manager</div>
+                  <div style="font-size: 18px; font-weight: 700; color: #ffffff; margin-bottom: 4px;">Ranjith Kumar HN
+                  </div>
+                  <div
+                    style="font-size: 14px; color: rgba(255, 255, 255, 0.7); display: flex; align-items: center; gap: 8px;">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="color:#2dd4bf">
+                      <path
+                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                    </svg>
+                    <a href="tel:+919788323006" style="text-decoration:none; color:inherit; font-weight: 600;">+91 97883
+                      23006</a>
+                  </div>
+                </div>
+              </div>
+              <div class="contact-node-card">
+                <div
+                  style="width: 54px; height: 54px; background: rgba(59, 130, 246, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #3b82f6; flex-shrink: 0;">
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                </div>
+                <div>
+                  <div
+                    style="font-size: 11px; font-weight: 700; color: #3b82f6; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px;">
+                    Setter Cum Supervisorr</div>
+                  <div style="font-size: 18px; font-weight: 700; color: #ffffff; margin-bottom: 4px;">Subith Kumar N
+                  </div>
+                  <div
+                    style="font-size: 14px; color: rgba(255, 255, 255, 0.7); display: flex; align-items: center; gap: 8px;">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="color:#3b82f6">
+                      <path
+                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                    </svg>
+                    <a href="tel:+917010453944" style="text-decoration:none; color:inherit; font-weight: 600;">+91 70104
+                      53944</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 6: METROLOGY LAB -->
+      <section class="section-panel" id="pane-inspection-lab">
+        <!-- Full-Bleed Cinematic Hero -->
+        <div class="section-hero-bleed">
+          <img src="assets/images/inspection_lab.png" alt="Metrology and Calibration Instruments">
+          <div class="section-hero-overlay"></div>
+        </div>
+
+        <div class="panel-width-limit">
+          <div class="panel-header">
+            <div>
+              <div class="panel-eyebrow">Quality &amp; Calibration Lab</div>
+              <h1 class="panel-title">Metrology Quality Lab</h1>
+            </div>
+            <span class="panel-badge">NABL Calibrated</span>
+          </div>
+
+          <p class="panel-tagline">Temperature-stabilized metrology room hosting precise physical gauge systems. Backed
+            by annual NABL certification schedules to enforce strict ±2µm dimensional compliance.</p>
+
+          <!-- Specifications Directory -->
+          <div class="specs-table-wrapper">
+            <h3 class="section-subtitle">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20M4 19.5V3a2.5 2.5 0 0 1 2.5-2.5H20v14H6.5A2.5 2.5 0 0 0 4 15.5z" />
+              </svg>
+              Calibration Tools &amp; Sensitivities
+            </h3>
+            <table class="specs-table">
+              <thead>
+                <tr>
+                  <th>Calibration Instrument</th>
+                  <th>Technical Brand</th>
+                  <th>Maximum Sensitivity Limit</th>
+                  <th>Primary Calibration Purpose</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="highlight-val">Digital Height Gauge</td>
+                  <td>Mitutoyo (Japan)</td>
+                  <td>0.001 mm (1 micron)</td>
+                  <td>Z-Axis heights and absolute coplanarity</td>
+                </tr>
+                <tr>
+                  <td class="highlight-val">Slip Gauge sets</td>
+                  <td>Mitutoyo (Japan)</td>
+                  <td>Grade 0 standard</td>
+                  <td>Physical master calibrations reference</td>
+                </tr>
+                <tr>
+                  <td class="highlight-val">Vernier Calipers &amp; Micrometers</td>
+                  <td>Mitutoyo (Japan)</td>
+                  <td>0.01 mm / 0.001 mm</td>
+                  <td>External and internal dimensional compliance</td>
+                </tr>
+                <tr>
+                  <td class="highlight-val">Thread &amp; Plug Gauges</td>
+                  <td>Baker (India)</td>
+                  <td>H7 / g6 limits</td>
+                  <td>Go / No-Go physical thread validation</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Information Grid - No Box Containers -->
+          <div class="info-layout-grid">
+            <div>
+              <h3 class="section-subtitle">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z" />
+                </svg>
+                Inspection Procedures &amp; Controls
+              </h3>
+              <div class="tooling-desc-list">
+                <div class="tool-desc-item">
+                  <div class="tool-desc-name">Bore Dial checking stations</div>
+                  <p class="tool-desc-txt">Ensures that critical bearings diameters match absolute roundness targets
+                    down to ±5 microns.</p>
+                </div>
+                <div class="tool-desc-item">
+                  <div class="tool-desc-name">Mitutoyo Surface Roughness profile tester</div>
+                  <p class="tool-desc-txt">Measures absolute Ra index values to guarantee smooth cylindrical sliding
+                    runs.</p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="section-subtitle">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 8v4l3 3" />
+                </svg>
+                Operations Directory
+              </h3>
+              <div class="checklist-grid">
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> Continuous first-off production checkouts</div>
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> Automated SPC control charts analysis</div>
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> Absolute Go/No-Go thread inspections</div>
+                <div class="check-item"><svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg> Ra profile surface roughness validation</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- OPERATIONAL CONTACT PORTAL (Production Manager & Setter Cum Supervisorr) -->
+          <div class="manager-contact-section"
+            style="margin-top: 60px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 48px;">
+            <h3 class="section-subtitle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6.29-6.29 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.83 5h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 12.62a16 16 0 0 0 6.29 6.29l1.38-1.09a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 19.92z" />
+              </svg>
+              Operational Inquiries &amp; Scheduling
+            </h3>
+            <div class="contact-card-grid"
+              style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 20px;">
+              <div class="contact-node-card">
+                <div
+                  style="width: 54px; height: 54px; background: rgba(45, 212, 191, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #2dd4bf; flex-shrink: 0;">
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </div>
+                <div>
+                  <div
+                    style="font-size: 11px; font-weight: 700; color: #2dd4bf; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px;">
+                    Production Manager</div>
+                  <div style="font-size: 18px; font-weight: 700; color: #ffffff; margin-bottom: 4px;">K. Karthik</div>
+                  <div
+                    style="font-size: 14px; color: rgba(255, 255, 255, 0.7); display: flex; align-items: center; gap: 8px;">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="color:#2dd4bf">
+                      <path
+                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                    </svg>
+                    <a href="tel:+919894355676" style="text-decoration:none; color:inherit; font-weight: 600;">+91 98943
+                      55676</a>
+                  </div>
+                </div>
+              </div>
+              <div class="contact-node-card">
+                <div
+                  style="width: 54px; height: 54px; background: rgba(59, 130, 246, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #3b82f6; flex-shrink: 0;">
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                </div>
+                <div>
+                  <div
+                    style="font-size: 11px; font-weight: 700; color: #3b82f6; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px;">
+                    Setter Cum Supervisorr</div>
+                  <div style="font-size: 18px; font-weight: 700; color: #ffffff; margin-bottom: 4px;">M. Vignesh</div>
+                  <div
+                    style="font-size: 14px; color: rgba(255, 255, 255, 0.7); display: flex; align-items: center; gap: 8px;">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="color:#3b82f6">
+                      <path
+                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                    </svg>
+                    <a href="tel:+919894355676" style="text-decoration:none; color:inherit; font-weight: 600;">+91 98943
+                      55676</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- FOOTER (Exactly matching index.html structure) -->
+  <footer>
+    <div class="foot-inner">
+      <div class="foot-top">
+        <div>
+          <div class="foot-brand-wrap" style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+            <img src="assets/images/logo1.png" alt="Anvil Automation" class="foot-logo-img"
+              style="width:40px;height:40px;object-fit:contain">
+            <div class="foot-brand-n">ANVIL AUTOMATION</div>
+          </div>
+          <p class="foot-brand-d">ISO 9001:2015 certified precision CNC machining, VMC machining and pressure die
+            casting manufacturer. Serving automotive and engineering industries from Coimbatore, Tamil Nadu since 2004.
+          </p>
+        </div>
+        <div class="foot-col">
+          <h5>Services</h5>
+          <a href="capabilities-detail.html#cnc-turning">CNC Turning</a>
+          <a href="capabilities-detail.html#vmc-machining">VMC Machining</a>
+          <a href="capabilities-detail.html#die-casting">Pressure Die Casting</a>
+          <a href="capabilities-detail.html#scrap-trading">Aluminum Scrap Trading</a>
+        </div>
+        <div class="foot-col">
+          <h5>Company</h5>
+          <a href="index.html#about">About Us</a>
+          <a href="infrastructure-detail.html">Infrastructure</a>
+          <a href="index.html#quality">Quality Policy</a>
+          <a href="index.html#clients">Our Clients</a>
+          <a href="index.html#contact">Contact</a>
+        </div>
+        <div class="foot-col">
+          <h5>Contact</h5>
+          <div class="foot-contact-r"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6.29-6.29 19.79 19.79 0 01-3.07-8.67A2 2 0 013.83 5h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 12.62a16 16 0 006.29 6.29l1.38-1.09a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 19.92z" />
+            </svg><span>+91 98943 55676</span></div>
+          <div class="foot-contact-r"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="5" width="18" height="14" rx="2" />
+              <path d="M3 7l9 6 9-6" />
+            </svg><span>anvil.cbe@gmail.com</span></div>
+          <div class="foot-contact-r"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg><span>SF No. 233/1B3-1B4, Oraikkal Palayam Road, Kunnathur Village, Coimbatore – 641107, Tamil
+              Nadu</span></div>
+          <div class="foot-contact-r"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" />
+              <path d="M7 7h10M7 12h6" />
+            </svg><span>GST: 33BGJPS4244J1Z5 · PAN: BGJPS4244J</span></div>
+          <div class="foot-contact-r"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="7" width="20" height="15" rx="2" />
+              <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" />
+            </svg><span>Aadhaar: 607508485643</span></div>
+        </div>
+      </div>
+      <div class="foot-bar">
+        <p class="foot-copy">© 2024 Anvil Automation · Proprietor: P. Selvakumar · All rights reserved.</p>
+        <p class="foot-gst">Company Aadhaar: 607508485643</p>
+        <div class="foot-cert">ISO 9001:2015 Certified</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Tab switching routing engine based on hash
+    const tabBtns = document.querySelectorAll('.pill-btn');
+    const panels = document.querySelectorAll('.section-panel');
+
+    function switchTab(targetHash) {
+      const cleanHash = targetHash.replace('#', '') || 'lmw-smarturn';
+
+      // Update pill buttons
+      tabBtns.forEach(btn => {
+        const btnHash = btn.getAttribute('href').replace('#', '');
+        if (btnHash === cleanHash) {
+          btn.classList.add('active');
+          // Smooth scroll active pill into view on mobile
+          btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // Show/Hide Content Panels
+      panels.forEach(panel => {
+        const panelId = panel.id.replace('pane-', '');
+        if (panelId === cleanHash) {
+          panel.classList.add('active');
+        } else {
+          panel.classList.remove('active');
+        }
+      });
+
+      // Smooth scroll slightly up to panel top when switching tabs
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    // Monitor hash adjustments
+    window.addEventListener('hashchange', () => {
+      switchTab(window.location.hash);
+    });
+
+    // Run on initial page load
+    window.addEventListener('DOMContentLoaded', () => {
+      switchTab(window.location.hash || '#lmw-smarturn');
+    });
+
+    // Mobile nav toggle drawer
+    function toggleMob() {
+      const drawer = document.getElementById('mobNav');
+      drawer.classList.toggle('active');
+    }
+  </script>
+</body>
+
+</html>
