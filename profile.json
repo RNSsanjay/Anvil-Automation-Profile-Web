@@ -40,7 +40,7 @@
         },
         {
           "model": "SAFAL TURN-5",
-          "units": 6,
+          "units": 5,
           "max_turning_diameter": "200 mm",
           "turning_length": "350 mm",
           "chuck_size": "200 mm",
@@ -96,7 +96,7 @@
       "fleet": [
         {
           "model": "HMT DIE CAST",
-          "units": 1,
+          "units": 3,
           "capacity": "120 Ton",
           "furnace_power": "36 KW",
           "furnace_capacity": "180–250 KG",

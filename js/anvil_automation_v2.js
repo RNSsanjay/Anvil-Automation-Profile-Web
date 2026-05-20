@@ -218,9 +218,9 @@ function openChatbot() {
 /* ── CAPABILITIES STRIP ── */
 (function () {
   const caps = [
-    { name: 'CNC Turning', tag: 'LMW · SAFAL × 6 · SGS', icon: '<circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>' },
+    { name: 'CNC Turning', tag: 'LMW · SAFAL × 5 · SGS', icon: '<circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>' },
     { name: 'VMC Machining', tag: 'Fanuc · 6000 RPM · Indexer', icon: '<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>' },
-    { name: 'Pressure Die Casting', tag: 'HMT 120 Ton · ASTM L3', icon: '<path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>' },
+    { name: 'Pressure Die Casting', tag: '3× HMT 120 Ton · ASTM L3', icon: '<path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>' },
     { name: 'Scrap Trading', tag: 'Aluminum · Non-ferrous · Recycling', icon: '<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>' },
     { name: 'ISO 9001:2015', tag: 'Quality Certified', icon: '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/>' },
     { name: 'PPAP Documentation', tag: 'Process Control', icon: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>' },
