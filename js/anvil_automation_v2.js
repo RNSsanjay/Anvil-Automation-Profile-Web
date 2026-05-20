@@ -589,3 +589,57 @@ document.querySelectorAll('.reveal-text').forEach(el => revealObserver.observe(e
 
   window.addEventListener('scroll', updateDockVisibility, { passive: true });
 })();
+
+/* ── EASTER EGG: LOGO 10 CLICKS TOOLTIP ── */
+(function () {
+  const logo = document.querySelector('.nav-logo-wrap');
+  if (!logo) return;
+
+  // Only run on the landing page (index.html)
+  const isLandingPage = window.location.pathname === '/' || 
+                        window.location.pathname.endsWith('index.html') || 
+                        window.location.pathname.endsWith('/') ||
+                        (!document.querySelector('.portal-hero-img') && !document.querySelector('.machines-hero'));
+
+  if (!isLandingPage) return;
+
+  let clickCount = 0;
+  let tooltip = null;
+  let hideTimeout = null;
+
+  logo.addEventListener('click', (e) => {
+    // Intercept standard navigation to index.html since we are already on index.html
+    e.preventDefault();
+    clickCount++;
+
+    if (clickCount >= 10) {
+      showTooltip();
+    } else {
+      // smooth scroll to top if clicked before 10 times
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
+
+  function showTooltip() {
+    if (!tooltip) {
+      tooltip = document.createElement('div');
+      tooltip.className = 'dev-tooltip';
+      tooltip.innerHTML = `
+        <div class="dev-tooltip-header">Developed By</div>
+        <div class="dev-tooltip-name">Sanjay N</div>
+        <div class="dev-tooltip-company">from RNS Solutions</div>
+        <div class="dev-tooltip-since">Since May 2005</div>
+      `;
+      logo.style.position = 'relative'; // Ensure tooltip coordinates are relative to the logo
+      logo.appendChild(tooltip);
+    }
+
+    clearTimeout(hideTimeout);
+    tooltip.classList.add('show');
+
+    // Auto-hide after 5 seconds
+    hideTimeout = setTimeout(() => {
+      tooltip.classList.remove('show');
+    }, 5000);
+  }
+})();
