@@ -3,7 +3,9 @@
     "name": "Anvil Automation",
     "established": 2004,
     "proprietor": "P. Selvakumar",
-    "certifications": ["ISO 9001:2015"],
+    "certifications": [
+      "ISO 9001:2015"
+    ],
     "tagline": "Precision · Performance · Reliability",
     "scale": "Small Scale Industry",
     "employees": "50+ Skilled Workers",
@@ -18,8 +20,7 @@
     "maps_query": "Anvil Automation Coimbatore",
     "coordinates": "SF No. 233/1B3-1B4, Oraikkal Palayam Road, Kunnathur Village",
     "gst": "33BGJPS4244J1Z5",
-    "pan": "BGJPS4244J",
-    "aadhaar": "607508485643"
+    "pan": "BGJPS4244J"
   },
   "services": [
     {
@@ -28,11 +29,41 @@
       "category": "Precision Manufacturing",
       "description": "High precision turning operations for ferrous and non-ferrous components.",
       "fleet": [
-        { "model": "LMW SMARTURN", "units": 1, "max_turning_diameter": "200 mm", "turning_length": "150 mm", "chuck_size": "165 mm", "bar_capacity": "42 mm", "spindle_power": "5.5 / 7.5 KW" },
-        { "model": "SAFAL TURN-5", "units": 6, "max_turning_diameter": "200 mm", "turning_length": "350 mm", "chuck_size": "200 mm", "bar_capacity": "25 mm", "spindle_power": "5.5 / 7.5 KW" },
-        { "model": "SGS T-TURN 135", "units": 1, "max_turning_diameter": "150 mm", "turning_length": "150 mm", "chuck_size": "135 mm", "spindle_bore": "38 mm" }
+        {
+          "model": "LMW SMARTURN",
+          "units": 1,
+          "max_turning_diameter": "200 mm",
+          "turning_length": "150 mm",
+          "chuck_size": "165 mm",
+          "bar_capacity": "42 mm",
+          "spindle_power": "5.5 / 7.5 KW"
+        },
+        {
+          "model": "SAFAL TURN-5",
+          "units": 6,
+          "max_turning_diameter": "200 mm",
+          "turning_length": "350 mm",
+          "chuck_size": "200 mm",
+          "bar_capacity": "25 mm",
+          "spindle_power": "5.5 / 7.5 KW"
+        },
+        {
+          "model": "SGS T-TURN 135",
+          "units": 1,
+          "max_turning_diameter": "150 mm",
+          "turning_length": "150 mm",
+          "chuck_size": "135 mm",
+          "spindle_bore": "38 mm"
+        }
       ],
-      "capabilities": ["Precision Turning", "Grooving", "Threading", "Boring", "Facing", "Close Tolerance"]
+      "capabilities": [
+        "Precision Turning",
+        "Grooving",
+        "Threading",
+        "Boring",
+        "Facing",
+        "Close Tolerance"
+      ]
     },
     {
       "id": "vmc_machining",
@@ -40,9 +71,22 @@
       "category": "Advanced Machining",
       "description": "Vertical machining center solutions for complex engineering components.",
       "fleet": [
-        { "model": "VMC — FANUC", "units": 2, "axes": "X / Y / Z: 800 / 500 / 500 mm", "table_size": "1050 × 450 mm", "spindle_speed": "6000 RPM", "tool_capacity": "20 Tools · Indexer" }
+        {
+          "model": "VMC — FANUC",
+          "units": 2,
+          "axes": "X / Y / Z: 800 / 500 / 500 mm",
+          "table_size": "1050 × 450 mm",
+          "spindle_speed": "6000 RPM",
+          "tool_capacity": "20 Tools · Indexer"
+        }
       ],
-      "capabilities": ["Milling", "Drilling", "Tapping", "Pocket Machining", "Multi-axis"]
+      "capabilities": [
+        "Milling",
+        "Drilling",
+        "Tapping",
+        "Pocket Machining",
+        "Multi-axis"
+      ]
     },
     {
       "id": "die_casting",
@@ -50,17 +94,38 @@
       "category": "Casting Solutions",
       "description": "In-house high pressure die casting for aluminum automotive components.",
       "fleet": [
-        { "model": "HMT DIE CAST", "units": 1, "capacity": "120 Ton", "furnace_power": "36 KW", "furnace_capacity": "180–250 KG", "standard": "ASTM Level 3 Capable" }
+        {
+          "model": "HMT DIE CAST",
+          "units": 1,
+          "capacity": "120 Ton",
+          "furnace_power": "36 KW",
+          "furnace_capacity": "180–250 KG",
+          "standard": "ASTM Level 3 Capable"
+        }
       ],
-      "capabilities": ["High Pressure", "Controlled Porosity", "ASTM L3 Standard", "Proof Machining"]
+      "capabilities": [
+        "High Pressure",
+        "Controlled Porosity",
+        "ASTM L3 Standard",
+        "Proof Machining"
+      ]
     },
     {
       "id": "scrap_trading",
       "name": "Aluminum Scrap Trading & Recycling Support",
       "category": "Circular Economy",
       "description": "Aluminum scrap handling and recycling support for sustainable manufacturing.",
-      "items": ["Foundry Grade Scrap", "Die Casting Scrap", "Aluminum Blocks & Runners"],
-      "capabilities": ["Scrap Collection", "Segregation", "Foundry Grade", "Non-ferrous"]
+      "items": [
+        "Foundry Grade Scrap",
+        "Die Casting Scrap",
+        "Aluminum Blocks & Runners"
+      ],
+      "capabilities": [
+        "Scrap Collection",
+        "Segregation",
+        "Foundry Grade",
+        "Non-ferrous"
+      ]
     }
   ],
   "quality": {
@@ -90,12 +155,30 @@
     ]
   },
   "clients": [
-    { "name": "Motherson Automotive Elastomers Technology", "location": "Chennai" },
-    { "name": "Motherson Automotive Technology & Engineering (MATE)", "location": "Chennai" },
-    { "name": "RND Gears Pvt Ltd", "location": "Bangalore" },
-    { "name": "Tildenet", "location": "Karur" },
-    { "name": "MN Auto Products Pvt Ltd", "location": "Coimbatore" },
-    { "name": "L.G. Balakrishnan Bros Ltd (LGB)", "location": "Coimbatore" }
+    {
+      "name": "Motherson Automotive Elastomers Technology",
+      "location": "Chennai"
+    },
+    {
+      "name": "Motherson Automotive Technology & Engineering (MATE)",
+      "location": "Chennai"
+    },
+    {
+      "name": "RND Gears Pvt Ltd",
+      "location": "Bangalore"
+    },
+    {
+      "name": "Tildenet",
+      "location": "Karur"
+    },
+    {
+      "name": "MN Auto Products Pvt Ltd",
+      "location": "Coimbatore"
+    },
+    {
+      "name": "L.G. Balakrishnan Bros Ltd (LGB)",
+      "location": "Coimbatore"
+    }
   ],
   "strengths": [
     "Aluminum Scrap Handling & Recycling Support",
