@@ -18,8 +18,18 @@ const MIME_TYPES = {
 };
 
 const server = http.createServer((req, res) => {
-  // Strip query parameters
-  const urlPath = req.url.split('?')[0];
+  // Strip query parameters and normalize trailing slash
+  const rawPath = req.url.split('?')[0];
+  const normalizedPath = rawPath.replace(/\/+$/, '') || '/';
+
+  // Redirect profile aliases to the homepage leadership section
+  if (normalizedPath === '/profile' || normalizedPath === '/profile.html') {
+    res.writeHead(302, { Location: '/index.html#leadership' });
+    res.end();
+    return;
+  }
+
+  const urlPath = normalizedPath;
   let filePath = path.join(__dirname, urlPath === '/' ? 'index.html' : urlPath);
   
   // URL decode for spaces and special characters

@@ -15,7 +15,7 @@
   "contact": {
     "address": "SF No. 233/1B3-1B4, Oraikkal Palayam Road, Kunnathur Village, Coimbatore – 641107, Tamil Nadu, India",
     "phone": "+91 98943 55676",
-    "email": "anvil.cbe@gmail.com",
+    "email": "sales@anvilautomation.org",
     "whatsapp": "+91 98943 55676",
     "maps_query": "Anvil Automation Coimbatore",
     "coordinates": "SF No. 233/1B3-1B4, Oraikkal Palayam Road, Kunnathur Village",
@@ -95,8 +95,8 @@
       "description": "In-house high pressure die casting for aluminum automotive components.",
       "fleet": [
         {
-          "model": "HMT DIE CAST",
-          "units": 3,
+          "model": "   DIE CAST",
+          "units": 2,
           "capacity": "120 Ton",
           "furnace_power": "36 KW",
           "furnace_capacity": "180–250 KG",

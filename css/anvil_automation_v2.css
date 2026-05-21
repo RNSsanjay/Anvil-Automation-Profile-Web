@@ -548,11 +548,13 @@ nav.on-hero .ham span{background:white}
 @keyframes capsScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* Numbers impact row */
-.impact{padding:80px 72px;background:var(--bg);border-bottom:1px solid var(--line)}
-.impact-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
-.imp-card{background:white;padding:40px 36px;transition:background .3s;position:relative;overflow:hidden}
-.imp-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
-.imp-card:hover{background:var(--bg)}
+.impact{padding:80px 0;background:var(--bg);border-bottom:1px solid var(--line);overflow:hidden}
+.impact-inner{width:100%;display:flex;gap:24px;overflow-x:auto;overflow-y:hidden;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;padding:16px 72px 32px 72px;cursor:grab}
+.impact-inner::-webkit-scrollbar{display:none}
+.impact-inner.dragging{cursor:grabbing}
+.imp-card{background:white;padding:40px 36px;transition:all .35s var(--ease);position:relative;overflow:hidden;border-radius:16px;border:1px solid var(--line);flex-shrink:0;width:320px}
+.imp-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease)}
+.imp-card:hover{transform:translateY(-8px);box-shadow:0 16px 36px rgba(15,63,181,0.08);border-color:rgba(15,63,181,0.25)}
 .imp-card:hover::after{transform:scaleX(1)}
 .imp-num{font-family:var(--fd);font-size:clamp(48px,5vw,72px);line-height:1;color:var(--blue);letter-spacing:.02em}
 .imp-label{font-size:13px;color:var(--mute);margin-top:8px;font-weight:400;line-height:1.5}
@@ -741,12 +743,14 @@ nav.on-hero .ham span{background:white}
 .partner-logos.dragging{cursor:grabbing;scroll-behavior:auto}
 .partner-logos.dragging .p-logo{pointer-events:none;user-select:none}
 
-.p-logo{background:white;padding:32px 28px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-width:280px;max-width:280px;border:1px solid var(--line);border-radius:16px;transition:all .3s;cursor:default;flex-shrink:0}
+.p-logo{background:white;padding:32px 28px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-width:280px;max-width:280px;border:1px solid var(--line);border-radius:16px;transition:all .3s;cursor:pointer;flex-shrink:0}
 .p-logo:hover{background:var(--bg);transform:translateY(-4px);box-shadow:0 8px 24px rgba(8,13,20,.08)}
 .p-logo-mark{width:64px;height:64px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:22px;letter-spacing:.06em;color:white;font-weight:400}
 .p-logo-name{font-size:13px;font-weight:600;color:var(--ink);text-align:center;line-height:1.4}
 .p-logo-city{font-size:11px;color:var(--mute);font-family:var(--fm);letter-spacing:.08em;text-transform:uppercase;margin-top:4px}
 .p-logo-ind{font-size:10px;padding:3px 10px;border-radius:100px;border:1px solid var(--line);color:var(--mute);font-family:var(--fm);letter-spacing:.08em;text-transform:uppercase;margin-top:6px}
+.p-logo-visit{opacity:0;transform:translateY(6px);transition:opacity .25s ease,transform .25s ease;color:var(--blue);font-weight:700;font-size:12px}
+.p-logo:hover .p-logo-visit{opacity:1;transform:translateY(0)}
 
 /* ═══════════════════ TESTIMONIALS ═══════════════════ */
 #testimonials{padding:100px 0;background:var(--ink);overflow:hidden}
@@ -912,6 +916,56 @@ nav.on-hero .ham span{background:white}
   opacity: 0;
   pointer-events: none;
 }
+
+/* ── DOCK: light-background mode (black border/icons) ── */
+.dock.dock-on-light {
+  background: rgba(0,0,0,0.04);
+  border-color: rgba(0,0,0,0.22);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+}
+.dock.dock-on-light:hover {
+  background: rgba(0,0,0,0.07);
+  border-color: rgba(0,0,0,0.32);
+  box-shadow: 0 10px 36px rgba(0,0,0,0.14);
+}
+.dock.dock-on-light .dock-btn {
+  background: rgba(0,0,0,0.06);
+  border-color: rgba(0,0,0,0.18);
+  color: rgba(0,0,0,0.82);
+}
+.dock.dock-on-light .dock-btn::before {
+  background: radial-gradient(circle at center, rgba(0,0,0,0.12), transparent 70%);
+}
+.dock.dock-on-light .dock-btn:hover {
+  background: rgba(0,0,0,0.14);
+  border-color: rgba(0,0,0,0.36);
+  color: #000;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+.dock.dock-on-light .dock-btn svg { stroke: rgba(0,0,0,0.75); }
+.dock.dock-on-light .dock-btn:hover svg { stroke: #000; }
+.dock.dock-on-light .dock-btn.wa,
+.dock.dock-on-light .dock-btn.ph,
+.dock.dock-on-light .dock-btn.em,
+.dock.dock-on-light .dock-btn.mp,
+.dock.dock-on-light .dock-btn.iq { background: rgba(0,0,0,0.06); }
+.dock.dock-on-light .dock-btn.wa:hover,
+.dock.dock-on-light .dock-btn.ph:hover,
+.dock.dock-on-light .dock-btn.em:hover,
+.dock.dock-on-light .dock-btn.mp:hover,
+.dock.dock-on-light .dock-btn.iq:hover { background: rgba(0,0,0,0.14); }
+.dock.dock-on-light .dock-sep {
+  background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.35), transparent);
+}
+.dock.dock-on-light .dock-tip {
+  background: rgba(0,0,0,0.12);
+  color: #111;
+  border-color: rgba(0,0,0,0.22);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+}
+.dock.dock-on-light .dock-tip::after {
+  border-top-color: rgba(0,0,0,0.12);
+}
 @keyframes dockFadeIn{
   from{opacity:0;transform:translateX(-50%) translateY(20px)}
   to{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -1046,6 +1100,95 @@ nav.on-hero .ham span{background:white}
   border:6px solid transparent;
   border-top-color:rgba(255,255,255,0.16);
 }
+
+/* ── EMAIL DOCK PANEL ── */
+.dock-email-item{position:relative}
+.dock-email-panel{
+  position:absolute;
+  bottom:calc(100% + 20px);
+  left:50%;
+  transform:translateX(-50%) translateY(10px);
+  width:290px;
+  background:rgba(10,13,24,0.94);
+  backdrop-filter:blur(28px);
+  -webkit-backdrop-filter:blur(28px);
+  border:1px solid rgba(255,255,255,0.13);
+  border-radius:18px;
+  padding:8px;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity 0.25s ease, transform 0.3s cubic-bezier(.34,1.8,.64,1), visibility 0.25s;
+  z-index:20;
+  box-shadow:0 24px 64px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255,255,0.04);
+}
+.dock-email-panel::after{
+  content:'';position:absolute;
+  bottom:-6px;left:50%;transform:translateX(-50%);
+  border:6px solid transparent;
+  border-top-color:rgba(255,255,255,0.13);
+  border-bottom:none;
+}
+.dock-email-item:hover .dock-email-panel,
+.dock-email-panel.open{
+  opacity:1;visibility:visible;pointer-events:all;
+  transform:translateX(-50%) translateY(0);
+}
+.dep-header{
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--fm);font-size:9px;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(255,255,255,0.35);
+  padding:6px 10px 10px;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+  margin-bottom:6px;
+}
+.dep-header svg{stroke:rgba(255,255,255,0.35);flex-shrink:0}
+.dep-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 12px;border-radius:10px;
+  text-decoration:none;
+  border-left:2px solid transparent;
+  transition:all 0.2s ease;
+  gap:8px;
+}
+.dep-row:hover{
+  background:rgba(255,255,255,0.07);
+  border-left-color:var(--dep-color,rgba(255,255,255,.35));
+  padding-left:16px;
+}
+.dep-info{flex:1;min-width:0}
+.dep-role{
+  font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--dep-color,rgba(255,255,255,.45));
+  margin-bottom:4px;
+}
+.dep-addr{
+  font-size:12px;font-weight:500;
+  color:rgba(255,255,255,.82);
+  font-family:var(--fm);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.dep-send{
+  width:14px;height:14px;flex-shrink:0;
+  stroke:var(--dep-color,rgba(255,255,255,.35));
+  opacity:0;transform:translateX(-4px);
+  transition:all 0.2s;
+}
+.dep-row:hover .dep-send{opacity:1;transform:translateX(0)}
+
+/* Light-bg overrides for email panel */
+.dock.dock-on-light .dock-email-panel{
+  background:rgba(248,249,252,0.97);
+  border-color:rgba(0,0,0,0.11);
+  box-shadow:0 24px 64px rgba(0,0,0,0.14),0 0 0 1px rgba(0,0,0,0.04);
+}
+.dock.dock-on-light .dock-email-panel::after{border-top-color:rgba(0,0,0,0.11)}
+.dock.dock-on-light .dep-header{color:rgba(0,0,0,0.38);border-bottom-color:rgba(0,0,0,0.07)}
+.dock.dock-on-light .dep-header svg{stroke:rgba(0,0,0,0.38)}
+.dock.dock-on-light .dep-row:hover{background:rgba(0,0,0,0.05);border-left-color:var(--dep-color,rgba(0,0,0,.3))}
+.dock.dock-on-light .dep-role{color:var(--dep-color,rgba(0,0,0,.5))}
+.dock.dock-on-light .dep-addr{color:rgba(0,0,0,0.75);font-weight:500}
+.dock.dock-on-light .dep-send{stroke:var(--dep-color,rgba(0,0,0,.3))}
 
 /* ═══════════════════ CTA ═══════════════════ */
 #cta{padding:120px 72px;background:var(--blue);position:relative;overflow:hidden;text-align:center}
@@ -1416,7 +1559,7 @@ footer{background:#050810;padding:72px 72px 28px}
   .machines-grid{grid-template-columns:1fr 1fr}
   .foot-top{grid-template-columns:1fr 1fr;gap:40px}
   .str-grid{grid-template-columns:1fr 1fr}
-  .impact-inner{grid-template-columns:1fr 1fr}
+  .impact-inner{gap:20px;padding:16px 48px 24px 48px}
   
   /* Partner logos - keep horizontal scroll */
   .p-logo{min-width:260px;max-width:260px;padding:28px 24px}
@@ -1450,9 +1593,9 @@ footer{background:#050810;padding:72px 72px 28px}
   .nav-logo-wrap{width:48px;height:48px}
   
   #about,#services,#infrastructure,#quality,#clients,#contact,#cta{padding:80px 20px}
-  .impact{padding:60px 20px}
-  .impact-inner{grid-template-columns:1fr 1fr;border-radius:12px}
-  .imp-card{padding:28px 24px}
+  .impact{padding:60px 0}
+  .impact-inner{gap:16px;padding:8px 20px 24px 20px}
+  .imp-card{padding:28px 24px;width:280px}
   .imp-num{font-size:40px}
   
   .services-grid,.machines-grid{grid-template-columns:1fr;gap:20px}
@@ -1501,7 +1644,8 @@ footer{background:#050810;padding:72px 72px 28px}
 
 @media(max-width:480px){
   .str-grid{grid-template-columns:1fr}
-  .impact-inner{grid-template-columns:1fr}
+  .impact-inner{gap:12px}
+  .imp-card{width:260px;padding:24px 20px}
   .q-metrics{grid-template-columns:1fr}
   .cta-btns{flex-direction:column}
   .btn-cta-w,.btn-cta-o{width:100%;justify-content:center}

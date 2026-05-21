@@ -81,7 +81,7 @@ function showTab(i) {
   const wrap = document.getElementById('cloudTagsWrap');
   if (!wrap) return;
   const labels = [
-    'CNC', 'VMC', 'LMW', 'SAFAL', 'SGS', 'HMT', 'Fanuc',
+    'CNC', 'VMC', 'LMW', 'SAFAL', 'SGS', '  ', 'Fanuc',
     'Turning', 'Milling', 'Drilling', 'Tapping', 'Boring', 'Threading', 'Facing', 'Casting',
     'ISO 9001', 'PPAP', 'Cpk', 'NABL',
     'Aluminum', 'Steel', 'Ferrous',

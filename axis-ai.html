@@ -1778,7 +1778,7 @@ INSTRUCTIONS:
           "contact": {
             "address": "SF No. 233/1B3-1B4, Oraikkal Palayam Road, Kunnathur Village, Coimbatore – 641107, Tamil Nadu, India",
             "phone": "+91 98943 55676",
-            "email": "anvil.cbe@gmail.com",
+            "email": "sales@anvilautomation.org",
             "whatsapp": "+91 98943 55676",
             "maps_query": "Anvil Automation Coimbatore",
             "coordinates": "SF No. 233/1B3-1B4, Oraikkal Palayam Road, Kunnathur Village",
@@ -1815,7 +1815,7 @@ INSTRUCTIONS:
               "category": "Casting Solutions",
               "description": "In-house high pressure die casting for aluminum automotive components.",
               "fleet": [
-                { "model": "HMT DIE CAST", "units": 3, "capacity": "120 Ton", "furnace_power": "36 KW", "furnace_capacity": "180–250 KG", "standard": "ASTM Level 3 Capable" }
+                { "model": "   DIE CAST", "units": 2, "capacity": "120 Ton", "furnace_power": "36 KW", "furnace_capacity": "180–250 KG", "standard": "ASTM Level 3 Capable" }
               ],
               "capabilities": ["High Pressure", "Controlled Porosity", "ASTM L3 Standard", "Proof Machining"]
             },
@@ -2231,7 +2231,7 @@ INSTRUCTIONS:
 
       const data = await res.json();
       const reply = data.choices?.[0]?.message?.content
-        || "I'm unable to process that right now. Please contact anvil.cbe@gmail.com or call +91 98943 55676.";
+        || "I'm unable to process that right now. Please contact sales@anvilautomation.org or call +91 98943 55676.";
 
       conversationHistory.push({ role: 'assistant', content: reply });
       return reply;
@@ -2322,7 +2322,7 @@ INSTRUCTIONS:
         appendMsg(cleanReply, 'bot', isRich);
       } catch (e) {
         removeTyping();
-        appendMsg("Connection issue. Please contact anvil.cbe@gmail.com or +91 98943 55676.", 'bot', false);
+        appendMsg("Connection issue. Please contact sales@anvilautomation.org or +91 98943 55676.", 'bot', false);
       }
       isProcessing = false;
     }
@@ -2567,7 +2567,7 @@ INSTRUCTIONS:
           startNoSpeechTimeout(); // Restart silence timer once bot finishes speaking!
         });
       } catch (err) {
-        const errReply = "Connection issue. Please contact anvil.cbe@gmail.com or +91 98943 55676.";
+        const errReply = "Connection issue. Please contact sales@anvilautomation.org or +91 98943 55676.";
         resp.textContent = errReply;
         resp.classList.add('visible');
 

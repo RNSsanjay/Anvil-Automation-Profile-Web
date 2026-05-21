@@ -120,6 +120,20 @@ function openChatbot() {
   console.log('Chatbot clicked - Navigating to Axis AI');
 }
 
+/* ── EMAIL PANEL TOGGLE (for touch / click) ── */
+function toggleEmailPanel(e) {
+  e.stopPropagation();
+  const panel = document.getElementById('dockEmailPanel');
+  if (panel) panel.classList.toggle('open');
+}
+document.addEventListener('click', function(e) {
+  const item = document.getElementById('dockEmailItem');
+  const panel = document.getElementById('dockEmailPanel');
+  if (panel && item && !item.contains(e.target)) {
+    panel.classList.remove('open');
+  }
+});
+
 /* ── METEORS ── */
 (function () {
   const l = document.getElementById('meteorLayer');
@@ -197,8 +211,8 @@ function openChatbot() {
 
   if (vid) {
     vid.addEventListener('canplay', () => { vid.classList.add('loaded'); }, { once: true });
-    vid.addEventListener('playing', () => { 
-      updateBar(); 
+    vid.addEventListener('playing', () => {
+      updateBar();
       // Fade out cinematic text after 3 seconds
       setTimeout(() => {
         const introCenter = document.querySelector('.intro-center');
@@ -220,7 +234,7 @@ function openChatbot() {
   const caps = [
     { name: 'CNC Turning', tag: 'LMW · SAFAL × 5 · SGS', icon: '<circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>' },
     { name: 'VMC Machining', tag: 'Fanuc · 6000 RPM · Indexer', icon: '<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>' },
-    { name: 'Pressure Die Casting', tag: '3× HMT 120 Ton · ASTM L3', icon: '<path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>' },
+    { name: 'Pressure Die Casting', tag: '2×    120 Ton · ASTM L3', icon: '<path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>' },
     { name: 'Scrap Trading', tag: 'Aluminum · Non-ferrous · Recycling', icon: '<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>' },
     { name: 'ISO 9001:2015', tag: 'Quality Certified', icon: '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/>' },
     { name: 'PPAP Documentation', tag: 'Process Control', icon: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>' },
@@ -278,7 +292,7 @@ setTimeout(revealVisibleNow, 120);
 (function () {
   const wrap = document.getElementById('cloudWrap');
   if (!wrap) return;
-  const labels = ['CNC', 'VMC', 'LMW', 'SAFAL', 'SGS', 'HMT', 'Fanuc', 'Turning', 'Milling', 'Drilling', 'Tapping', 'Boring', 'Threading', 'Casting', 'ISO 9001', 'PPAP', 'Cpk', 'NABL', 'Aluminum', 'Steel', 'Ferrous', '120 Ton', '6000 RPM', '200mm', 'Indexer', 'Precision', 'Automotive', 'Coimbatore'];
+  const labels = ['CNC', 'VMC', 'LMW', 'SAFAL', 'SGS', '  ', 'Fanuc', 'Turning', 'Milling', 'Drilling', 'Tapping', 'Boring', 'Threading', 'Casting', 'ISO 9001', 'PPAP', 'Cpk', 'NABL', 'Aluminum', 'Steel', 'Ferrous', '120 Ton', '6000 RPM', '200mm', 'Indexer', 'Precision', 'Automotive', 'Coimbatore'];
   const R = 155;
   const items = [];
   labels.forEach((lbl, i) => {
@@ -406,10 +420,10 @@ setTimeout(revealVisibleNow, 120);
   let scrollLeft;
   let autoScrollInterval;
   let isHovering = false;
-  
+
   // Calculate half width for seamless loop reset
   const getHalfWidth = () => container.scrollWidth / 2;
-  
+
   // Auto-scroll animation with seamless loop
   function startAutoScroll() {
     if (autoScrollInterval) return;
@@ -423,7 +437,7 @@ setTimeout(revealVisibleNow, 120);
       }
     }, 30);
   }
-  
+
   function stopAutoScroll() {
     if (autoScrollInterval) {
       clearInterval(autoScrollInterval);
@@ -459,7 +473,7 @@ setTimeout(revealVisibleNow, 120);
     const x = e.pageX - container.offsetLeft;
     const walk = (x - startX) * 2; // Scroll speed multiplier
     const newScrollLeft = scrollLeft - walk;
-    
+
     // Handle seamless loop during drag
     if (newScrollLeft >= getHalfWidth()) {
       container.scrollLeft = newScrollLeft - getHalfWidth();
@@ -596,10 +610,10 @@ document.querySelectorAll('.reveal-text').forEach(el => revealObserver.observe(e
   if (!logo) return;
 
   // Only run on the landing page (index.html)
-  const isLandingPage = window.location.pathname === '/' || 
-                        window.location.pathname.endsWith('index.html') || 
-                        window.location.pathname.endsWith('/') ||
-                        (!document.querySelector('.portal-hero-img') && !document.querySelector('.machines-hero'));
+  const isLandingPage = window.location.pathname === '/' ||
+    window.location.pathname.endsWith('index.html') ||
+    window.location.pathname.endsWith('/') ||
+    (!document.querySelector('.portal-hero-img') && !document.querySelector('.machines-hero'));
 
   if (!isLandingPage) return;
 
@@ -642,4 +656,138 @@ document.querySelectorAll('.reveal-text').forEach(el => revealObserver.observe(e
       tooltip.classList.remove('show');
     }, 3000);
   }
+})();
+
+/* ── IMPACT CARDS HORIZONTAL SCROLL ── */
+(function () {
+  const container = document.querySelector('.impact-inner');
+  if (!container) return;
+
+  // Clone cards for seamless looping
+  const originalCards = Array.from(container.children);
+  originalCards.forEach(card => {
+    const clone = card.cloneNode(true);
+    clone.classList.add('visible'); // ensure clones are visible
+    clone.removeAttribute('data-reveal'); // remove reveal observer trigger from clones
+    container.appendChild(clone);
+  });
+
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+  let autoScrollInterval = null;
+  let isHovering = false;
+
+  const getHalfWidth = () => container.scrollWidth / 2;
+
+  function startAutoScroll() {
+    if (autoScrollInterval) return;
+    autoScrollInterval = setInterval(() => {
+      if (!isDown && !isHovering) {
+        container.scrollLeft += 1;
+        if (container.scrollLeft >= getHalfWidth()) {
+          container.scrollLeft = 0;
+        }
+      }
+    }, 15); // 16ms interval (~60 FPS) for faster, smoother motion
+  }
+
+  function stopAutoScroll() {
+    if (autoScrollInterval) {
+      clearInterval(autoScrollInterval);
+      autoScrollInterval = null;
+    }
+  }
+
+  container.addEventListener('mousedown', (e) => {
+    isDown = true;
+    container.classList.add('dragging');
+    startX = e.pageX - container.offsetLeft;
+    scrollLeft = container.scrollLeft;
+    stopAutoScroll();
+  });
+
+  container.addEventListener('mouseleave', () => {
+    isDown = false;
+    container.classList.remove('dragging');
+    isHovering = false;
+    startAutoScroll();
+  });
+
+  container.addEventListener('mouseup', () => {
+    isDown = false;
+    container.classList.remove('dragging');
+    if (!isHovering) startAutoScroll();
+  });
+
+  container.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - container.offsetLeft;
+    const walk = (x - startX) * 2; // Scroll speed multiplier
+    const newScrollLeft = scrollLeft - walk;
+
+    if (newScrollLeft >= getHalfWidth()) {
+      container.scrollLeft = newScrollLeft - getHalfWidth();
+      scrollLeft = container.scrollLeft;
+      startX = x;
+    } else if (newScrollLeft < 0) {
+      container.scrollLeft = getHalfWidth() + newScrollLeft;
+      scrollLeft = container.scrollLeft;
+      startX = x;
+    } else {
+      container.scrollLeft = newScrollLeft;
+    }
+  });
+
+  container.addEventListener('mouseenter', () => {
+    isHovering = true;
+    stopAutoScroll();
+  });
+
+  // Start auto-scroll initially
+  startAutoScroll();
+})();
+
+/* ── DOCK BACKGROUND DETECTION: toggle black/white based on section bg ── */
+(function () {
+  const dock = document.getElementById('mainDock');
+  if (!dock) return;
+
+  // Selectors for sections with a LIGHT (white/near-white) background
+  const lightBgSelectors = [
+    '#services',      // background: var(--bg) = near-white
+    '#quality',       // background: var(--bg)
+    '#clients',       // background: white
+    '.about-sec',     // background: var(--bg)
+    '.impact',        // white/light impact numbers bar
+    '.caps-strip',    // capabilities strip (light)
+    '.ticker-band',   // ticker band (light)
+  ];
+
+  const lightEls = lightBgSelectors
+    .map(sel => document.querySelector(sel))
+    .filter(Boolean);
+
+  function updateDockTheme() {
+    // The dock sits at the bottom of the viewport; check what element
+    // occupies the point at ~88% down the visible area (near dock position)
+    const checkY = window.scrollY + window.innerHeight * 0.88;
+
+    let onLight = false;
+    for (const el of lightEls) {
+      const top = el.offsetTop;
+      const bot = top + el.offsetHeight;
+      if (checkY >= top && checkY <= bot) {
+        onLight = true;
+        break;
+      }
+    }
+
+    dock.classList.toggle('dock-on-light', onLight);
+  }
+
+  updateDockTheme();
+  window.addEventListener('scroll', updateDockTheme, { passive: true });
+  window.addEventListener('resize', updateDockTheme, { passive: true });
 })();
