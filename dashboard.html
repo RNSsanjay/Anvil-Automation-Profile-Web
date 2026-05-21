@@ -1,0 +1,1890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ASN Portal — Anvil Automation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --bg:       #050810;
+      --bg2:      #080d1a;
+      --bg3:      #0c1220;
+      --surface:  rgba(255,255,255,.03);
+      --surf2:    rgba(255,255,255,.06);
+      --border:   rgba(255,255,255,.07);
+      --border2:  rgba(255,255,255,.13);
+      --white:    #ffffff;
+      --w80:      rgba(255,255,255,.80);
+      --w60:      rgba(255,255,255,.60);
+      --w40:      rgba(255,255,255,.40);
+      --w20:      rgba(255,255,255,.20);
+      --w10:      rgba(255,255,255,.10);
+      --w06:      rgba(255,255,255,.06);
+      --teal:     #2dd4bf;
+      --teal-dk:  #0d9488;
+      --teal-dim: rgba(45,212,191,.12);
+      --teal-glo: rgba(45,212,191,.25);
+      --amber:    #f59e0b;
+      --amber-dim:rgba(245,158,11,.12);
+      --green:    #22c55e;
+      --green-dim:rgba(34,197,94,.12);
+      --red:      #ef4444;
+      --red-dim:  rgba(239,68,68,.12);
+      --blue:     #3b82f6;
+      --blue-dim: rgba(59,130,246,.12);
+      --font-d:   'Bebas Neue', sans-serif;
+      --font-b:   'DM Sans', sans-serif;
+      --font-m:   'DM Mono', monospace;
+      --r-sm: 8px; --r-md: 12px; --r-lg: 18px; --r-xl: 24px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { height: 100%; scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-b);
+      background: var(--bg);
+      color: var(--white);
+      min-height: 100%;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+
+    /* Grid texture */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(var(--w06) 1px, transparent 1px),
+        linear-gradient(90deg, var(--w06) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── TOP NAV ── */
+    .topnav {
+      position: sticky; top: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 64px;
+      background: rgba(5,8,16,.88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-brand {
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none;
+    }
+    .nav-brand img {
+      width: 36px; height: 36px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 8px rgba(255,255,255,.6));
+    }
+    .nav-brand-name {
+      font-family: var(--font-d);
+      font-size: 18px;
+      letter-spacing: .1em;
+      color: var(--white);
+    }
+    .nav-brand-tag {
+      font-size: 9px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--w40);
+    }
+
+    .nav-center {
+      display: flex; align-items: center; gap: 6px;
+      padding: 5px 8px;
+      border-radius: var(--r-lg);
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    .nav-pill {
+      padding: 7px 16px;
+      border-radius: var(--r-md);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .04em;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: var(--w40);
+      font-family: var(--font-b);
+      transition: all .22s;
+    }
+    .nav-pill.active {
+      background: var(--teal);
+      color: var(--bg);
+    }
+    .nav-pill:hover:not(.active) { color: var(--w80); background: var(--surf2); }
+
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+
+    .nav-user {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 14px;
+      border-radius: var(--r-md);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--w60);
+    }
+    .nav-user-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--teal);
+      box-shadow: 0 0 8px var(--teal-glo);
+    }
+
+    .btn-nav {
+      padding: 7px 16px;
+      border-radius: var(--r-md);
+      border: 1px solid var(--border2);
+      background: transparent;
+      color: var(--w60);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: var(--font-b);
+      transition: all .22s;
+    }
+    .btn-nav:hover { color: var(--white); border-color: var(--w40); background: var(--surf2); }
+
+    /* ── PAGE ── */
+    .page { position: relative; z-index: 1; }
+
+    /* ── VIEWS ── */
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* ══════════════════════════════════
+       LOGIN VIEW
+    ══════════════════════════════════ */
+    .login-wrap {
+      min-height: calc(100vh - 64px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-xl);
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,.5);
+      animation: fadeUp .45s cubic-bezier(.4,0,.2,1) both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .login-header {
+      padding: 36px 36px 28px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(135deg, var(--bg3) 0%, var(--bg2) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-header::after {
+      content: '';
+      position: absolute; bottom: -60px; right: -60px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--teal-dim) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .login-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 10px;
+    }
+
+    .login-title {
+      font-family: var(--font-d);
+      font-size: 40px;
+      letter-spacing: .05em;
+      color: var(--white);
+      line-height: .95;
+      margin-bottom: 8px;
+    }
+
+    .login-title span { color: var(--teal); }
+
+    .login-sub {
+      font-size: 13px;
+      color: var(--w40);
+      line-height: 1.6;
+    }
+
+    .login-body { padding: 28px 36px 36px; }
+
+    /* Role tabs */
+    .role-tabs {
+      display: flex; gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .role-tab {
+      flex: 1;
+      display: flex; align-items: center; gap: 10px;
+      padding: 14px 16px;
+      border-radius: var(--r-md);
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      transition: all .22s;
+    }
+    .role-tab:hover { border-color: var(--border2); background: var(--surf2); }
+    .role-tab.active { border-color: var(--teal); background: var(--teal-dim); }
+
+    .role-tab-ico {
+      width: 34px; height: 34px;
+      border-radius: var(--r-sm);
+      background: var(--surf2);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .role-tab.active .role-tab-ico { background: rgba(45,212,191,.2); }
+    .role-tab-ico svg { width: 16px; height: 16px; stroke: var(--w40); fill: none; stroke-width: 2; }
+    .role-tab.active .role-tab-ico svg { stroke: var(--teal); }
+
+    .role-tab-name { font-size: 13px; font-weight: 700; color: var(--w60); }
+    .role-tab.active .role-tab-name { color: var(--teal); }
+    .role-tab-desc { font-size: 10px; color: var(--w40); margin-top: 1px; }
+
+    /* Login fields */
+    .l-fields { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
+
+    .l-field-grp { display: flex; flex-direction: column; gap: 6px; }
+    .l-field-lbl {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase;
+      color: var(--w40);
+    }
+    .l-field-wrap { position: relative; }
+    .l-field-wrap svg.fi {
+      position: absolute; left: 12px; top: 50%;
+      transform: translateY(-50%);
+      width: 14px; height: 14px;
+      stroke: var(--w20); fill: none; stroke-width: 2;
+      pointer-events: none;
+    }
+    .l-field-input {
+      width: 100%;
+      padding: 12px 12px 12px 38px;
+      border-radius: var(--r-md);
+      border: 1px solid var(--border);
+      background: var(--bg3);
+      color: var(--white);
+      font-family: var(--font-b);
+      font-size: 13.5px;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .l-field-input::placeholder { color: var(--w20); }
+    .l-field-input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px var(--teal-dim); }
+
+    .btn-submit {
+      width: 100%;
+      padding: 13px 20px;
+      border-radius: var(--r-md);
+      border: none;
+      background: var(--teal);
+      color: var(--bg);
+      font-family: var(--font-b);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .03em;
+      cursor: pointer;
+      transition: all .22s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-submit:hover { background: #25b9a6; box-shadow: 0 8px 24px var(--teal-glo); transform: translateY(-1px); }
+    .btn-submit:disabled { opacity: .5; cursor: not-allowed; transform: none; box-shadow: none; }
+    .btn-submit svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    .login-status {
+      display: none;
+      align-items: flex-start; gap: 8px;
+      padding: 11px 14px;
+      border-radius: var(--r-md);
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    .login-status.show { display: flex; }
+    .login-status svg { width: 14px; height: 14px; fill: none; stroke-width: 2; flex-shrink: 0; margin-top: 2px; }
+    .login-status.error   { background: var(--red-dim); border: 1px solid rgba(239,68,68,.25); color: #fca5a5; }
+    .login-status.error svg { stroke: var(--red); }
+    .login-status.info    { background: var(--blue-dim); border: 1px solid rgba(59,130,246,.25); color: #93c5fd; }
+    .login-status.info svg { stroke: var(--blue); }
+
+    /* ══════════════════════════════════
+       SUPPLIER VIEW
+    ══════════════════════════════════ */
+    .supplier-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 32px 80px;
+    }
+
+    /* Page header */
+    .page-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 40px; gap: 16px; flex-wrap: wrap;
+    }
+    .page-eyebrow {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 8px;
+    }
+    .page-title {
+      font-family: var(--font-d);
+      font-size: clamp(36px, 5vw, 56px);
+      letter-spacing: .04em; line-height: .95;
+      color: var(--white);
+    }
+    .page-sub { font-size: 13px; color: var(--w40); margin-top: 6px; line-height: 1.6; }
+
+    /* Stats row */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    .stat-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 20px 22px;
+      transition: border-color .2s;
+    }
+    .stat-card:hover { border-color: var(--border2); }
+
+    .stat-label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: var(--w40); margin-bottom: 8px;
+    }
+    .stat-value {
+      font-family: var(--font-d);
+      font-size: 34px; letter-spacing: .04em;
+      color: var(--white); line-height: 1;
+    }
+    .stat-value.teal { color: var(--teal); }
+    .stat-value.amber { color: var(--amber); }
+    .stat-value.green { color: var(--green); }
+
+    /* ASN Form + My ASNs grid */
+    .supplier-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* Card */
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-xl);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 22px 28px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .card-title {
+      font-family: var(--font-d);
+      font-size: 22px; letter-spacing: .06em;
+      color: var(--white);
+    }
+    .card-sub { font-size: 12px; color: var(--w40); margin-top: 3px; }
+
+    .card-body { padding: 28px; }
+
+    /* ASN Form */
+    .asn-form { display: flex; flex-direction: column; gap: 16px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .f-group { display: flex; flex-direction: column; gap: 6px; }
+    .f-group.full { grid-column: 1 / -1; }
+
+    .f-label {
+      font-size: 10.5px; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--w40);
+      display: flex; align-items: center; gap: 5px;
+    }
+    .f-label .req { color: var(--teal); }
+
+    .f-wrap { position: relative; }
+    .f-wrap svg.fi {
+      position: absolute; left: 11px; top: 50%;
+      transform: translateY(-50%);
+      width: 13px; height: 13px;
+      stroke: var(--w20); fill: none; stroke-width: 2;
+      pointer-events: none; transition: stroke .2s;
+    }
+    .f-input, .f-select {
+      width: 100%;
+      padding: 11px 11px 11px 34px;
+      border-radius: var(--r-md);
+      border: 1px solid var(--border);
+      background: var(--bg3);
+      color: var(--white);
+      font-family: var(--font-b);
+      font-size: 13px;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      -webkit-appearance: none;
+    }
+    .f-input::placeholder { color: var(--w20); }
+    .f-input:focus, .f-select:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px var(--teal-dim);
+    }
+    .f-input:focus ~ svg.fi, .f-wrap:focus-within svg.fi { stroke: var(--teal); }
+    .f-select option { background: var(--bg3); }
+
+    textarea.f-input {
+      padding-top: 11px;
+      resize: vertical;
+      min-height: 72px;
+      line-height: 1.5;
+    }
+
+    .btn-teal {
+      width: 100%;
+      padding: 13px 20px;
+      border-radius: var(--r-md);
+      border: none;
+      background: var(--teal);
+      color: var(--bg);
+      font-family: var(--font-b);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .22s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      position: relative; overflow: hidden;
+    }
+    .btn-teal::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,.12), transparent);
+      opacity: 0; transition: opacity .22s;
+    }
+    .btn-teal:hover::after { opacity: 1; }
+    .btn-teal:hover { transform: translateY(-1px); box-shadow: 0 10px 28px var(--teal-glo); }
+    .btn-teal:disabled { opacity: .5; cursor: not-allowed; transform: none; box-shadow: none; }
+    .btn-teal svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    .btn-outline {
+      padding: 10px 18px;
+      border-radius: var(--r-md);
+      border: 1px solid var(--border2);
+      background: transparent;
+      color: var(--w60);
+      font-family: var(--font-b);
+      font-size: 12.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .22s;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-outline svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .btn-outline:hover { color: var(--white); border-color: var(--w40); background: var(--surf2); }
+
+    /* Status */
+    .form-status {
+      display: none;
+      align-items: flex-start; gap: 8px;
+      padding: 11px 14px;
+      border-radius: var(--r-md);
+      font-size: 12.5px; line-height: 1.55;
+    }
+    .form-status.show { display: flex; }
+    .form-status svg { width: 14px; height: 14px; fill: none; stroke-width: 2; flex-shrink: 0; margin-top: 2px; }
+    .form-status.error   { background: var(--red-dim); border: 1px solid rgba(239,68,68,.22); color: #fca5a5; }
+    .form-status.error svg { stroke: var(--red); }
+    .form-status.success { background: var(--green-dim); border: 1px solid rgba(34,197,94,.22); color: #86efac; }
+    .form-status.success svg { stroke: var(--green); }
+    .form-status.info    { background: var(--blue-dim); border: 1px solid rgba(59,130,246,.22); color: #93c5fd; }
+    .form-status.info svg { stroke: var(--blue); }
+
+    /* QR Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(5,8,16,.85);
+      backdrop-filter: blur(12px);
+      z-index: 500;
+      align-items: center; justify-content: center;
+      padding: 24px;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: var(--r-xl);
+      width: 100%; max-width: 480px;
+      overflow: hidden;
+      animation: fadeUp .35s cubic-bezier(.4,0,.2,1) both;
+      box-shadow: 0 40px 100px rgba(0,0,0,.6);
+    }
+
+    .modal-header {
+      padding: 24px 28px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: flex-start; justify-content: space-between;
+    }
+    .modal-title { font-family: var(--font-d); font-size: 26px; letter-spacing: .05em; color: var(--white); }
+    .modal-sub { font-size: 12px; color: var(--w40); margin-top: 4px; }
+    .modal-close {
+      background: none; border: none; cursor: pointer;
+      color: var(--w40); padding: 4px;
+      transition: color .2s;
+    }
+    .modal-close:hover { color: var(--white); }
+    .modal-close svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    .modal-body { padding: 28px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+
+    .qr-wrap {
+      background: var(--white);
+      border-radius: var(--r-lg);
+      padding: 20px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 32px rgba(45,212,191,.15);
+    }
+    #qrCanvas { display: block; }
+
+    .asn-id-display {
+      font-family: var(--font-m);
+      font-size: 13px;
+      color: var(--teal);
+      padding: 8px 16px;
+      border-radius: var(--r-md);
+      background: var(--teal-dim);
+      border: 1px solid rgba(45,212,191,.2);
+      letter-spacing: .06em;
+    }
+
+    .asn-summary {
+      width: 100%;
+      display: flex; flex-direction: column; gap: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      overflow: hidden;
+    }
+    .asn-sum-row {
+      display: flex; justify-content: space-between;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 12.5px;
+    }
+    .asn-sum-row:last-child { border-bottom: none; }
+    .asn-sum-k { color: var(--w40); font-weight: 500; }
+    .asn-sum-v { color: var(--white); font-weight: 600; text-align: right; font-family: var(--font-m); font-size: 12px; }
+
+    .modal-footer {
+      padding: 20px 28px;
+      border-top: 1px solid var(--border);
+      display: flex; gap: 10px;
+    }
+
+    /* ASN List */
+    .asn-list { display: flex; flex-direction: column; gap: 12px; }
+    .asn-list-empty {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--w40);
+      font-size: 13px;
+    }
+    .asn-list-empty svg {
+      width: 40px; height: 40px;
+      stroke: var(--w20); fill: none; stroke-width: 1.5;
+      margin: 0 auto 12px; display: block;
+    }
+
+    .asn-item {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: 16px 18px;
+      transition: border-color .2s;
+      cursor: default;
+    }
+    .asn-item:hover { border-color: var(--border2); }
+
+    .asn-item-top {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 10px; gap: 10px;
+    }
+    .asn-item-id {
+      font-family: var(--font-m);
+      font-size: 11px; color: var(--teal);
+      letter-spacing: .06em;
+    }
+    .asn-item-mat {
+      font-size: 14px; font-weight: 700;
+      color: var(--white); margin-top: 2px;
+    }
+
+    .asn-badge {
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .badge-pending { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,158,11,.2); }
+    .badge-received { background: var(--green-dim); color: var(--green); border: 1px solid rgba(34,197,94,.2); }
+    .badge-transit  { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(59,130,246,.2); }
+    .badge-verified { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(45,212,191,.2); }
+
+    .asn-item-meta {
+      display: flex; flex-wrap: wrap; gap: 14px;
+      font-size: 11.5px; color: var(--w40);
+    }
+    .asn-item-meta span { display: flex; align-items: center; gap: 5px; }
+    .asn-item-meta svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    /* ══════════════════════════════════
+       ADMIN DASHBOARD
+    ══════════════════════════════════ */
+    .admin-wrap {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 40px 32px 80px;
+    }
+
+    /* Admin stats */
+    .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .a-stat {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 22px 24px;
+      display: flex; align-items: flex-start; gap: 16px;
+    }
+    .a-stat-ico {
+      width: 44px; height: 44px;
+      border-radius: var(--r-md);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .a-stat-ico svg { width: 20px; height: 20px; fill: none; stroke-width: 2; }
+    .a-stat-ico.teal  { background: var(--teal-dim); }
+    .a-stat-ico.teal svg { stroke: var(--teal); }
+    .a-stat-ico.amber { background: var(--amber-dim); }
+    .a-stat-ico.amber svg { stroke: var(--amber); }
+    .a-stat-ico.green { background: var(--green-dim); }
+    .a-stat-ico.green svg { stroke: var(--green); }
+    .a-stat-ico.blue  { background: var(--blue-dim); }
+    .a-stat-ico.blue svg  { stroke: var(--blue); }
+    .a-stat-num { font-family: var(--font-d); font-size: 38px; letter-spacing: .04em; color: var(--white); line-height: 1; }
+    .a-stat-lbl { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--w40); margin-top: 4px; }
+
+    /* Admin main grid */
+    .admin-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ASN Table */
+    .asn-table-wrap { overflow-x: auto; }
+
+    .filter-row {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 16px; flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px; font-weight: 600;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--w40);
+      cursor: pointer;
+      font-family: var(--font-b);
+      transition: all .2s;
+    }
+    .filter-btn.active { background: var(--teal); color: var(--bg); border-color: var(--teal); }
+    .filter-btn:hover:not(.active) { color: var(--w80); border-color: var(--border2); }
+
+    .asn-table { width: 100%; border-collapse: collapse; }
+    .asn-table th {
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--w40);
+      border-bottom: 1px solid var(--border);
+    }
+    .asn-table td {
+      padding: 13px 14px;
+      font-size: 12.5px;
+      color: var(--w80);
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .asn-table tr:last-child td { border-bottom: none; }
+    .asn-table tr:hover td { background: var(--surface); }
+
+    .td-id { font-family: var(--font-m); font-size: 11px; color: var(--teal); }
+    .td-mat { font-weight: 700; color: var(--white); }
+
+    .btn-sm {
+      padding: 6px 12px;
+      border-radius: var(--r-sm);
+      border: 1px solid var(--border2);
+      background: var(--surface);
+      color: var(--w60);
+      font-family: var(--font-b);
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .btn-sm:hover { color: var(--white); border-color: var(--w40); background: var(--surf2); }
+    .btn-sm.teal  { border-color: rgba(45,212,191,.3); color: var(--teal); background: var(--teal-dim); }
+    .btn-sm.teal:hover { background: rgba(45,212,191,.2); }
+    .btn-sm.green { border-color: rgba(34,197,94,.3); color: var(--green); background: var(--green-dim); }
+    .btn-sm.green:hover { background: rgba(34,197,94,.2); }
+
+    /* QR Scanner panel */
+    .scanner-panel {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-xl);
+      overflow: hidden;
+    }
+
+    .scanner-head {
+      padding: 22px 24px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .scanner-body { padding: 24px; }
+
+    .scanner-area {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: var(--r-lg);
+      border: 2px dashed var(--border2);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 12px;
+      background: var(--bg3);
+      color: var(--w40);
+      font-size: 13px;
+      text-align: center;
+      padding: 24px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scanner-area svg { width: 40px; height: 40px; stroke: var(--w20); fill: none; stroke-width: 1.5; }
+
+    /* Scan corner decorations */
+    .scanner-area::before,
+    .scanner-area::after {
+      content: '';
+      position: absolute;
+      width: 28px; height: 28px;
+      border-color: var(--teal);
+      border-style: solid;
+    }
+    .scanner-area::before { top: 12px; left: 12px; border-width: 2px 0 0 2px; border-radius: 4px 0 0 0; }
+    .scanner-area::after  { bottom: 12px; right: 12px; border-width: 0 2px 2px 0; border-radius: 0 0 4px 0; }
+
+    .manual-id-row {
+      display: flex; gap: 8px;
+    }
+    .manual-id-row input {
+      flex: 1;
+      padding: 10px 12px;
+      border-radius: var(--r-md);
+      border: 1px solid var(--border);
+      background: var(--bg3);
+      color: var(--white);
+      font-family: var(--font-m);
+      font-size: 13px;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .manual-id-row input:focus { border-color: var(--teal); }
+    .manual-id-row input::placeholder { color: var(--w20); font-family: var(--font-b); }
+
+    /* Verified ASN detail */
+    .verified-detail {
+      display: none;
+      background: var(--bg3);
+      border: 1px solid rgba(45,212,191,.25);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      margin-top: 16px;
+    }
+    .verified-detail.show { display: block; }
+
+    .verified-head {
+      padding: 14px 18px;
+      background: var(--teal-dim);
+      border-bottom: 1px solid rgba(45,212,191,.2);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .verified-head svg { width: 16px; height: 16px; stroke: var(--teal); fill: none; stroke-width: 2; }
+    .verified-head-txt { font-size: 13px; font-weight: 700; color: var(--teal); }
+
+    .verified-rows { display: flex; flex-direction: column; }
+    .verified-row {
+      display: flex; justify-content: space-between;
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--border);
+      font-size: 12.5px;
+    }
+    .verified-row:last-child { border-bottom: none; }
+    .verified-k { color: var(--w40); }
+    .verified-v { color: var(--white); font-weight: 600; font-family: var(--font-m); font-size: 12px; }
+
+    .verify-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+
+    /* Spinner */
+    .spinner {
+      width: 15px; height: 15px;
+      border: 2px solid rgba(5,8,16,.3);
+      border-top-color: var(--bg);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .hidden { display: none !important; }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .admin-grid, .supplier-grid { grid-template-columns: 1fr; }
+      .admin-stats, .stats-row { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .admin-stats, .stats-row { grid-template-columns: 1fr 1fr; }
+      .topnav { padding: 0 16px; }
+      .supplier-wrap, .admin-wrap { padding: 24px 16px 60px; }
+      .card-body { padding: 20px; }
+      .form-row { grid-template-columns: 1fr; }
+      .nav-center { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── TOP NAV ── -->
+<nav class="topnav">
+  <a href="index.html" class="nav-brand">
+    <img src="https://rnssanjay.github.io/Anvil-Automation-Profile-Web/assets/images/logo1.png"
+         alt="Anvil"
+         onerror="this.style.display='none'">
+    <div>
+      <div class="nav-brand-name">ANVIL ASN</div>
+      <div class="nav-brand-tag">Advance Ship Notice Portal</div>
+    </div>
+  </a>
+
+  <div class="nav-center" id="navCenter" style="display:none">
+    <button class="nav-pill active" id="navSupplier" onclick="switchView('supplier')">
+      Supplier
+    </button>
+    <button class="nav-pill" id="navAdmin" onclick="switchView('admin')">
+      Admin
+    </button>
+  </div>
+
+  <div class="nav-right">
+    <div class="nav-user hidden" id="navUser">
+      <div class="nav-user-dot"></div>
+      <span id="navUserEmail">—</span>
+    </div>
+    <button class="btn-nav hidden" id="navSignout" onclick="doSignout()">Sign Out</button>
+    <a href="index.html" class="btn-nav">← Website</a>
+  </div>
+</nav>
+
+<!-- ── MAIN ── -->
+<div class="page">
+
+  <!-- ══ LOGIN VIEW ══ -->
+  <div class="view active" id="viewLogin">
+    <div class="login-wrap">
+      <div class="login-card">
+        <div class="login-header">
+          <div class="login-eyebrow">Anvil Automation · Coimbatore</div>
+          <div class="login-title">ASN<br><span>PORTAL</span></div>
+          <div class="login-sub">Advance Ship Notice system for suppliers and admin. Sign in to continue.</div>
+        </div>
+        <div class="login-body">
+
+          <!-- Role selection -->
+          <div class="role-tabs">
+            <div class="role-tab active" id="roleSupplier" onclick="setLoginRole('supplier')">
+              <div class="role-tab-ico">
+                <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              </div>
+              <div>
+                <div class="role-tab-name">Supplier</div>
+                <div class="role-tab-desc">Create & manage ASNs</div>
+              </div>
+            </div>
+            <div class="role-tab" id="roleAdmin" onclick="setLoginRole('admin')">
+              <div class="role-tab-ico">
+                <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div>
+                <div class="role-tab-name">Admin</div>
+                <div class="role-tab-desc">Verify & receive shipments</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="login-status" id="loginStatus">
+            <svg viewBox="0 0 24 24" id="loginStatusIcon"></svg>
+            <span id="loginStatusTxt"></span>
+          </div>
+
+          <div class="l-fields">
+            <div class="l-field-grp">
+              <label class="l-field-lbl">Email</label>
+              <div class="l-field-wrap">
+                <input class="l-field-input" id="loginEmail" type="email" placeholder="name@company.com" autocomplete="email" />
+                <svg class="fi" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </div>
+            </div>
+            <div class="l-field-grp">
+              <label class="l-field-lbl">Password</label>
+              <div class="l-field-wrap">
+                <input class="l-field-input" id="loginPassword" type="password" placeholder="Enter password" autocomplete="current-password" />
+                <svg class="fi" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-submit" id="loginBtn" onclick="doLogin()">
+            <svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+            Sign In
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SUPPLIER VIEW ══ -->
+  <div class="view" id="viewSupplier">
+    <div class="supplier-wrap">
+
+      <div class="page-header">
+        <div>
+          <div class="page-eyebrow">Supplier Portal · Anvil Automation</div>
+          <h1 class="page-title">ADVANCE SHIP<br>NOTICE</h1>
+          <div class="page-sub">Create ASNs, generate QR codes, and track your shipments.</div>
+        </div>
+        <button class="btn-outline" onclick="openAsnModal()">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          New ASN
+        </button>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">Total ASNs</div>
+          <div class="stat-value" id="sTotalAsn">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Pending</div>
+          <div class="stat-value amber" id="sPending">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">In Transit</div>
+          <div class="stat-value" style="color:var(--blue)" id="sTransit">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Received</div>
+          <div class="stat-value green" id="sReceived">0</div>
+        </div>
+      </div>
+
+      <div class="supplier-grid">
+
+        <!-- ASN Form -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">CREATE ASN</div>
+              <div class="card-sub">Fill all details to generate your Advance Ship Notice</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="form-status" id="asnFormStatus">
+              <svg viewBox="0 0 24 24" id="asnFormStatusIcon"></svg>
+              <span id="asnFormStatusTxt"></span>
+            </div>
+            <form class="asn-form" id="asnForm" onsubmit="return false">
+
+              <div class="form-row">
+                <div class="f-group">
+                  <label class="f-label">Material Name <span class="req">*</span></label>
+                  <div class="f-wrap">
+                    <input class="f-input" id="f_material" type="text" placeholder="e.g. Aluminium Ingots" required />
+                    <svg class="fi" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                  </div>
+                </div>
+                <div class="f-group">
+                  <label class="f-label">Invoice Number <span class="req">*</span></label>
+                  <div class="f-wrap">
+                    <input class="f-input" id="f_invoice" type="text" placeholder="INV-2026-001" required />
+                    <svg class="fi" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="f-group">
+                  <label class="f-label">Quantity <span class="req">*</span></label>
+                  <div class="f-wrap">
+                    <input class="f-input" id="f_qty" type="number" placeholder="e.g. 500" min="1" required />
+                    <svg class="fi" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                  </div>
+                </div>
+                <div class="f-group">
+                  <label class="f-label">Weight (kg) <span class="req">*</span></label>
+                  <div class="f-wrap">
+                    <input class="f-input" id="f_weight" type="number" placeholder="e.g. 1200" min="0.1" step="0.1" required />
+                    <svg class="fi" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="f-group">
+                  <label class="f-label">Vehicle Number <span class="req">*</span></label>
+                  <div class="f-wrap">
+                    <input class="f-input" id="f_vehicle" type="text" placeholder="TN 38 AB 1234" required />
+                    <svg class="fi" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                  </div>
+                </div>
+                <div class="f-group">
+                  <label class="f-label">Driver Name <span class="req">*</span></label>
+                  <div class="f-wrap">
+                    <input class="f-input" id="f_driver" type="text" placeholder="Driver full name" required />
+                    <svg class="fi" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="f-group">
+                  <label class="f-label">Driver Phone</label>
+                  <div class="f-wrap">
+                    <input class="f-input" id="f_driverPhone" type="tel" placeholder="+91 98765 43210" />
+                    <svg class="fi" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.1 14.76a19.79 19.79 0 01-3.07-8.67A2 2 0 013.83 4h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 11.6a16 16 0 006.29 6.29l1.38-1.09a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 19.92z"/></svg>
+                  </div>
+                </div>
+                <div class="f-group">
+                  <label class="f-label">Dispatch Date <span class="req">*</span></label>
+                  <div class="f-wrap">
+                    <input class="f-input" id="f_dispatch" type="date" required style="padding-left:11px" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="f-group">
+                  <label class="f-label">Expected Arrival <span class="req">*</span></label>
+                  <div class="f-wrap">
+                    <input class="f-input" id="f_arrival" type="date" required style="padding-left:11px" />
+                  </div>
+                </div>
+                <div class="f-group">
+                  <label class="f-label">Unit</label>
+                  <div class="f-wrap">
+                    <input class="f-input" id="f_unit" type="text" placeholder="Nos / KG / MT / Boxes" />
+                    <svg class="fi" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                  </div>
+                </div>
+              </div>
+
+              <div class="f-group full">
+                <label class="f-label">Notes / Remarks</label>
+                <div class="f-wrap">
+                  <textarea class="f-input" id="f_notes" placeholder="Additional notes, handling instructions, special requirements…" style="padding-left:11px"></textarea>
+                </div>
+              </div>
+
+              <button type="button" class="btn-teal" id="asnSubmitBtn" onclick="submitASN()">
+                <div class="spinner" id="asnSpinner"></div>
+                <span id="asnBtnLabel">
+                  <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  Submit ASN & Generate QR
+                </span>
+              </button>
+
+            </form>
+          </div>
+        </div>
+
+        <!-- My ASNs -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">MY ASNs</div>
+              <div class="card-sub">Your submitted shipment notices</div>
+            </div>
+            <button class="btn-outline" onclick="loadSupplierASNs()">
+              <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+              Refresh
+            </button>
+          </div>
+          <div class="card-body" style="padding:16px">
+            <div class="asn-list" id="supplierAsnList">
+              <div class="asn-list-empty">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                No ASNs yet. Create your first shipment notice.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ADMIN VIEW ══ -->
+  <div class="view" id="viewAdmin">
+    <div class="admin-wrap">
+
+      <div class="page-header">
+        <div>
+          <div class="page-eyebrow">Admin Panel · Anvil Automation</div>
+          <h1 class="page-title">ASN CONTROL<br>DASHBOARD</h1>
+          <div class="page-sub">Manage incoming shipments, verify ASNs and update inventory.</div>
+        </div>
+      </div>
+
+      <!-- Admin stats -->
+      <div class="admin-stats" id="adminStatsRow">
+        <div class="a-stat">
+          <div class="a-stat-ico teal"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div><div class="a-stat-num" id="adTotal">0</div><div class="a-stat-lbl">Total ASNs</div></div>
+        </div>
+        <div class="a-stat">
+          <div class="a-stat-ico amber"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div><div class="a-stat-num" id="adPending">0</div><div class="a-stat-lbl">Pending</div></div>
+        </div>
+        <div class="a-stat">
+          <div class="a-stat-ico blue"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+          <div><div class="a-stat-num" id="adTransit">0</div><div class="a-stat-lbl">In Transit</div></div>
+        </div>
+        <div class="a-stat">
+          <div class="a-stat-ico green"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <div><div class="a-stat-num" id="adReceived">0</div><div class="a-stat-lbl">Received</div></div>
+        </div>
+      </div>
+
+      <div class="admin-grid">
+
+        <!-- ASN Table -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">ALL SHIPMENTS</div>
+              <div class="card-sub">All incoming ASNs across suppliers</div>
+            </div>
+            <button class="btn-outline" onclick="loadAdminASNs()">
+              <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+              Refresh
+            </button>
+          </div>
+          <div class="card-body" style="padding:0">
+            <div class="filter-row" style="padding:16px 20px 0">
+              <button class="filter-btn active" onclick="filterAdmin('all', this)">All</button>
+              <button class="filter-btn" onclick="filterAdmin('pending', this)">Pending</button>
+              <button class="filter-btn" onclick="filterAdmin('in_transit', this)">In Transit</button>
+              <button class="filter-btn" onclick="filterAdmin('received', this)">Received</button>
+            </div>
+            <div class="asn-table-wrap" style="padding:12px 0">
+              <table class="asn-table">
+                <thead>
+                  <tr>
+                    <th>ASN ID</th>
+                    <th>Material</th>
+                    <th>Qty</th>
+                    <th>Arrival</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="adminTableBody">
+                  <tr><td colspan="6" style="text-align:center;color:var(--w40);padding:32px">Loading…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scanner panel -->
+        <div class="scanner-panel">
+          <div class="scanner-head">
+            <div class="card-title">VERIFY SHIPMENT</div>
+            <div class="card-sub">Enter ASN ID to verify and receive a shipment</div>
+          </div>
+          <div class="scanner-body">
+
+            <div class="scanner-area">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3m0 4h4m-4-4v4"/></svg>
+              <span>Enter ASN ID below<br>to look up shipment</span>
+            </div>
+
+            <div class="manual-id-row">
+              <input id="scanInput" type="text" placeholder="ASN-XXXXXXXX" />
+              <button class="btn-sm teal" onclick="lookupASN()">Verify</button>
+            </div>
+
+            <!-- Verified detail -->
+            <div class="verified-detail" id="verifiedDetail">
+              <div class="verified-head">
+                <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                <span class="verified-head-txt">ASN Found — Shipment Details</span>
+              </div>
+              <div class="verified-rows" id="verifiedRows"></div>
+              <div class="verify-actions" id="verifyActions" style="padding:14px 18px 16px"></div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<!-- ══ QR MODAL ══ -->
+<div class="modal-overlay" id="qrModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">ASN GENERATED</div>
+        <div class="modal-sub" id="modalAsnId">ASN-XXXXXXXX</div>
+      </div>
+      <button class="modal-close" onclick="closeQrModal()">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="qr-wrap">
+        <canvas id="qrCanvas"></canvas>
+      </div>
+      <div class="asn-id-display" id="modalAsnIdDisplay">ASN-XXXXXXXX</div>
+      <div class="asn-summary" id="modalSummary"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-teal" style="flex:1" onclick="downloadQR()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download QR
+      </button>
+      <button class="btn-outline" onclick="closeQrModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════
+// SUPABASE CONFIG
+// ══════════════════════════════════════════════════
+const SUPABASE_URL  = 'https://oklyxaazgddyjargfopy.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rbHl4YWF6Z2RkeWphcmdmb3B5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4OTYwNTMsImV4cCI6MjA2MzQ3MjA1M30.sb_publishable_sOdyK-TdxEQ2XEiaJ9Cb_w_QfB2Zpxz';
+// ⚠️ Replace SUPABASE_ANON with your real anon/public key from Supabase Dashboard → Project Settings → API
+
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+const ADMIN_EMAIL = 'admin@anvilautomation';
+const ADMIN_PASS  = 'Anvil@2026';
+
+// ══════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════
+let currentUser = null;
+let currentRole = 'supplier';
+let loginRole   = 'supplier';
+let allAdminASNs = [];
+let lastCreatedASN = null;
+
+// ══════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════
+function genASNId() {
+  return 'ASN-' + Math.random().toString(36).substr(2,8).toUpperCase();
+}
+
+function fmtDate(d) {
+  if (!d) return '—';
+  return new Date(d).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+}
+
+function statusBadge(s) {
+  const map = {
+    pending:    ['badge-pending', 'Pending'],
+    in_transit: ['badge-transit', 'In Transit'],
+    verified:   ['badge-verified', 'Verified'],
+    received:   ['badge-received', 'Received'],
+  };
+  const [cls, label] = map[s] || ['badge-pending', s];
+  return `<span class="asn-badge ${cls}">${label}</span>`;
+}
+
+const SVGICONS = {
+  info:    '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>',
+  success: '<path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
+  error:   '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>',
+};
+
+function showStatus(elStatus, elIcon, elTxt, text, type) {
+  elStatus.className = `form-status ${type} show`;
+  if (elIcon) elIcon.innerHTML = SVGICONS[type] || SVGICONS.info;
+  if (elTxt)  elTxt.textContent = text;
+}
+function clearStatus(elStatus) {
+  if (elStatus) elStatus.className = 'form-status';
+}
+
+// ══════════════════════════════════════════════════
+// LOGIN
+// ══════════════════════════════════════════════════
+function setLoginRole(role) {
+  loginRole = role;
+  document.getElementById('roleSupplier').classList.toggle('active', role === 'supplier');
+  document.getElementById('roleAdmin').classList.toggle('active', role === 'admin');
+}
+
+async function doLogin() {
+  const email    = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+  const statusEl = document.getElementById('loginStatus');
+  const iconEl   = document.getElementById('loginStatusIcon');
+  const txtEl    = document.getElementById('loginStatusTxt');
+
+  if (!email || !password) {
+    statusEl.className = 'login-status error show';
+    iconEl.innerHTML = SVGICONS.error;
+    txtEl.textContent = 'Please enter email and password.';
+    return;
+  }
+
+  const btn = document.getElementById('loginBtn');
+  btn.disabled = true;
+  btn.textContent = 'Signing in…';
+  statusEl.className = 'login-status info show';
+  iconEl.innerHTML = SVGICONS.info;
+  txtEl.textContent = 'Authenticating…';
+
+  try {
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+
+    currentUser = data.user;
+    // Determine role: admin email = admin, everything else = supplier
+    const isAdmin = email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+    currentRole = isAdmin ? 'admin' : 'supplier';
+
+    afterLogin();
+  } catch (err) {
+    statusEl.className = 'login-status error show';
+    iconEl.innerHTML = SVGICONS.error;
+    txtEl.textContent = err.message || 'Login failed. Check credentials.';
+    btn.disabled = false;
+    btn.textContent = 'Sign In';
+  }
+}
+
+function afterLogin() {
+  // Show nav user info
+  document.getElementById('navUser').classList.remove('hidden');
+  document.getElementById('navSignout').classList.remove('hidden');
+  document.getElementById('navUserEmail').textContent =
+    currentUser.email?.split('@')[0] + ' (' + (currentRole === 'admin' ? 'Admin' : 'Supplier') + ')';
+
+  if (currentRole === 'admin') {
+    document.getElementById('navCenter').style.display = 'flex';
+    switchView('admin');
+  } else {
+    document.getElementById('navCenter').style.display = 'none';
+    switchView('supplier');
+  }
+}
+
+async function doSignout() {
+  await sb.auth.signOut();
+  currentUser = null;
+  currentRole = 'supplier';
+  document.getElementById('navUser').classList.add('hidden');
+  document.getElementById('navSignout').classList.add('hidden');
+  document.getElementById('navCenter').style.display = 'none';
+  switchView('login');
+  // Reset login form
+  document.getElementById('loginEmail').value = '';
+  document.getElementById('loginPassword').value = '';
+  document.getElementById('loginStatus').className = 'login-status';
+  document.getElementById('loginBtn').disabled = false;
+  document.getElementById('loginBtn').textContent = 'Sign In';
+  setLoginRole('supplier');
+}
+
+// ══════════════════════════════════════════════════
+// VIEW SWITCHING
+// ══════════════════════════════════════════════════
+function switchView(view) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view' + view.charAt(0).toUpperCase() + view.slice(1)).classList.add('active');
+
+  if (view === 'supplier') {
+    document.getElementById('navSupplier').classList.add('active');
+    document.getElementById('navAdmin').classList.remove('active');
+    loadSupplierASNs();
+  } else if (view === 'admin') {
+    document.getElementById('navAdmin').classList.add('active');
+    document.getElementById('navSupplier').classList.remove('active');
+    loadAdminASNs();
+  }
+}
+
+// ══════════════════════════════════════════════════
+// CREATE ASN (SUPPLIER)
+// ══════════════════════════════════════════════════
+async function submitASN() {
+  const statusEl = document.getElementById('asnFormStatus');
+  const iconEl   = document.getElementById('asnFormStatusIcon');
+  const txtEl    = document.getElementById('asnFormStatusTxt');
+  const btn      = document.getElementById('asnSubmitBtn');
+  const spinner  = document.getElementById('asnSpinner');
+  const lbl      = document.getElementById('asnBtnLabel');
+
+  const material   = document.getElementById('f_material').value.trim();
+  const invoice    = document.getElementById('f_invoice').value.trim();
+  const qty        = document.getElementById('f_qty').value.trim();
+  const weight     = document.getElementById('f_weight').value.trim();
+  const vehicle    = document.getElementById('f_vehicle').value.trim();
+  const driver     = document.getElementById('f_driver').value.trim();
+  const driverPh   = document.getElementById('f_driverPhone').value.trim();
+  const dispatch   = document.getElementById('f_dispatch').value;
+  const arrival    = document.getElementById('f_arrival').value;
+  const unit       = document.getElementById('f_unit').value.trim();
+  const notes      = document.getElementById('f_notes').value.trim();
+
+  if (!material || !invoice || !qty || !weight || !vehicle || !driver || !dispatch || !arrival) {
+    showStatus(statusEl, iconEl, txtEl, 'Please fill all required fields (marked with ✦).', 'error');
+    return;
+  }
+  if (new Date(arrival) < new Date(dispatch)) {
+    showStatus(statusEl, iconEl, txtEl, 'Expected arrival cannot be before dispatch date.', 'error');
+    return;
+  }
+
+  btn.disabled = true;
+  spinner.style.display = 'block';
+  lbl.style.display = 'none';
+  showStatus(statusEl, iconEl, txtEl, 'Submitting ASN to Anvil Automation…', 'info');
+
+  try {
+    const asnId = genASNId();
+    const payload = {
+      asn_id:        asnId,
+      supplier_id:   currentUser.id,
+      supplier_email:currentUser.email,
+      material_name: material,
+      invoice_number:invoice,
+      quantity:      parseFloat(qty),
+      weight_kg:     parseFloat(weight),
+      unit:          unit || 'Nos',
+      vehicle_number:vehicle,
+      driver_name:   driver,
+      driver_phone:  driverPh,
+      dispatch_date: dispatch,
+      expected_arrival: arrival,
+      notes:         notes,
+      status:        'pending',
+      created_at:    new Date().toISOString(),
+    };
+
+    const { data, error } = await sb.from('asn_records').insert([payload]).select().single();
+    if (error) throw error;
+
+    lastCreatedASN = data || payload;
+
+    // Reset form
+    document.getElementById('asnForm').reset();
+    showStatus(statusEl, iconEl, txtEl, 'ASN submitted successfully! Generating QR code…', 'success');
+
+    setTimeout(() => {
+      openQRModal(lastCreatedASN);
+      clearStatus(statusEl);
+      loadSupplierASNs();
+    }, 800);
+
+  } catch (err) {
+    showStatus(statusEl, iconEl, txtEl, err.message || 'Failed to submit ASN. Please try again.', 'error');
+  } finally {
+    btn.disabled = false;
+    spinner.style.display = 'none';
+    lbl.style.display = '';
+  }
+}
+
+// ══════════════════════════════════════════════════
+// LOAD SUPPLIER'S ASNs
+// ══════════════════════════════════════════════════
+async function loadSupplierASNs() {
+  if (!currentUser) return;
+  const listEl = document.getElementById('supplierAsnList');
+  listEl.innerHTML = '<div class="asn-list-empty" style="padding:32px;color:var(--w40)">Loading…</div>';
+
+  try {
+    const { data, error } = await sb.from('asn_records')
+      .select('*')
+      .eq('supplier_id', currentUser.id)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    // Update stats
+    const all = data || [];
+    document.getElementById('sTotalAsn').textContent = all.length;
+    document.getElementById('sPending').textContent  = all.filter(a => a.status === 'pending').length;
+    document.getElementById('sTransit').textContent  = all.filter(a => a.status === 'in_transit').length;
+    document.getElementById('sReceived').textContent = all.filter(a => a.status === 'received').length;
+
+    if (!all.length) {
+      listEl.innerHTML = `<div class="asn-list-empty">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        No ASNs yet. Create your first shipment notice.
+      </div>`;
+      return;
+    }
+
+    listEl.innerHTML = all.map(a => `
+      <div class="asn-item">
+        <div class="asn-item-top">
+          <div>
+            <div class="asn-item-id">${a.asn_id}</div>
+            <div class="asn-item-mat">${a.material_name}</div>
+          </div>
+          ${statusBadge(a.status)}
+        </div>
+        <div class="asn-item-meta">
+          <span><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/></svg>${a.quantity} ${a.unit || 'Nos'}</span>
+          <span><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/></svg>${a.vehicle_number}</span>
+          <span><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Arrives ${fmtDate(a.expected_arrival)}</span>
+          <span><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>${a.invoice_number}</span>
+        </div>
+      </div>
+    `).join('');
+
+  } catch (err) {
+    listEl.innerHTML = `<div class="asn-list-empty" style="color:var(--red)">Error: ${err.message}</div>`;
+  }
+}
+
+// ══════════════════════════════════════════════════
+// LOAD ADMIN ASNs
+// ══════════════════════════════════════════════════
+async function loadAdminASNs() {
+  const tbody = document.getElementById('adminTableBody');
+  tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--w40);padding:32px">Loading…</td></tr>';
+
+  try {
+    const { data, error } = await sb.from('asn_records')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    allAdminASNs = data || [];
+
+    // Stats
+    document.getElementById('adTotal').textContent   = allAdminASNs.length;
+    document.getElementById('adPending').textContent = allAdminASNs.filter(a => a.status === 'pending').length;
+    document.getElementById('adTransit').textContent = allAdminASNs.filter(a => a.status === 'in_transit').length;
+    document.getElementById('adReceived').textContent= allAdminASNs.filter(a => a.status === 'received').length;
+
+    renderAdminTable(allAdminASNs);
+  } catch (err) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--red);padding:24px">Error: ${err.message}</td></tr>`;
+  }
+}
+
+function renderAdminTable(list) {
+  const tbody = document.getElementById('adminTableBody');
+  if (!list.length) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--w40);padding:32px">No ASNs found.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = list.map(a => `
+    <tr>
+      <td class="td-id">${a.asn_id}</td>
+      <td class="td-mat">${a.material_name}</td>
+      <td>${a.quantity} ${a.unit || ''}</td>
+      <td>${fmtDate(a.expected_arrival)}</td>
+      <td>${statusBadge(a.status)}</td>
+      <td>
+        <button class="btn-sm teal" onclick="quickVerify('${a.asn_id}')">Verify</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function filterAdmin(status, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (status === 'all') {
+    renderAdminTable(allAdminASNs);
+  } else {
+    renderAdminTable(allAdminASNs.filter(a => a.status === status));
+  }
+}
+
+// ══════════════════════════════════════════════════
+// QR MODAL
+// ══════════════════════════════════════════════════
+function openQRModal(asn) {
+  const modal = document.getElementById('qrModal');
+  modal.classList.add('open');
+
+  document.getElementById('modalAsnId').textContent      = asn.asn_id;
+  document.getElementById('modalAsnIdDisplay').textContent = asn.asn_id;
+
+  // Summary table
+  document.getElementById('modalSummary').innerHTML = `
+    <div class="asn-sum-row"><span class="asn-sum-k">Material</span><span class="asn-sum-v">${asn.material_name}</span></div>
+    <div class="asn-sum-row"><span class="asn-sum-k">Quantity</span><span class="asn-sum-v">${asn.quantity} ${asn.unit || 'Nos'}</span></div>
+    <div class="asn-sum-row"><span class="asn-sum-k">Weight</span><span class="asn-sum-v">${asn.weight_kg} KG</span></div>
+    <div class="asn-sum-row"><span class="asn-sum-k">Invoice</span><span class="asn-sum-v">${asn.invoice_number}</span></div>
+    <div class="asn-sum-row"><span class="asn-sum-k">Vehicle</span><span class="asn-sum-v">${asn.vehicle_number}</span></div>
+    <div class="asn-sum-row"><span class="asn-sum-k">Driver</span><span class="asn-sum-v">${asn.driver_name}</span></div>
+    <div class="asn-sum-row"><span class="asn-sum-k">Dispatch</span><span class="asn-sum-v">${fmtDate(asn.dispatch_date)}</span></div>
+    <div class="asn-sum-row"><span class="asn-sum-k">Expected</span><span class="asn-sum-v">${fmtDate(asn.expected_arrival)}</span></div>
+    <div class="asn-sum-row"><span class="asn-sum-k">Supplier</span><span class="asn-sum-v">${asn.supplier_email || '—'}</span></div>
+  `;
+
+  // QR data payload
+  const qrPayload = JSON.stringify({
+    asn_id:       asn.asn_id,
+    material:     asn.material_name,
+    quantity:     asn.quantity,
+    unit:         asn.unit,
+    weight_kg:    asn.weight_kg,
+    invoice:      asn.invoice_number,
+    vehicle:      asn.vehicle_number,
+    driver:       asn.driver_name,
+    dispatch:     asn.dispatch_date,
+    arrival:      asn.expected_arrival,
+    supplier:     asn.supplier_email,
+    generated_at: new Date().toISOString(),
+  });
+
+  // Generate QR
+  const canvas = document.getElementById('qrCanvas');
+  QRCode.toCanvas(canvas, qrPayload, {
+    width: 220,
+    margin: 2,
+    color: { dark: '#050810', light: '#ffffff' },
+    errorCorrectionLevel: 'M',
+  }, (err) => {
+    if (err) console.error('QR generation error:', err);
+  });
+}
+
+function closeQrModal() {
+  document.getElementById('qrModal').classList.remove('open');
+}
+
+function downloadQR() {
+  const canvas = document.getElementById('qrCanvas');
+  const link   = document.createElement('a');
+  link.download = (document.getElementById('modalAsnIdDisplay').textContent || 'ASN') + '-QR.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+// ══════════════════════════════════════════════════
+// VERIFY / RECEIVE (ADMIN)
+// ══════════════════════════════════════════════════
+function quickVerify(asnId) {
+  document.getElementById('scanInput').value = asnId;
+  lookupASN();
+  // Scroll to scanner
+  document.querySelector('.scanner-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+async function lookupASN() {
+  const id  = document.getElementById('scanInput').value.trim().toUpperCase();
+  const det = document.getElementById('verifiedDetail');
+  const rows= document.getElementById('verifiedRows');
+  const act = document.getElementById('verifyActions');
+
+  if (!id) { det.classList.remove('show'); return; }
+
+  rows.innerHTML = '<div style="padding:14px 18px;color:var(--w40);font-size:13px">Searching…</div>';
+  det.classList.add('show');
+  act.innerHTML = '';
+
+  try {
+    const { data, error } = await sb.from('asn_records').select('*').eq('asn_id', id).single();
+    if (error || !data) {
+      rows.innerHTML = `<div style="padding:14px 18px;color:var(--red);font-size:13px">❌ ASN not found: ${id}</div>`;
+      return;
+    }
+    const a = data;
+
+    rows.innerHTML = `
+      <div class="verified-row"><span class="verified-k">ASN ID</span><span class="verified-v">${a.asn_id}</span></div>
+      <div class="verified-row"><span class="verified-k">Material</span><span class="verified-v">${a.material_name}</span></div>
+      <div class="verified-row"><span class="verified-k">Quantity</span><span class="verified-v">${a.quantity} ${a.unit || 'Nos'}</span></div>
+      <div class="verified-row"><span class="verified-k">Weight</span><span class="verified-v">${a.weight_kg} KG</span></div>
+      <div class="verified-row"><span class="verified-k">Invoice</span><span class="verified-v">${a.invoice_number}</span></div>
+      <div class="verified-row"><span class="verified-k">Vehicle</span><span class="verified-v">${a.vehicle_number}</span></div>
+      <div class="verified-row"><span class="verified-k">Driver</span><span class="verified-v">${a.driver_name}${a.driver_phone ? ' · ' + a.driver_phone : ''}</span></div>
+      <div class="verified-row"><span class="verified-k">Supplier</span><span class="verified-v">${a.supplier_email}</span></div>
+      <div class="verified-row"><span class="verified-k">Expected</span><span class="verified-v">${fmtDate(a.expected_arrival)}</span></div>
+      <div class="verified-row"><span class="verified-k">Status</span><span class="verified-v">${a.status.replace('_',' ').toUpperCase()}</span></div>
+      ${a.notes ? `<div class="verified-row"><span class="verified-k">Notes</span><span class="verified-v" style="font-family:var(--font-b)">${a.notes}</span></div>` : ''}
+    `;
+
+    // Show action buttons based on current status
+    let btns = '';
+    if (a.status === 'pending') {
+      btns += `<button class="btn-teal" onclick="updateStatus('${a.asn_id}','in_transit')">
+        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        Mark as In Transit
+      </button>`;
+    }
+    if (a.status === 'pending' || a.status === 'in_transit') {
+      btns += `<button class="btn-teal" style="background:var(--green);margin-top:${a.status==='pending'?'8px':'0'}" onclick="updateStatus('${a.asn_id}','verified')">
+        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Verify Shipment
+      </button>`;
+    }
+    if (a.status === 'verified') {
+      btns += `<button class="btn-teal" style="background:var(--green)" onclick="updateStatus('${a.asn_id}','received')">
+        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Mark Received & Update Inventory
+      </button>`;
+    }
+    if (a.status === 'received') {
+      btns = `<div style="padding:10px 0;font-size:13px;color:var(--green);display:flex;align-items:center;gap:8px">
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Stock received and inventory updated.
+      </div>`;
+    }
+    act.innerHTML = btns;
+
+  } catch (err) {
+    rows.innerHTML = `<div style="padding:14px 18px;color:var(--red);font-size:13px">Error: ${err.message}</div>`;
+  }
+}
+
+async function updateStatus(asnId, newStatus) {
+  try {
+    const updatePayload = {
+      status: newStatus,
+      [`${newStatus}_at`]: new Date().toISOString(),
+    };
+    if (newStatus === 'received') {
+      updatePayload.received_by = currentUser?.email;
+      updatePayload.inventory_updated = true;
+    }
+
+    const { error } = await sb.from('asn_records').update(updatePayload).eq('asn_id', asnId);
+    if (error) throw error;
+
+    // Re-lookup to refresh
+    await lookupASN();
+    await loadAdminASNs();
+
+  } catch (err) {
+    alert('Update failed: ' + err.message);
+  }
+}
+
+// ══════════════════════════════════════════════════
+// INIT — restore session
+// ══════════════════════════════════════════════════
+(async () => {
+  try {
+    const { data } = await sb.auth.getSession();
+    if (data?.session?.user) {
+      currentUser = data.session.user;
+      currentRole = currentUser.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase() ? 'admin' : 'supplier';
+      afterLogin();
+    }
+  } catch (_) { /* no session */ }
+})();
+
+// Enter key on login
+['loginEmail','loginPassword'].forEach(id => {
+  document.getElementById(id).addEventListener('keydown', e => {
+    if (e.key === 'Enter') doLogin();
+  });
+});
+document.getElementById('scanInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') lookupASN();
+});
+
+// Click outside modal to close
+document.getElementById('qrModal').addEventListener('click', function(e) {
+  if (e.target === this) closeQrModal();
+});
+</script>
+</body>
+</html>
